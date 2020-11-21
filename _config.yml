@@ -1,0 +1,16 @@
+exclude:
+  - node_modules
+  - script
+
+sass:
+  style: :compressed
+
+theme: jekyll-theme-primer
+  
+title: Cuong Nguyen
+description: Personal page
+
+google_analytics: UA-160268553-1
+
+disqus:
+    shortname: cnguyen10
