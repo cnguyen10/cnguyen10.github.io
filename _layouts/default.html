@@ -8,6 +8,9 @@
 {% seo %}
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
 
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
     <!-- KaTEX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
@@ -27,11 +30,29 @@
   </head>
   <body>
     <div class="container-lg px-3 my-5 markdown-body">
-      {% if page.title and page.title != site.title %}
-      <h1>{{ page.title }}</h1>
-      {% else %}
-      <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
-      {% endif %}
+      <div style="overflow: hidden; position: relative;">
+        <div style="display: inline-block; font-size: 2em;">
+          <strong>
+            {% if page.title and page.title != site.title %}
+            {{ page.title }}
+            {% else %}
+            {{ site.title }}
+            {% endif %}
+          </strong>
+        </div>
+
+        <button style="border: none; background-color: white; display: block; position: absolute; right: 0; top: 0;" onclick="menuDropdown()">
+          <i class="fa fa-bars fa-2x"></i>
+        </button>
+        <div id="myDropdown" style="display: none;">
+          <ul style="list-style-type:none; font-size: 1.25em;">
+            <li><a href="/.">About</a></li>
+            <li><a href="/blog">Blog</a></li>
+          </ul>
+        </div>
+        <hr style="height:1px;border:none;color:#333;background-color:#333;" />
+      </div>
+
       {{ content }}
 
       {% if page.comments %}
@@ -76,5 +97,16 @@
     {% endif %}
 
     <script id="dsq-count-scr" src="//cnguyen10.disqus.com/count.js" async></script>
+
+    <script>
+      function menuDropdown() {
+        var x = document.getElementById("myDropdown");
+        if (x.style.display === "block") {
+          x.style.display = "none";
+        } else {
+          x.style.display = "block";
+        }
+      }
+    </script>
   </body>
 </html>
