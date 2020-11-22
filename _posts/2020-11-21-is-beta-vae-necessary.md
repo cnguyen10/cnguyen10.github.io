@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "VAE: don't weight KL divergence"
+title: "Is beta-VAE necessary?"
 comments: true
 ---
 Given the data \\(x\\) and a latent variable \\(z\\), the objective function of a variational auto-encoder (VAE) is to maximize the evidence lower-bound (ELBO) w.r.t. the parameter of the variational distribution \\(q\\). This is equivalent to minimize the variational-free energy (the negative ELBO), which can be written as:
 \\[
     \min_{\lambda} \underbrace{\mathbb{E}_{q(z | x, \lambda)} \left[ - \ln p(x | z) \right]}\_{\text{reconstruction}} + \textcolor{red}{\beta}\mathrm{KL} \left[ q(z | x, \lambda) || p(x) \right], \tag{vfe}
 \\]
-where: \\(\mathrm{KL}[. || .]\\) is the Kullback-Leibler (KL) divergence, and \\(\textcolor{red}{\beta} = 1\\).
+where: \\(\mathrm{KL}[. || .]\\) is the Kullback-Leibler (KL) divergence, and \\(\textcolor{red}{\beta} = 1\\). This loss is also known as the one used in [\\(\beta\\)-VAE](beta vae paper).
 
 Conventionally, one models the reconstruction loss as mean squared error (MSE) or binary cross-entropy loss, then perform gradient descent to minimize the VFE or the objective function. However, simply doing this results in a poor reconstructed images. This leads to a trick that setting \\(\beta \ll 1\\) to obtain sharper reconstructed images. Although this trick is justified by the [\\(\beta\\)-VAE paper](beta vae paper), I think that it is not the right way to do since \\(\beta\\) in that paper is actually the Lagrange multiplier, not a hyper-parameter, and therefore, obtained through the optimization. Of course, setting \\(\beta \ll 1\\) is still mathematically correct since the resultant bound is further lowered (or in other words, looser).
 
@@ -37,13 +37,13 @@ This can also be known as regression in \\([0, 1]\\). Note that the distribution
 
 The likelihood of interest, in this case, is modeled as a continuous Bernoulli distribution:
 \\[
-    p(x \vert z, \Lambda) = \prod_{n=1}^{N} \underbrace{C\left( \hat{x}(z_{n}) \right)}\_{\text{normalizing const.}} \underbrace{\left[ \hat{x}(z_{n}) \right]^{x} \left[ 1 - \hat{x}(z_{n}) \right]^{1 - x}}\_{\text{pdf of Bernoulli distribution}}.
+    p(x \vert z) = \prod_{n=1}^{N} \underbrace{C\left( \hat{x}(z_{n}) \right)}\_{\text{normalizing const.}} \underbrace{\left[ \hat{x}(z_{n}) \right]^{x} \left[ 1 - \hat{x}(z_{n}) \right]^{1 - x}}\_{\text{pdf of Bernoulli distribution}}.
 \\]
 Note that the continuous Bernoulli distribution has a normalizing constant.
 
 Hence, it is straight-forward to obtain the log-likelihood of interest:
 \\[
-    \ln p(x \vert z, \Lambda) = \sum_{n=1}^{N} \ln C\left( \hat{x}(z_{n}) \right) + \underbrace{x \ln \hat{x}(z_{n}) + (1 - x) \ln \left[ 1 - \hat{x}(z_{n}) \right]}\_{\text{binary cross-entropy}}. \tag{ll-cb}
+    \ln p(x \vert z) = \sum_{n=1}^{N} \ln C\left( \hat{x}(z_{n}) \right) + \underbrace{x \ln \hat{x}(z_{n}) + (1 - x) \ln \left[ 1 - \hat{x}(z_{n}) \right]}\_{\text{binary cross-entropy}}. \tag{ll-cb}
 \\]
 
 <hr>
