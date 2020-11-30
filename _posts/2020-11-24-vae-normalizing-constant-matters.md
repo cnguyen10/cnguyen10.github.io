@@ -3,7 +3,7 @@ layout: post
 title: "VAE: normalizing constant matters"
 comments: true
 ---
-Variational auto-encoder (VAE) is one of the most popular generative models in machine learning nowadays. However, the rapid development of the field has made many machine learning practitioners (or, maybe only me) focus too much on deep learning without paying much attention to some fundamentals, such as linear regression. That causes much confusion due to the discrepancy between the derivation and the practical implementation, in which the regularization of the loss, or specifically the Kullback-Leibler (KL) divergence, is weighted by some factor \\(\beta\\). I myself did experience and struggle due to this issue at the beginning of my research. Even though weighting the KL divergence term by a factor \\(\beta \ll 1 \\) could temporarily resolve the issue, I has been questioning why the balancing between reconstruction and KL divergence is necessary. Eventually, the answer is quite simple: the normalizing constant in the reconstruction loss (or negative log-likelihood) that has been often ignored. This ignorance is the main cause of the imbalance between the two losses.
+Variational auto-encoder (VAE) is one of the most popular generative models in machine learning nowadays. However, the rapid development of the field has made many machine learning practitioners (or, maybe only me) focus too much on deep learning without paying much attention to some fundamentals, such as linear regression. That causes much confusion due to the discrepancy between the derivation and the practical implementation, in which the regularization of the loss, or specifically the Kullback-Leibler (KL) divergence, is weighted by some factor \\(\beta\\). I myself did experience and struggle at the beginning of my research. Even though weighting the KL divergence term by a factor \\(\beta \ll 1 \\) could temporarily resolve the issue, I has been questioning why the balancing between reconstruction and KL divergence is necessary. Eventually, the answer is quite simple: the normalizing constant in the reconstruction loss (or negative log-likelihood) that has been often ignored. This ignorance is the main cause of the imbalance between the two losses.
 
 ## Variational auto-encoder
 Given data points \\(\mathbf{x} = \\{x_{i}\\}\_{n=1}^{N} \\), the model of a VAE assumes that there is a corresponding latent variable \\(\mathbf{z} = \\{ z_{n} \\}\_{n=1}^{N}\\) that generates data \\(\mathbf{x}\\). In short, the objective function of a VAE is to minimize the variational-free energy (VFE) given as:
@@ -44,7 +44,7 @@ Hence, the negative log-likelihood, or the reconstruction loss in the VAE, can b
     -\ln p(\mathbf{x} \vert \mathbf{z}, \theta, \Lambda) = - \frac{N}{2} \ln \frac{\Lambda}{2 \pi} + \Lambda \times \underbrace{\frac{1}{2} \sum_{n=1}^{N} \left[ x_{n} - f(z_{n}; \theta) \right]^{2}}\_{\text{MSE}}. \tag{nll-G}
 \\]
 
-> Note that current practice uses only MSE, which ignores the first term and the scaling factor due to the noise precision \\(\Lambda\\).
+> Note that current practice uses only MSE, which ignores the first term and the scaling factor relating to the noise precision \\(\Lambda\\).
 
 Under this modeling approach, the decoder would consist of 2 networks: one for mean \\(\bar{x} = f(z; \theta)\\) and the other for noise precision \\(\Lambda = g(z; \phi)\\). Of course, one can consider \\(\Lambda\\) as a hyper-parameter to simplify further the implementation.
 
