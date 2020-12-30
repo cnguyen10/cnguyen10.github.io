@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "PAC-Bayes bound for generalization error"
-comment: true
+comments: true
 ---
 Properly approaximately correct (PAC) learning has been a fundamental course for most of graduate programs in machine learning. Its motivation is to upper-bound the *true risk* (or generalisation error) by the *empirical risk* with certain confidence level. In other words, it is often written in the following form:
 
