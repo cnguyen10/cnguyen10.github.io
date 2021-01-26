@@ -41,7 +41,7 @@ where: \\(\epsilon \sim \mathcal{N}\left( \epsilon; 0, \Lambda^{-1} \right)\\). 
 \\]
 Hence, the negative log-likelihood, or the reconstruction loss in the VAE, can be expressed as:
 \\[
-    -\ln p(\mathbf{x} \vert \mathbf{z}, \theta, \Lambda) = - \frac{N}{2} \ln \frac{\Lambda}{2 \pi} + \Lambda \times \underbrace{\frac{1}{2} \sum_{n=1}^{N} \left[ x_{n} - f(z_{n}; \theta) \right]^{2}}\_{\text{MSE}}. \tag{nll-G}
+    -\ln p(\mathbf{x} \vert \mathbf{z}, \theta, \Lambda) = - \frac{N}{2} \ln \frac{\Lambda}{2 \pi} + \Lambda \times \frac{1}{2} \underbrace{\sum_{n=1}^{N} \left[ x_{n} - f(z_{n}; \theta) \right]^{2}}\_{N \times \text{MSE}}. \tag{nll-G}
 \\]
 
 > Note that current practice uses only MSE, which ignores the first term and the scaling factor relating to the noise precision \\(\Lambda\\).
@@ -51,7 +51,7 @@ Under this modeling approach, the decoder would consist of 2 networks: one for m
 The "full" loss function of a VAE is, therefore, presented as:
 \\[
     \boxed{
-    \mathbb{E}\_{q(\mathbf{z})} \left[ \frac{N}{2} \ln(2\pi) - \frac{1}{2} \sum_{n=1}^{N} \ln \Lambda_{n} + \frac{1}{2} \sum_{n=1}^{N} \Lambda_{n} \left[ x_{n} - f(z_{n}; \theta) \right]^{2} \right] + \mathrm{KL} \left[ q(\mathbf{z}) \Vert p(\mathbf{x}) \right]. \tag{vfe-G}
+    \mathbb{E}\_{q(\mathbf{z})} \left[ \frac{N}{2} \ln(2\pi) - \frac{N}{2} \ln \Lambda + \frac{\Lambda}{2} \sum_{n=1}^{N} \left[ x_{n} - f(z_{n}; \theta) \right]^{2} \right] + \mathrm{KL} \left[ q(\mathbf{z}) \Vert p(\mathbf{x}) \right]. \tag{vfe-G}
     }
 \\]
 
