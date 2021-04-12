@@ -4,7 +4,7 @@ title: "Outer product approximation of Hessian matrix"
 comments: true
 ---
 
-Hessian matrix is heavily studied in the optimization community. The purpose is to utilize the second order derivative to optimize a function of interest (also known as Newton's method). In the machine learning, especially Bayesian inference, Hessian matrix can be found in some applications, such as Laplace's method which approximates a distribution of interest by a Gaussian distribution. Although Hessian matrix provides additional information which improves the convergence speed in optimization or reduces a complicated distribution to a Gaussian distribution, calculating a Hessian matrix often increases computation complexity. In neural networks where the number of model parameters is very large, Hessian matrix is often intractable due to the limited computation and memory.
+Hessian matrix is heavily studied in the optimization community. The purpose is to utilize the second order derivative to optimize a function of interest (also known as Newton's method). In machine learning, especially Bayesian inference, Hessian matrix can be found in some applications, such as Laplace's method which approximates a distribution by a Gaussian distribution. Although Hessian matrix provides additional information which improves the convergence rate in optimization or reduces a complicated distribution to a Gaussian distribution, calculating a Hessian matrix often increases computation complexity. In neural networks where the number of model parameters is very large, Hessian matrix is often intractable due to the limited computation and memory.
 
 Many efficient approximations of Hessian matrix have been developed to either reduce the running time complexity or decompose the Hessian matrix to reduce the amount of memory storage. Hessian-free approaches which utilizes the Hessian-vector product are also attracted much research interest. This post will present an approximation of Hessian matrix using the outer product. Note that this approximation represents an approximated Hessian matrix by a set of matrices whose sizes are reasonable to store in GPU memory. The trade-off is that the running time complexity to obtain the Hessian matrix is still quadractic. Note that this approximation is also known as Gauss-Newton matrix.
 
@@ -34,7 +34,7 @@ Many efficient approximations of Hessian matrix have been developed to either re
         \[
             \begin{aligned}
                 \mathbf{H}_{jk} & = \frac{\partial}{\partial\mathbf{w}_{k}} \left( \frac{\partial L}{\partial \mathbf{w}_{j}} \right) = \frac{\partial}{\partial\mathbf{w}_{k}} \left( \sum_{i=1}^{N} \frac{\partial \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{w}_{j}} \right) \\
-                & = \frac{\partial}{\partial \mathbf{w}_{k}} \left( \sum_{i=1}^{N} \sum_{c=1}^{C} \frac{\partial\ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})} \frac{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j}} \right) \quad \text{(chain rule)}\\
+                & = \frac{\partial}{\partial \mathbf{w}_{k}} \left( \sum_{i=1}^{N} \sum_{c=1}^{C} \frac{\partial\ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})} \frac{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j}} \right) \quad \text{\textcolor{ForestGreen}{(chain rule)}}\\
                 & = \sum_{i=1}^{N} \sum_{c=1}^{C} \frac{\partial}{\partial \mathbf{w}_{k}} \left( \frac{\partial \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})} \frac{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j}} \right).
             \end{aligned}
         \]
@@ -89,7 +89,7 @@ Many efficient approximations of Hessian matrix have been developed to either re
         </p>
     </blockquote>
 
-    The calculation for the Hessian matrix \(\mathbf{H}_{\sigma}\) of the loss w.r.t. the pre-activated outputs \(\mathbf{f}\) at the last layer is presented in the following sub-sections.
+    The following section will present how to calculate the matrix \(\mathbf{H}_{\sigma}\) for some commonly-used losses.
 </div>
 
 <h2>Derivation for \(\mathbf{H}_{\sigma}\)</h2>
