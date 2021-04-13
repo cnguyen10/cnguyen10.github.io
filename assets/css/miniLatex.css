@@ -9,55 +9,61 @@ body {
     counter-increment: theorem;
     display: block;
     margin: 12px 0;
+    padding: 0.5em;
     font-style: italic;
+    background-color: #EEF3F5;
 }
 .theorem::before {
-content: 'Theorem ' counter(theorem) '. ';
-font-weight: bold;
-font-style: normal;
+    content: 'Theorem ' counter(theorem) '. ';
+    font-weight: bold;
+    font-style: normal;
 }
 
 /* Lemma */
 .lemma {
-counter-increment: theorem;
-display: block;
-margin: 12px 0;
-font-style: italic;
+    counter-increment: theorem;
+    display: block;
+    margin: 12px 0;
+    padding: 0.5em;
+    font-style: italic;
+    background-color: #EEF3F5;
 }
 .lemma::before {
-content: 'Lemma ' counter(theorem) '. ';
-font-weight: bold;
-font-style: normal;
+    content: 'Lemma ' counter(theorem) '. ';
+    font-weight: bold;
+    font-style: normal;
 }
 
 /* Proof */
 .proof {
-display: block;
-margin: 12px 0;
-font-style: normal;
-position: relative;
+    display: block;
+    margin: 12px 0;
+    padding: 0.5em;
+    font-style: normal;
+    position: relative;
 }
 .proof::before {
-content: 'Proof. ' attr(title);
-font-style: italic;
+    content: 'Proof. ' attr(title);
+    font-style: italic;
 }
 .proof:after {
-content: '◾️';
-position: absolute;
-right: -12px;
-bottom: -2px;
+    content: '◾️';
+    position: absolute;
+    right: -12px;
+    bottom: -2px;
 }
 
 /* Definition */
 .definition {
-counter-increment: definition;
-display: block;
-margin: 12px 0;
-font-style: normal;
+    counter-increment: definition;
+    display: block;
+    margin: 12px 0;
+    padding: 0.5em;
+    font-style: normal;
+    background-color: #EEF3F5;
 }
 .definition::before {
-content: 'Definition ' counter(definition) '. ';
-font-weight: bold;
-font-style: normal;
+    content: 'Definition ' counter(definition) '. ';
+    font-weight: bold;
+    font-style: normal;
 }
-  
