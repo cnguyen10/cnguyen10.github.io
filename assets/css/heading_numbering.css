@@ -1,0 +1,21 @@
+body{counter-reset: section}
+h2{counter-reset: sub-section}
+h3{counter-reset: composite}
+h4{counter-reset: detail}
+
+h2.number-heading:before{
+    counter-increment: section;
+    content: counter(section) "\a0\a0\a0";
+}
+h3.number-heading:before{
+    counter-increment: sub-section;
+    content: counter(section) "." counter(sub-section) "\a0\a0\a0";
+}
+h4.number-heading:before{
+    counter-increment: composite;
+    content: counter(section) "." counter(sub-section) "." counter(composite) "\a0\a0\a0";
+}
+h5.number-heading:before{
+    counter-increment: detail;
+    content: counter(section) "." counter(sub-section) "." counter(composite) "." counter(detail) "\a0\a0\a0";
+}
