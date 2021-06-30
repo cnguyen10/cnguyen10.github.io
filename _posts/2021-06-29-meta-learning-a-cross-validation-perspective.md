@@ -87,7 +87,7 @@ Before formulating the objective for meta-learning, it is essential to introduce
 <section>
     <h2 class="number-heading">Differentiation with other transfer learning approaches</h2>
     <div>
-        Given the definition of meta-learning in \sectionautorefname~\ref{sec:meta_learning}, it is often a source of confusion to differentiate meta-learning from other transfer learning approaches. In this section, some popular transfer learning methods are described with their objective function formulated to purposely distinguish from meta-learning.
+        Given the definition of meta-learning in section <a href="#meta-learning-extends-cross-validation">3</a>, it is often a source of confusion to differentiate meta-learning from other transfer learning approaches. In this section, some popular transfer learning methods are described with their objective function formulated to purposely distinguish from meta-learning.
     </div>
     <section>
         <h3 class="number-heading">Fine-tuning</h3>
@@ -100,7 +100,7 @@ Before formulating the objective for meta-learning, it is essential to introduce
                 \end{aligned}
                 \tag{fine-tuning}
             \]
-            Comparing to the objective of meta-learning in (meta_learning), the objective function of fine-tuning in \eqref{eq:fine_tuning_formulation} is a constrained optimisation which is much easier to solve. Due to the simplicity optimising on a single training task, fine-tuning requires a decent number of training examples on the target tasks to fine-tune \(\mathbf{w}_{t}\). In contrast, meta-learning works on several training tasks, and can quickly adapt to a new task with only a few training examples.
+            Comparing to the objective of meta-learning in (meta_learning), the objective function of fine-tuning in Eq. (fine-tuning) is a constrained optimisation which is much easier to solve. Due to the simplicity optimising on a single training task, fine-tuning requires a decent number of training examples on the target tasks to fine-tune \(\mathbf{w}_{t}\). In contrast, meta-learning works on several training tasks, and can quickly adapt to a new task with only a few training examples.
         </div>
     </section>
     <section>
