@@ -21,6 +21,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             renderMathInElement(document.body, {
                 // ...options...
+                trust: (context) => context.command === '\\htmlStyle'
                 // delimiters: [
                 //   {left: "$$", right: "$$", display: false},
                 //   {left: "\\(", right: "\\)", display: false},
