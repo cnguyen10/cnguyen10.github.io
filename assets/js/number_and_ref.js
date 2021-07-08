@@ -68,7 +68,7 @@ async function number_equations(){
     var equations = document.querySelectorAll('[id^=eq]');
     var eq_dict = {};
     for (var i = 0; i < equations.length; i++) {
-        equations[i].innerHTML = i + 1;
+        equations[i].innerHTML = "<a name=#" + equations[i].id + ">" + (i + 1) + "</a>";
         equations[i].setAttribute("name", equations[i].id);
         
         // add the equation into a list of key-value pair: id = counter_value
