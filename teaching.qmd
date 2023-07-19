@@ -1,0 +1,8 @@
+| Year | Semester | Course | Level | Role |
+| --- | --- | --- | --- | --- |
+| 2023 | 2 | Grand Challenges in Computer Science | Undergraduate | Co-intructor |
+| 2022 | 2 | Grand Challenges in Computer Science | Undergraduate | Co-intructor |
+| 2021 | 1 | Foundations on Computer Science | Master | Tutor |
+| 2021 | 2 | Foundations on Computer Science | Master | Tutor |
+
+: Courses taught at The University of Adelaide {tbl-colwidths="[15, 15, 30, 20, 20]" .strip .hover}

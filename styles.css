@@ -1,0 +1,22 @@
+details summary {
+    background-color: #eee;
+    padding: 0.5em;
+}
+details {
+    margin-bottom: 2em;
+}
+
+.theorem {
+    display: block;
+    margin: 12px 0;
+    padding: 0.5em;
+    /* font-style: italic; */
+    background-color: #EEF3F5;
+}
+
+div[class="proof"]::after {
+    /* content: '◾️'; */
+    content: '\20DE';
+    position: relative;
+    left: calc(100% - 20px);
+}

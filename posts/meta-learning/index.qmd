@@ -1,0 +1,240 @@
+---
+title: "From hyper-parameter optimisation to meta-learning"
+date: "2021-11-22"
+---
+
+Meta-learning, also known as *learn-how-to-learning*, has been being studied from 1980s [@schmidhuber1987evolutionary; @naik1992meta], and recently attracted much attention from the research community. Meta-learning is a technique in _transfer learning_  &mdash; a learning paradigm that utilises knowledge gained from past experience to facilitate the learning in the future. Due to being defined <q>implicitly</q>, meta -learning is often confused with other transfer learning techniques, e.g. *fine-tuning*, *multi-task learning*, *domain adaptation* and *continual learning*. The purpose of this post is to formulate meta-learning explicitly via *empirical Bayes*, and in particular *hyper-parameter optimisation*, to differentiate meta-learning from those common transfer learning approaches.
+
+This post is structured as follows: First, we define some terminologies used in general transfer learning and review hyper-parameter optimisation in single-task setting. We then formulate meta-learning as an extension of hyper-parameter optimisation in multi-task setting. Finally, we show the differences between meta-learning and other transfer-learning approaches.
+
+## Background
+
+### Data generation model of a task
+A data point of a task indexed by $i \in \mathbb{N}$ consists of an input $\mathbf{x}_{ij} \in \mathcal{X} \subseteq \mathbb{R}^{d}$ and a corresponding label $\mathbf{y}_{ij} \in \mathcal{Y}$ with $j \in \mathbb{N}$. For simplicity, only two families of tasks &#8211; regression and classification &#8211; are considered in this thesis. As a result, the label is defined as $\mathcal{Y} \subseteq \mathbb{R}$ for regression and as $\mathcal{Y} = \{0, 1, \ldots, C - 1\}$ for classification, where $C$ is the number of classes.
+
+Each data point in a task can be generated in 2 steps:
+
+- generate the input $\mathbf{x}_{ij}$ by sampling from some probability distribution $\mathcal{D}_{i}$,
+- determine the label $\mathbf{y}_{ij} = f(\mathbf{x}_{ij})$, where $f_{i}: \mathcal{X} \to \mathcal{Y}$ is the <q>correct</q> labelling function.
+
+Both the probability distribution $\mathcal{D}_{i}$ and the labelling function $f_{i}$ are unknown to the learning agent during training, and the aim of the supervised learning is to use the generated data to infer such labelling function $f$.
+
+For simplicity, we denote $(\mathbf{x}_{ij}, \mathbf{y}_{ij}) \sim (\mathcal{D}_{i}, f_{i})$ as the data generation model of task $i$-th.
+
+### Task instance
+::: {#def-task-instance}
+[@hospedales2021meta]
+
+A *task* or a *task instance* $\mathcal{T}_{i}$ consists of an unknown associated data generation model $(\mathcal{D}_{i}, f_{i})$, and a loss function $\ell_{i}$, denoted as:
+$$
+\mathcal{T}_{i} = \{(\mathcal{D}_{i}, f_{i}), \ell_{i}\}.
+$$
+:::
+
+::: {.remark}
+The loss function $\ell_{i}$ is defined abstractly, and can be either:
+
+- negative log-likelihood (NLL): $- \ln p(y_{ij} | \mathbf{x}_{ij}, \mathbf{w}_{i})$, corresponding to maximum likelihood estimation. This type of loss is quite common in practice, for example:
+
+    - mean squared error (MSE) in regression
+    - cross-entropy in classification
+
+
+- variational-free energy (negative *evidence lower-bound*) &mdash; corresponding to the objective function in variational inference.
+:::
+
+To solve a task $\mathcal{T}_{i}$, one needs to obtain an optimal task-specific model ${h(.; \mathbf{w}_{i}^{*}): \mathcal{X} \to \mathcal{Y}}$, parameterised by $\mathbf{w}^{*}_{i} \in \mathcal{W} \subseteq \mathbb{R}^{n}$, which minimises a loss function $\ell_{i}$ on the data of that task:
+$$
+\mathbf{w}_{i}^{*} = \arg\min_{\mathbf{w}_{i}} \mathbb{E}_{(\mathbf{x}_{ij}, \mathbf{y}_{ij}) \sim (\mathcal{D}_{i}, f_{i})} \left[ \ell_{i} (\mathbf{x}_{ij}, \mathbf{y}_{ij}; \mathbf{w}_{i}) \right].
+$$
+
+In practice, since both $\mathcal{D}_{i}$ and $f_{i}$ are unknown, the data generation model is replaced by a dataset consisting of a finite number of data-points generated according to the data generation model $(\mathcal{D}_{i}, f_{i})$, denoted as $S_{i} = \{\mathbf{x}_{ij}, \mathbf{y}_{ij}\}_{j=1}^{m_{i}}$. The objective to solve that task is often known as empirical risk minimisation:
+$$
+\mathbf{w}^{\mathrm{ERM}}_{i} = \arg\min_{\mathbf{w}_{i}} \frac{1}{m_{i}} \sum_{j = 1}^{m_{i}} \left[ \ell_{i} (\mathbf{x}_{ij}, \mathbf{y}_{ij}; \mathbf{w}_{i}) \right].
+$$ {#eq-objective_minimise_loss}
+
+Since the loss function used is the same for each task family, e.g. $\ell$ is NLL or variational-free energy, the subscript on the loss function is, therefore, dropped, and the loss is denoted as $\ell$ throughout this chapter. Furthermore, given the commonality of the loss function across all tasks, a task can, therefore, be simply represented by either its data generation model $(\mathcal{D}_{i}, f_{i})$ or the associated dataset $S_{i}$.
+
+### Hyper-parameter optimisation
+In single-task setting, the common way to <q>tune</q> or optimise a hyper-parameter is to split a given dataset $S_{i}$ into two disjoint subsets:
+$$
+\begin{aligned}
+S_{i}^{(t)} \cup S_{i}^{(v)} & = S_{i}\\
+S_{i}^{(t)} \cap S_{i}^{(v)} & = \varnothing,
+\end{aligned}
+$$
+where:
+
+- $S_{i}^{(t)} = \left\{ \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \right\}_{j=1}^{m_{i}^{(t)}}$ is the *training* (or *support*) subset,
+- $S_{i}^{(v)} = \left\{ \left( \mathbf{x}_{ij}^{(v)}, y_{ij}^{(v)} \right) \right\}_{j=1}^{m_{i}^{(v)}}$ is the *validation* (or *query*) subset.
+
+Note that with this definition, $m_{i}^{(t)} + m_{i}^{(v)} = m_{i}$, and $m_{i}^{(t)}$ and $m_{i}^{(v)}$ are not necessarily identical.
+
+The subset $S_{i}^{(t)}$ is used to train the model parameter of interest $\mathbf{w}_{i}$, while the subset $S_{i}^{(v)}$ is used to validate the hyper-parameter, denoted by $\theta$ (we provide examples of the hyper-parameter in Section <a href="#formulation-of-meta-learning">Formulation of meta-learning</a>). Mathematically, hyper-parameter optimisation in the single-task setting can be written as the following bi-level optimisation:
+$$
+\begin{aligned}
+& \min_{\theta} \frac{1}{m_{i}^{(v)}} \sum_{k = 1}^{m_{i}^{(v)}}  \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*} (\theta) \right)\\
+& \text{s.t.: } \mathbf{w}_{i}^{*} (\theta) = \arg\min_{\mathbf{w}_{i}} \frac{1}{m_{i}^{(t)}} \sum_{j = 1}^{m_{i}^{(t)}}  \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \mathbf{w}_{i} (\theta) \right).
+\end{aligned}
+$$
+
+We can extend the hyper-parameter optimisation from the two data subsets $S_{i}^{(t)}$ and $S_{i}^{(v)}$ to the general data generation model as the following:
+$$
+\begin{aligned}
+& \min_{\theta} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[  \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*} (\theta) \right) \right]\\
+& \text{s.t.: } \mathbf{w}_{i}^{*} (\theta) = \arg\min_{\mathbf{w}_{i}} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(t)}, y_{ik}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[  \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \mathbf{w}_{i} (\theta) \right) \right],
+\end{aligned}
+$$
+where $\mathcal{D}_{i}^{(t)}$ and $\mathcal{D}_{i}^{(v)}$ are the probability distributions of training and validation input data, respectively, and they are not necessarily identical.
+
+Formulation of meta-learning
+
+The setting of the meta-learning problem considered in this paper follows the *task environment* [@baxter2000model] that describes the unknown distribution $p(\mathcal{D}, f)$ over a family of tasks. Each task $\mathcal{T}_{i}$ is sampled from this task environment and can be represented as $\left( \mathcal{D}_{i}^{(t)}, \mathcal{D}_{i}^{(v)}, f_{i} \right)$, where $\mathcal{D}_{i}^{(t)}$ and $\mathcal{D}_{i}^{(v)}$ are the probability of training and validation input data, respectively, and are not necessarily identical. The aim of meta-learning is to use $T$ training tasks to train a meta-learning model that can be fine-tuned to perform well on an unseen task sampled from the same task environment.
+
+Such meta-learning methods use meta-parameters to model the common latent structure of the task distribution $p(\mathcal{D}, f)$. In this thesis, we consider meta-learning as an extension of hyper-parameter optimisation in single-task learning, where the hyper-parameter of interest &mdash; often called *meta-parameter* &mdash; is shared across many tasks. Similar to hyper-parameter optimisation presented in subsection <a href="#hyper-parameter-optimisation">hyper-parameter-optimisation</a>, the objective of meta-learning is also a bi-level optimisation:
+$$
+\begin{aligned}
+& \min_{\theta} \textcolor{red}{\mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f_{i} \right)}} \mathbb{E}_{ \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
+& \text{s.t.: } \mathbf{w}^{*}_{i}(\theta) = \arg\min_{\mathbf{w}_{i}} \mathbb{E}_{\left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[ \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \mathbf{w}_{i}(\theta) \right) \right].
+\end{aligned}
+$$ {#eq-meta_learning_bilevel_optimisation}
+
+The difference between meta-learning and hyper-parameter optimisation is that the meta-parameter (also known as hyper-parameter) $\theta$ is shared across all tasks sampled from the task environment $p(\mathcal{D}, f)$ as highlighted in <span style="color: red;">red</span> colour in @eq-meta_learning_bilevel_optimisation.
+
+In practice, the meta-parameter (or shared hyper-parameter) $\theta$ can be chosen as one of the followings:
+
+- *learning rate* of gradient-based optimisation used to minimise the lower level objective function in @eq-meta_learning_bilevel_optimisation to learn $\mathbf{w}_{i}^{*} \left(\theta\right)$ [@li2017meta],
+- *initialisation* of model parameter [@finn2017model],
+- *data representation* or *feature extractor* [@vinyals2016matching; @snell2017prototypical],
+- *optimiser* used to optimise the lower-level in @eq-meta_learning_bilevel_optimisation [@andrychowicz2016learning; @li2017learning].
+
+In this post, the meta-parameter $\theta$ is assumed to be the initialisation of model parameters. Formulation, derivation and analysis in the subsequent sections and chapters will, therefore, revolve around this assumption. Note that the analysis can be straight-forwardly extended to other types of meta-parameters with slight modifications.
+
+In general, the objective function of meta-learning in @eq-meta_learning_bilevel_optimisation can be solved by gradient-based optimisation, such as gradient descent. Due to the nature of the bi-level optimisation, the optimisation are often carried out in two steps. The first step is to adapt (or fine-tuned) the meta-parameter $\theta$ to the task-specific parameter $\mathbf{w}_{i}(\theta)$. This corresponds to the optimisation in the lower-level, and can be written as:
+$$
+\mathbf{w}_{i}^{*}(\theta) = \theta - \alpha \mathbb{E}_{\left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(t)}, \mathbf{y}_{ij}^{(t)}; \mathbf{w}_{i}(\theta) \right) \right],
+$$ {#eq-task_adaptation_sgd}
+where $\alpha$ is a hyper-parameter denoting the learning rate for task $\mathcal{T}_{i}$. For simplicity, the adaptation step in @eq-task_adaptation_sgd} is carried out with only one gradient descent update.
+
+The second step is to minimise the validation loss induced by the locally-optimal task-specific parameter $\mathbf{w}_{i}^{*}(\theta)$ evaluated on the validation subset w.r.t. the meta-parameter $\theta$. This corresponds to the upper-level optimisation, and can be expressed as:
+$$
+\theta \gets \theta - \gamma \mathbb{E}_{\mathcal{T}_{i} \sim p(\mathcal{D}, f)} \mathbb{E}_{ \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(v)}, \mathbf{y}_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right],
+$$ {#eq-meta_parameter_update_sgd}
+where $\gamma$ is another hyper-parameter representing the learning rate to learn $\theta$.
+
+The general algorithm of meta-learning using gradient-based optimisation is shown in Algorithm 1.
+
+<div>
+<pre class="pseudocode">
+\begin{algorithm}
+\caption{Training procedure of meta-learning in general}
+\begin{algorithmic}
+\PROCEDURE{Training}{task environment $p(\mathcal{D}, f)$, learning rates $\gamma$ and $\alpha$}
+\STATE initialise meta-parameter $\theta$
+\WHILE{$\theta$ not converged}
+\STATE sample a mini-batch of $T$ tasks from task environment $p\left( \mathcal{D}, f \right)$
+\FOR{each task $\mathcal{T}_{i}, i \in \{1, \ldots, T\}$}
+\STATE sample two data subsets $S_{i}^{(t)}$ and $S_{i}^{(v)}$ from task $\mathcal{T}_{i} = (\mathcal{D}_{i}^{(t)}, \mathcal{D}_{i}^{(v)}, f_{i})$
+\STATE adapt meta-parameter to task $\mathcal{T}_{i}$: $\mathbf{w}_{i}^{*} \left( \theta \right) = \theta - \frac{\alpha}{m_{i}^{(t)}} \sum_{j = 1}^{m_{i}^{(t)}} \nabla_{\theta} \left[ \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)};  \theta \right)\right]$ \COMMENT{Eq. @eq-task_adaptation_sgd}}
+\ENDFOR
+\STATE update meta-parameter: $\theta \gets \theta - \frac{\gamma}{T} \sum_{i=1}^{T} \frac{1}{m_{i}^{(v)}} \sum_{k=1}^{m_{i}^{(v)}} \nabla_{\theta} \left[\ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*} \left( \theta \right) \right) \right]$ \COMMENT{Eq. @eq-meta_parameter_update_sgd}}
+\ENDWHILE
+\STATE \textbf{return} the trained meta-parameter $\theta$
+\ENDPROCEDURE
+\end{algorithmic}
+\end{algorithm}
+</pre>
+</div>
+
+### Second-order meta-learning
+As shown in @eq-meta_parameter_update_sgd, the optimisation for the meta-parameter $\theta$ requires the gradient of the validation loss averaged across $T$ tasks. Given that each task-specific parameter $\mathbf{w}_{i}^{*}$ is a function of $\theta$ due to the lower-level optimisation in @eq-task_adaptation_sgd, the gradient of interest can be expanded as:
+$$
+\begin{aligned}
+& \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
+& = \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta}^{\top} \mathbf{w}_{i}^{*} \left( \theta \right) \times \nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
+& = \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \left\{ \left[ \mathbf{I} - \alpha \mathbb{E}_{ \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[ \textcolor{red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)} \right] \right] \right.\\
+& \quad \times \left. \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \textcolor{green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)} \right] \right\},
+\end{aligned}
+$$
+where the first equality is due to chain rule, and the second equality is the result that differentiates the gradient update in @eq-task_adaptation_sgd. Note that in the second equality, we remove the transpose notation since the corresponding matrix is symmetric.
+
+Thus, naively implementing such gradient would require to calculate the Hessian matrix $\textcolor{Red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)}$, resulting in an intractable procedure for large models, such as deep neural networks. To obtain a more efficient implementation, one can utilise the Hessian-vector product [@pearlmutter94fastexact] between the gradient vector $\textcolor{green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}$ and the Hessian matrix $\textcolor{red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)}$ to efficiently calculate the gradient of the validation loss w.r.t. $\theta$.
+
+Another way to calculate the gradient of the validation loss w.r.t. the meta-parameter $\theta$ is to use implicit differentiation [@domke2012generic; @rajeswaran2019meta; @lorraine2020optimizing]. This approach is more advantaged since it does not need to stores the computational graph and takes gradient via chain rule. Such implicit differentiation technique reduces the memory usage and therefore, allows to work with large-scale models. However, the trade-off is the increasing computational time to apply the chain rule to calculate the gradient of interest.
+
+Nevertheless, the implementations that compute the exact gradient of the validation loss w.r.t. $\theta$ without approximation are often referred to as <q>second-order</q> meta-learning.
+
+### First-order meta-learning
+In practice, the Hessian matrix $\textcolor{Red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)}$ is often omitted from the calculation to simplify the update for the meta-parameter $\theta$ [@finn2017model]. The resulting gradient consists of only the gradient of validation loss $\textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}$, which is more efficient to calculate with a single forward-pass if auto differentiation is used. This approximation is often referred as <q>first-order</q> meta-learning, and the gradient of interest can be presented as:
+$$
+\begin{aligned}
+& \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left(\mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right] \\
+& \approx \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)} \right].
+\end{aligned}
+$$
+
+REPTILE [@nichol2018on} &mdash; a variant first-order meta-learning &mdash; approximates further the gradient of validation loss $\textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}$ by the difference $\theta - \mathbf{w}_{i}^{*}$, resulting in a much simpler approximation:
+$$
+\mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right] = \theta - \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \left[ \mathbf{w}_{i}^{*}(\theta) \right].
+$$
+
+## Differentiation from other transfer learning approaches
+In this section, some popular transfer learning methods are described with their objective functions to purposely distinguish from meta-learning.
+
+### Fine-tuning
+Fine-tuning is the most common technique in neural network based transfer learning [@pratt1991direct; @yosinski2014transferable] where the last or a couple of last layers in a neural network pre-trained on a source task are replaced and fine-tuned on a target task. Formally, if $g(.; \mathbf{w}_{0})$ is denoted as the forward function of the shared layers with shared parameters $\mathbf{w}_{0}$, where $\mathbf{w}_{s}$ and $\mathbf{w}_{t}$ are the parameters of the remaining layers $h$ specifically trained on source and target tasks, respectively, then the objective of fine-tuning can be expressed as:
+$$
+\begin{aligned}
+& \min_{\mathbf{w}_{t}} \mathbb{E}_{(\mathbf{x}_{t}, \mathbf{y}_{t}) \sim \mathcal{T}_{t}} \left[ \ell \left( h\left( g\left( \mathbf{x}_{t}; \mathbf{w}_{0}^{*} \right); \mathbf{w}_{t} \right), \mathbf{y}_{t} \right) \right] \\
+& \text{s.t.: } \mathbf{w}_{0}^{*}, \mathbf{w}_{s}^{*} = \arg\min_{\mathbf{w}_{0}, \mathbf{w}_{s}} \mathbb{E}_{(\mathbf{x}_{s}, \mathbf{y}_{s}) \sim \mathcal{T}_{s}} \left[ \ell \left( h \left( g\left( \mathbf{x}_{s}; \mathbf{w}_{0} \right); \mathbf{w}_{s} \right), \mathbf{y}_{s} \right) \right],
+\end{aligned}
+$$ {#eq-fine_tuning_formulation}
+
+where $\mathbf{x}_{s}, \mathbf{y}_{s}$ and $\mathbf{x}_{t}, \mathbf{y}_{t}$ are the data sampled from the source task $\mathcal{T}_{s}$ and target task $\mathcal{T}_{t}$, respectively.
+
+Although the objective of fine-tuning shown in @eq-fine_tuning_formulation is still a bi-level optimisation, it is easier to solve than the one in meta-learning due to the following reasons:
+
+- The objective in fine-tuning has only one constrain corresponding to one source task, while meta-learning has several constrains corresponding to multiple training tasks.
+- In fine-tuning, $\mathbf{w}_{t}$ and $\mathbf{w}_{0}$ are inferred separately, while in meta-learning, the task-specific parameter is a function of the meta-parameter, resulting in a more complicated correlation.
+
+The downside of fine-tuning is the requirement of a reasonable number of training examples on the target task to fine-tune $\mathbf{w}_{t}$. In contrast, meta-learning leverages the knowledge extracted from several training tasks to quickly adapt to a new task with only a few training examples.
+
+### Domain adaptation and generalisation
+Domain adaptation or domain-shift refers to the case when the joint data-label distribution on source and target are different, denoted as $p_{s} \left( \mathcal{D}, f \right) \neq p_{t} \left( \mathcal{D}, f \right)$, or simply $p_{s}(\mathbf{x}, \mathbf{y}) \neq p_{t}(\mathbf{x}, \mathbf{y})$~[@heckman1979sample; @shimodaira2000improving; @japkowicz2002class; @daume2006domain; @ben2007analysis]. The aim of domain adaptation is to leverage the model trained on source domain to available data in the target domain, so that the model adapted to the target domain can perform reasonably well. In other words, domain adaptation relies on a data transformation $g(., .; \mathbf{w}_{0}): \mathcal{X} \times \mathcal{Y} \to \mathcal{X}^{\prime} \times \mathcal{Y}^{\prime}$ that produces a domain-invariant latent space. Mathematically, the transformation $g$ is obtained by minimising a divergence between the two transformed data distribution:
+$$
+\begin{aligned}
+& \min_{\mathbf{w}_{0}} \mathrm{Divergence} \left[ p\left( \mathbf{x}_{s}^{\prime}, \mathbf{y}_{s}^{\prime} \right) || p\left( \mathbf{x}_{t}^{\prime}, \mathbf{y}_{t}^{\prime} \right) \right]\\
+& \text{s.t.: } \left( \mathbf{x}_{i}^{\prime}, \mathbf{y}_{i}^{\prime} \right) = g \left( \mathbf{x}_{i}, \mathbf{y}_{i}; \mathbf{w}_{0} \right), i \in \{s, t\}.
+\end{aligned}
+$$ {#eq-domain_adaptation}
+
+After obtaining the transformation $g$, one can simply train a model using the transformed data of the source domain, and then use that model to make predictions on the target domain.
+
+Given the optimisation in~@eq-domain_adaptation, domain adaptation is different from meta-learning due to the following reasons:
+
+- Domain adaptation assumes a shift in the task environments that generate source and target tasks, while meta-learning is based on the assumption of same task generation.
+- Domain adaptation utilises information of data from target domain, while meta-learning does not have such access.
+
+In general, meta-learning learns a shared prior or hyper-parameters to generalise for unseen tasks, while domain adaptation produces a model to solve a particular task in a specified target domain. Recently, there is a variance of domain adaptation, named <b>domain generalisation</b>, where the aim is to learn a domain-invariant model without any information of target domain. In this view, domain generalisation is very similar to meta-learning, and there are some works that employ meta-learning algorithms for domain generalisation [@li2018learning; @li2019feature].
+
+### Multi-task learning
+Multi-task learning learns several related auxiliary tasks and a target task simultaneously to exploit the diversity of task representation to regularise and improve the performance on the target task~[@caruana1997multitask]. If the input $\mathbf{x}$ is assumed to be the same across $T$ extra tasks and the target task $\mathcal{T}_{T + 1}$, then the objective of multi-task learning can be expressed as:
+$$
+\min_{\mathbf{w}_{0}, \{\mathbf{w}_{i}\}_{i = 1}^{T + 1}} \frac{1}{T + 1} \sum_{i = 1}^{T + 1} \ell_{i} \left( h_{i} \left( g\left( \mathbf{x}; \mathbf{w}_{0} \right); \mathbf{w}_{i} \right), \mathbf{y}_{i} \right),
+$$ {#eq-mtl_formulation}
+where $\mathbf{y}_{i}, \ell_{i}$ and $h_{i}$ are the label, loss function and the classifier for task $\mathcal{T}_{i}$, respectively, and $g(., \mathbf{w}_{0})$ is the shared feature extractor for $T + 1$ tasks.
+
+Multi-task learning is often confused with meta-learning due to their similar nature extracting information from many tasks. However, the objective function of multi-task learning in @eq-mtl_formulation is a single-level optimisation for the shared parameter $\mathbf{w}_{0}$ and multiple task-specific classifier $\{\mathbf{w}_{i}\}_{i = 1}^{T + 1}$. It is, therefore, not as complicated as a bi-level optimisation seen in meta-learning as shown in @eq-meta_learning_bilevel_optimisation. Furthermore, multi-task learning aims to solve a number of specific tasks known during training (referred to as target tasks), while meta-learning targets the generalisation for unseen tasks in the future.
+
+### Continual learning
+Continual or *life-long learning* refers to a situation where a learning agent has access to a continuous stream of tasks available over time, and the number of tasks to be learnt is not pre-defined~[@chen2018lifelong; @parisi2019continual]. The aim is to accommodate the knowledge extracted from one-time observed tasks to accelerate the learning of new tasks without catastrophically forgetting old tasks~[@french1999catastrophic]. In this sense, continual learning is very similar to meta-learning. However, continual learning most likely focuses on <b>systematic</b> design to acquire new knowledge in such a way that prevents interfering to the existing one, while meta-learning is more about <b>algorithmic</b> design to learn the new knowledge more efficiently. Thus, we cannot mathematically distinguish their differences as done in sub-sections <a href="#fine-tuning">Fine-tuning</a>, <a href="#domain-adaptation-and-generalisation">Domain adaptation and generalisation</a> and <a href="#multi-task-learning">Multi-task learning </a>. Nevertheless, continual learning criteria, especially catastrophic forgetting, can be encoded into meta-learning objective to advance further continual learning performance~[@al2018continuous; @nagabandi2019learning].
+
+## Summary
+In general, meta-learning is an extension of hyper-parameter optimisation in multi-task setting. The objective function of meta-learning is, therefore, a bi-level optimisation, where the lower-level is to adapt the meta-parameter to a task, while the upper-level is to evaluate how well the meta-parameter performs across $T$ tasks. Given such mathematical formulation, we can easily distinguish meta-learning from some common transfer learning approaches, such as fine-tuning, multi-task learning, domain adaptation and continual learning.
+
+Hope that this post would give another perspective of meta-learning. I'll see you in the next post about probabilistic methods in meta-learning.
+
+## References
+
+::: {#refs}
+:::

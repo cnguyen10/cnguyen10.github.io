@@ -1,0 +1,531 @@
+---
+title: "Bias - variance decomposition"
+date: "2022-05-03"
+tbl-colwidths: [25, 75]
+---
+Bias and variance decomposition is one of the key tools to understand machine learning. However, conventional discussion about bias - variance decomposition revolves around the square loss (also known as mean square error). It is unclear whether such decomposition is still valid for some common loss functions, such as 0-1 loss or cross-entropy loss used in classification. This post is to present the decomposition for those losses following the <em>unified</em> framework of bias and variance decomposition from [@domingos2000unified], its extended study on <em>Bregman divergence</em> with <em>un-bounded support</em> from [@pfau2013generalized] and the special case about Kullback-Leibler (KL) divergence [@heskes1998bias].
+
+
+## Notations
+The notations are similar to the ones in [@domingos2000unified], but for $C$-class classification.
+
+| Notation  | Description  |
+|--------|--------|
+| $\mathbf{x}$  | an input instance in $\mathcal{X} \subseteq \in \mathbb{R}^{d}$   |
+| $\Delta_{K}$   | the $K$-dimensional simplex $\equiv \{\mathbf{v} \in \mathbb{R}^{K + 1}_{+}: \mathbf{v}^{\top} \pmb{1} = 1\}$   |
+| $\Delta_{K}$ | the $K$-dimensional simplex $\equiv \{\mathbf{v} \in \mathbb{R}^{K + 1}_{+}: \mathbf{v}^{\top} \pmb{1} = 1\}$   |
+| $\mathbf{t}$ | a label instance: $\mathbf{t} \sim p(\mathbf{t} | \mathbf{x})$, for example: (i) one-hot vector if $p(\mathbf{t} | \mathbf{x})$ is a categorical distribution, or (ii) soft-label if $p(\mathbf{t} | \mathbf{x})$ is a Dirichlet or logistic normal distribution |
+| $\ell$ | loss function $\ell: \Delta_{C - 1} \times \Delta_{C - 1} \to [0, +\infty]$, e.g. 0-1 loss or cross-entropy loss |
+| $\mathbf{y}$ | predicted label distribution: $\mathbf{y} = f(\mathbf{x}) \in \Delta_{C - 1}$ |
+| $\mathcal{D}$ | the set of training sets |
+
+: Notations used in the bias-variance decomposition. {.striped .hover}
+
+## Terminologies
+::: {#def-optimal-prediction}
+The optimal prediction $\mathbf{y}_{*} \in \Delta_{C - 1}$ of a target $\mathbf{t}$ is defined as follows:
+$$
+    \mathbf{y}_{*} = \arg\min_{\mathbf{y}^{\prime}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left[ \ell \left( \mathbf{t}, \mathbf{y}^{\prime} \right) \right].
+$$
+:::
+
+::: {#def-main-model-prediction}
+The main model prediction for a loss function, $\ell$, and the set of training sets, $\mathcal{D}$, is defined as:
+$$
+    \mathbf{y}_{m} = \arg\min_{\mathbf{y}^{\prime}} \mathbb{E}_{\mathcal{D}} \left[ \ell \left(\mathbf{y}, \mathbf{y}^{\prime} \right) \right].
+$$
+:::
+
+::: {.remark}
+The defintions of <em>optimal</em> and <em>main model</em> predictions above assume that the loss function $\ell$ is symmetric in terms of the input arguments. For asymmetric loss function, such as Bregmand divergence or cross-entropy, the definitions of such predictions might be slightly changed at the order of the input arguments.
+:::
+
+Given the definitions of $\mathbf{y}_{*}$ and $\mathbf{y}_{m}$, the bias, variance and noise can be defined following the <em>unified</em> framework proposed in [@domingos2000unified] as follows:
+
+::: {#def-bias}
+The bias of a learner on an example $\mathbf{x}$ is defined as: $B(\mathbf{x}) = \ell \left( \mathbf{y}_{*}, \mathbf{y}_{m} \right)$.
+:::
+
+::: {#def-variance}
+The variance of a learner on an example $\mathbf{x}$ is defined as: $V(\mathbf{x}) = \mathbb{E}_{\mathcal{D}} \left[ \ell \left( \mathbf{y}_{m}, \mathbf{y} \right) \right]$.
+:::
+
+::: {#def-noise}
+The noise of an example $\mathbf{x}$ is defined as: $N(\mathbf{x}) = \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left[ \ell(\mathbf{t}, \mathbf{y}_{*}) \right]$.
+:::
+
+The definitions of bias and variance above are quite intuitive comparing to other definitions in the literature. As $\mathbf{y}_{m}$ is the <em>main</em> model prediction, the bias $B(\mathbf{x})$ measures the systematic deviation (loss) from the <em>optimal</em> (or true) label $\mathbf{y}_{*}$, while the variance $V(\mathbf{x})$ measures the loss induced due to the fluctuations of each model prediction $\mathbf{y}$ on different training datasets around the <em>main</em> prediction $\mathbf{y}_{m}$. In addition, as the loss $\ell$ is non-negative, both the bias and variance are also non-negative.
+
+Given the defintions of bias, variance and noise above, the unified decomposition proposed in [@domingos2000unified] can be expressed as:
+$$
+    \begin{aligned}
+        \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y})] & = \textcolor{Crimson}{\ell(\mathbf{y}_{*}, \mathbf{y}_{m})} + c_{1} \, \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}}[\ell(\mathbf{y}, \mathbf{y}_{m})]} + c_{2} \, \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})}[\ell(\mathbf{t}, \mathbf{y_{*}})]} \\
+        & = \textcolor{Crimson}{B(\mathbf{x})} + c_{1} \, \textcolor{MidnightBlue}{V(\mathbf{x})} + c_{2} \, \textcolor{Green}{N(\mathbf{x})},
+    \end{aligned}
+$$ {#eq-unified_decomposition}
+where $c_{1}$ and $c_{2}$ are two scalars. For example, in MSE, $c_{1} = c_{2} = 1$.
+
+Of course, not all losses would satisfy the decomposition in @eq-unified_decomposition. However, as shown in [@domingos2000unified - Theorem 7], such decomposition can be used to bound the expected loss as long as the loss is metric. Nevertheless, in this post, we dicuss the composition on some common loss functions, such as 0-1 loss and Bregman divergence which includes MSE and Kullback-Leibler (KL) divergence.
+
+
+
+## Square loss
+To warm-up, we discuss a wellknown bias-variance decomposition in the literature. It is applied for MSE or square loss. Here, we use the notations of vectors instead of scalars as often seen in conventional analysis. We will derive a general decomposition for Bregman divergence in which MSE is a particular case in a later section.
+
+::: {#thm-mse}
+When the loss is the square loss: $\ell(\mathbf{y}_{1}, \mathbf{y}_{2}) = || \mathbf{y}_{1} - \mathbf{y}_{2}||_{2}^{2}$, then the expected loss on several training sets can be decomposed into:
+$$
+    \begin{aligned}
+        \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \ell(\mathbf{t}, \mathbf{y}) & = \textcolor{Crimson}{\ell(\mathbf{y}_{*}, \mathbf{y}_{m})} + \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} [ \ell(\mathbf{y}_{m}, \mathbf{y})]} + \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ \ell( \mathbf{t}, \mathbf{y}_{*} )]} \\
+        \text{or: } \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} || \mathbf{t} - \mathbf{y} ||_{2}^{2} & = \underbrace{\textcolor{Crimson}{|| \mathbf{y}_{*} - \mathbf{y}_{m} ||_{2}^{2}}}_{\text{bias}} + \underbrace{\textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} || \mathbf{y}_{m} - \mathbf{y} ||_{2}^{2}}}_{\text{variance}} + \underbrace{\textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} || \mathbf{t} - \mathbf{y}_{*} ||_{2}^{2}}}_{\text{noise}}.
+    \end{aligned}
+$$
+:::
+<details>
+<summary>Please refer to the detailed proof here</summary>
+
+::: {.proof}
+Given the square loss, the <em>optimal</em> prediction can be determined as:
+$$
+    \begin{aligned}
+        & \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} || \mathbf{t} - \mathbf{y}^{\prime} ||_{2}^{2} \ge || \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left[ \mathbf{t} \right] - \mathbf{y}^{\prime} ||_{2}^{2} \ge 0 \quad \text{(Jensen's inequality on L2-norm)}\\
+        \implies & \mathbf{y}_{*} = \arg\min_{\mathbf{y}^{\prime}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} || \mathbf{t} - \mathbf{y}^{\prime} ||_{2}^{2} = \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}].
+    \end{aligned}
+$$
+Similarly, the <em>main</em> model prediction can be obtained as: $\mathbf{y}_{m} = \mathbb{E}_{\mathcal{D}} [\mathbf{y}]$.
+
+The expected loss can then be written as:
+$$
+    \begin{aligned}
+        & \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} || \mathbf{t} - \mathbf{y} ||_{2}^{2} \\
+        & = \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} (\mathbf{t} - \mathbf{y})^{\top} (\mathbf{t} - \mathbf{y}) \\
+        & = \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left( (\mathbf{t} - \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}]) + (\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}] - \mathbb{E}_{\mathcal{D}} [\mathbf{y}]) + (\mathbb{E}_{\mathcal{D}} [\mathbf{y}] - \mathbf{y}) \right)^{\top} \left( (\mathbf{t} - \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}]) \right. \\
+        & \quad \left. + (\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}] - \mathbb{E}_{\mathcal{D}} [\mathbf{y}]) + (\mathbb{E}_{\mathcal{D}} [\mathbf{y}] - \mathbf{y}) \right) \\
+        & = \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} || \mathbf{t} - \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}] ||_{2}^{2} + || \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}] - \mathbb{E}_{\mathcal{D}} [\mathbf{y}] ||_{2}^{2} + \mathbb{E}_{\mathcal{D}} || \mathbb{E}_{\mathcal{D}} [\mathbf{y}] - \mathbf{y} ||_{2}^{2} \\
+        & = \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} || \mathbf{t} - \mathbf{y}_{*} ||_{2}^{2}} + \textcolor{Crimson}{|| \mathbf{y}_{*} - \mathbf{y}_{m} ||_{2}^{2}} + \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} || \mathbf{y}_{m} - \mathbf{y} ||_{2}^{2}}.
+    \end{aligned}
+$$
+
+:::
+</details>
+
+## 0-1 loss
+::: {#def-0-1-loss}
+The 0-1 loss is defined as:
+$$
+    \ell(\mathbf{y}_{1}, \mathbf{y}_{2}) = \Bbb{1} (\mathbf{y}_{1}, \mathbf{y}_{2}) = \begin{cases}
+        0 & \text{if } \mathbf{y}_{1} = \mathbf{y}_{2},\\
+        1 & \text{if } \mathbf{y}_{1} \neq \mathbf{y}_{2}.
+    \end{cases}
+$$
+:::
+
+### Binary classification
+::: {#thm-binary-0-1-loss}
+([@domingos2000unified - Theorem 2])
+The expected 0-1 loss in a **binary classification** setting can be written as:
+$$
+    \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left[ \ell(\mathbf{t}, \mathbf{y}) \right] = \textcolor{Crimson}{\ell(\mathbf{y}_{*}, \mathbf{y}_{m})} + \textcolor{Brown}{c} \, \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} \left[ \mathbf{y}, \mathbf{y}_{m} \right]} + \left[ 2 p_{\mathcal{D}}(\mathbf{y} = \mathbf{y}_{*}) - 1 \right]  \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left[ \ell(\mathbf{t}, \mathbf{y}_{*}) \right]},
+$$
+where:
+$$
+    \textcolor{Brown}{c} = \begin{cases}
+        1 & \text{if } \mathbf{y}_{m} = \mathbf{y}_{*}\\
+        -1 & \text{otherwise}.
+    \end{cases}
+$$
+:::
+
+<details>
+<summary>The proof is copied in [@domingos2000unified - Theorem 2] for a self-contained discussion.</summary>
+
+::: {.proof}
+To prove the theorem, we calculate $\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y})]$ and $\mathbb{E}_{\mathcal{D}} [\ell(\mathbf{t}, \mathbf{y})]$, then combine both of them to complete the proof.
+
+First, we proceed to prove the followings:
+$$
+    \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y})] = \ell(\mathbf{y}_{*}, \mathbf{y}) + c_{0} \, \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y}_{*})],
+$$ {#eq-expected_01_wrt_t}
+with $c_{0} = 1$ if $\mathbf{y} = \mathbf{y}_{*}$ and $c_{0} = -1$ if $\mathbf{y} \neq \mathbf{y}_{*}$.
+
+If $\mathbf{y} = \mathbf{y}_{*}$, then [@eq-expected_01_wrt_t] is trivially true with $c_{0} = 1$. We next prove [@eq-expected_01_wrt_t] when $\mathbf{y} \neq \mathbf{y}_{*}$. Since there are only two classes, if $\mathbf{y} \neq \mathbf{y}_{*}$ and $\mathbf{t} \neq \mathbf{y}_{*}$, then $\mathbf{y} = \mathbf{t}$ and vice versa. And since two events are quivalent, $p(\mathbf{y} = \mathbf{t}) = p(\mathbf{t} \neq \mathbf{y}_{*})$. The expected 0-1 loss w.r.t. $\mathbf{t}$ can be written as:
+$$
+    \begin{aligned}
+        \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y})] & = p(\mathbf{t} = \mathbf{y})\\
+        & = 1 - p(\mathbf{t} \neq \mathbf{y}) \\
+        & = 1 - p (\mathbf{t} = \mathbf{y}_{*}) \\
+        & = 1 - \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ \ell(\mathbf{t}, \mathbf{y}_{*}) ]\\
+        & = \ell(\mathbf{y}_{*}, \mathbf{y}) - \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ \ell(\mathbf{t}, \mathbf{y}_{*}) ].
+    \end{aligned}
+$$
+This proves [@eq-expected_01_wrt_t].
+
+Next, we show that:
+$$
+    \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{y}_{*}, \mathbf{y})] = \ell(\mathbf{y}_{*}, \mathbf{y}_{m}) + \textcolor{Brown}{c} \, \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{y}, \mathbf{y}_{m})].
+$$ {#eq-expected_01_wrt_D}
+
+If $\mathbf{y}_{m} = \mathbf{y}_{*}$, then [@eq-expected_01_wrt_D] is trivially true with $\textcolor{Brown}{c} = 1$. If $\mathbf{y}_{m} \neq \mathbf{y}_{*}$, then $\mathbf{y}_{m} \neq \mathbf{y}$ implies that $\mathbf{y} = \mathbf{y}_{*}$ and vice-versa. Thus, the expected 0-1 loss w.r.t. different training set can be expressed as:
+$$
+    \begin{aligned}
+        \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{y}_{*}, \mathbf{y})] & = p(\mathbf{y} \neq \mathbf{y}_{*}) = 1 - p(\mathbf{y} = \mathbf{y}_{*}) = 1 - p(\mathbf{y}_{m} \neq \mathbf{y})\\
+        & = 1 - \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{y}_{m}, \mathbf{y})] = \ell(\mathbf{y}_{*}, \mathbf{y}_{m}) - \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{y}_{m}, \mathbf{y})].
+    \end{aligned}
+$$
+
+Thus, it proves [@eq-expected_01_wrt_D].
+
+Finally, we can combine both results in [@eq-expected_01_wrt_t] and [@eq-expected_01_wrt_D] to prove the theorem. Taking the expectation w.r.t. $\mathcal{D}$ on both sides of [@eq-expected_01_wrt_t] gives:
+$$
+    \begin{aligned}
+        \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left[ \ell(\mathbf{t}, \mathbf{y}) \right] & = \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{t}, \mathbf{y})] + c_{0} \, \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y}_{*})]\\
+        & = \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{t}, \mathbf{y})] + c_{0} \, \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y}_{*})].
+    \end{aligned}
+$$
+
+And since:
+$$
+    \begin{aligned}
+        \mathbb{E}_{\mathcal{D}} [c_{0}] & = p(\mathbf{y} = \mathbf{y}_{*}) - p (\mathbf{y} \neq \mathbf{y}_{*} = 2 p(\mathbf{y} = \mathbf{y}_{*}) - 1,
+    \end{aligned}
+$$
+we can then obtain the result of the theorem by using [@eq-expected_01_wrt_D].
+:::
+</details>
+
+### Multi-class classification
+::: {#thm-multiclass-0-1-loss}
+The expected loss for 0-1 loss in a multiclass classification can be decomposed into:
+$$
+    \begin{aligned}
+        & \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left[ \ell(\mathbf{t}, \mathbf{y}) \right] = \ell(\mathbf{y}_{*}, \mathbf{y}_{m}) + \textcolor{Blue}{c} \, \mathbb{E}_{\mathcal{D}} \left[ \mathbf{y}, \mathbf{y}_{m} \right] \\
+        & \quad + [ 2 p_{\mathcal{D}} (\mathbf{y} = \mathbf{y}_{*}) - p_{\mathcal{D}} (\mathbf{y} \neq \mathbf{y}_{*}) p_{\mathbf{t}}(\mathbf{y} = \mathbf{t} | \mathbf{y}_{*} \neq \mathbf{t}) ]  \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ \ell(\mathbf{t}, \mathbf{y}_{*}) ],
+    \end{aligned}
+$$
+where:
+$$
+    c = \begin{cases}
+        1 & \text{if } \mathbf{y}_{m} = \mathbf{y}_{*}\\
+        -p_{\mathcal{D}} (\mathbf{y} = \mathbf{y}_{*} | \mathbf{y} \neq \mathbf{y}_{m}) & \text{otherwise}.
+    \end{cases}
+$$
+:::
+<details>
+<summary>The proof is copied in [@domingos2000unified - Theorem 3] for a self-contained discussion.</summary>
+
+::: {.proof}
+The proof is similar to the binary classification where we decompose $\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y})]$ and $\mathbb{E}_{\mathcal{D}} [\ell(\mathbf{t}, \mathbf{y})]$. The key difference is that when $\mathbf{y} \neq \mathbf{y}_{*}$ and $\mathbf{t} \neq \mathbf{y}_{*}$ no longer imply that $\mathbf{y} = \mathbf{t}$. Similarly, $\mathbf{y}_{m} \neq \mathbf{y}_{*}$ and $\mathbf{y}_{m} \neq \mathbf{y}$ no longer imply $\mathbf{y} = \mathbf{y}_{*}$.
+
+Now, we want to prove the following decomposition:
+$$
+    \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y})] = \ell(\mathbf{y}_{*}, \mathbf{y}) + c_{0} \, \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y}_{*})],
+$$ {#eq-expected_01_wrt_t_multiclass}
+where:
+$$
+    c_{0} = \begin{cases}
+        -p(\mathbf{y} = \mathbf{t} | \mathbf{y}_{*} \neq \mathbf{t}) & \text{when } \mathbf{y} \neq \mathbf{y}_{*}\\
+        1 & \text{when } \mathbf{y} = \mathbf{y}_{*}.
+    \end{cases}
+$$
+
+When $\mathbf{y} = \mathbf{y}_{*}$, [@eq-expected_01_wrt_t_multiclass] is trivially true with $c_{0} = 1$.
+
+When $\mathbf{y} \neq \mathbf{y}_{*}$, the following fact is true: $p(\mathbf{y} = \mathbf{t}| \mathbf{y}_{*} = \mathbf{t}, \mathbf{y} \neq \mathbf{y}_{*}) = 0$. To simplify the notation, the condition $\mathbf{y} \neq \mathbf{y}_{*}$ is omitted. Thus, applying the sum rule on the probability of predicted label gives:
+$$
+    \begin{aligned}
+        p(\mathbf{y} = \mathbf{t}) & = \underbrace{p(\mathbf{y} = \mathbf{t} | \mathbf{y}_{*} = \mathbf{t})}_{0} \, p(\mathbf{y}_{*} + \mathbf{t}) + p(\mathbf{y} = \mathbf{t} | \mathbf{y}_{*} \neq \mathbf{t}) \, p(\mathbf{y}_{*} \neq \mathbf{t}) \\
+        & = p(\mathbf{y} = \mathbf{t} | \mathbf{y}_{*} \neq \mathbf{t}) \, p(\mathbf{y}_{*} \neq \mathbf{t}).
+    \end{aligned}
+$$
+
+The expected loss w.r.t. $\mathbf{t}$ can be written as:
+$$
+    \begin{aligned}
+        \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y})] & = p(\mathbf{y} \neq \mathbf{t}) = 1 - p(\mathbf{y} = \mathbf{t})\\
+        & = 1 \underbrace{- p(\mathbf{y} = \mathbf{t} | \mathbf{y}_{*} \neq \mathbf{t})}_{c_{0}} \, p(\mathbf{y}_{*} \neq \mathbf{t})\\
+        & = \ell(\mathbf{y}_{*}, \mathbf{y}) + c_{0} \, \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\ell(\mathbf{t}, \mathbf{y}_{*})].
+    \end{aligned}
+$$
+This proves [@eq-expected_01_wrt_t_multiclass].
+
+Similarly, one can prove the decomposition for the expected loss w.r.t. $\mathcal{D}$:
+$$
+    \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{y}_{*}, \mathbf{y})] = \ell(\mathbf{y}_{*}, \mathbf{y}_{m}) + \textcolor{Brown}{c} \, \mathbb{E}_{\mathcal{D}} [\ell(\mathbf{y}, \mathbf{y}_{m})].
+$$ {#eq-expected_01_wrt_D_multiclass}
+
+Combining the results in [@eq-expected_01_wrt_t_multiclass] and [@eq-expected_01_wrt_D_multiclass] in a similar manner in the case of binary classification completes the proof.
+:::
+</details>
+
+## Bregman divergence
+
+The derivation and discussion in this section is extracted from [@pfau2013generalized] with some modification to make notations consistent.
+
+::: {#def-bregman-divergence}
+If $F: \mathcal{Y} \to \mathbb{R}$ is a strictly convex differentiable function, then Bregman divergence derived from $F$ is a function $D_{F}: \mathcal{Y} \times \mathcal{Y} \to \mathbb{R}_{+}$ defined as:
+$$
+    D_{F} (\mathbf{t}, \mathbf{y}) = F(\mathbf{t}) - F(\mathbf{y}) - \nabla^{\top} F(\mathbf{y}) \, (\mathbf{t} - \mathbf{y}).
+$$
+:::
+
+::: {.remark}
+Given the defintion, Bregman divergence is not symmetric. It does not satisfy the triangle inequality. Thus, it is not a metric.
+:::
+
+Some examples of Bregman divergence:
+
+- Squared Euclidean distance or square loss: $D_{F}(\mathbf{t}, \mathbf{y}) = || \mathbf{t} - \mathbf{y} ||_{2}^{2}$ which is derived from the convex function $F(\mathbf{y}) = || \mathbf{y} ||_{2}^{2}$
+- The squared Mahalanobis distance:
+$$
+    D_{F}(\mathbf{t}, \mathbf{y}) = \frac{1}{2} (\mathbf{t} - \mathbf{y})^{\top} \mathbf{Q} (\mathbf{t} - \mathbf{y})
+$$
+which is generated from the convex function: $F(\mathbf{y}) = \frac{1}{2} \mathbf{y}^{\top} \mathbf{Q} \mathbf{y}$
+- The KL divergence:
+$$
+    D_{F}(\mathbf{t}, \mathbf{y}) = \mathrm{KL} [p(\mathbf{t} | \mathbf{x}) || \mathbf{y}] = \sum_{c = 1}^{C} p(\mathbf{t} = \mathrm{one-hot}(c) | \mathbf{x}) \frac{p(\mathbf{t} = \mathrm{one-hot}(c) | \mathbf{x})}{\mathbf{y}_{c}}
+$$
+which is generated from the negative entropy:
+$$
+    F(\mathbf{y}) = \sum_{c = 1}^{C} \mathbf{y}_{c} \ln \mathbf{y}_{c}.
+$$
+
+### Some properties of Bregman divergence
+
+This sub-section presents some properties of Bregman divergence, which can then be used in the bias-variance decomposition. Note that the notation $\mathbf{y}_{*}, \mathbf{y}$ and $\mathbf{y}_{m}$ used in this section do not need to be label distribution, but can simply be the output of a model (without any normalization, e.g. no <em>softmax</em>). The case for label distributions will be considered in the subsequent section where the loss function is KL divergence.
+
+::: {#lem-bregman-mean-prediction}
+(Part 1 of Lemma 0.1 in [@pfau2013generalized])
+The <em>mean prediction</em> for Bregman divergence with **un-bounded support** has the following property:
+$$
+    \mathbf{y}_{m} = \arg\min_{\mathbf{y}^{\prime}} \mathbb{E}_{\mathcal{D}} [D_{F} (\mathbf{y}^{\prime}, \mathbf{y})] \Leftrightarrow \nabla F(\mathbf{y}_{m}) = \mathbb{E}_{\mathcal{D}} [ \nabla F(\mathbf{y}) ].
+$$
+:::
+
+<details>
+<summary>Detailed proof</summary>
+
+::: {.proof}
+&nbsp;
+
+#### Necessary
+
+When $\mathbf{y}_{m}$ is a minimizer of $\mathbb{E}_{\mathcal{D}} [D_{F} (\mathbf{y}^{\prime}, \mathbf{y})]$ w.r.t. $\mathbf{y}^{\prime}$, the necessary condition of such statement is that its gradient is zero:
+$$
+    \begin{aligned}
+        \nabla_{\mathbf{y}_{m}} \mathbb{E}_{\mathcal{D}} [D_{F} (\mathbf{y}_{m}, \mathbf{y})] & = \nabla_{\mathbf{y}_{m}} \mathbb{E}_{\mathcal{D}} [ F(\mathbf{y}_{m}) - F(\mathbf{y}) - \nabla^{\top} F(\mathbf{y}) \, (\mathbf{y}_{m} - \mathbf{y}) ] \\
+        & = \nabla_{\mathbf{y}_{m}} F(\mathbf{y}_{m}) - \nabla_{\mathbf{y}_{m}} \mathbb{E}_{\mathcal{D}} [ \nabla^{\top} F(\mathbf{y}) \, \mathbf{y}_{m}]\\
+        & = \nabla_{\mathbf{y}_{m}} F(\mathbf{y}_{m}) - \mathbb{E}_{\mathcal{D}} [ \nabla F(\mathbf{y}) ] = 0.
+    \end{aligned}
+$$
+$$
+    \implies \nabla F(\mathbf{y}_{m}) = \mathbb{E}_{\mathcal{D}} [ \nabla F(\mathbf{y}) ].
+$$
+
+#### Sufficient
+
+Similar to the necessary condition, one can easily show that $\nabla_{\mathbf{y}_{m}} F(\mathbf{y}_{m}) = \mathbb{E}_{\mathcal{D}} [ \nabla F(\mathbf{y}) ]$ implies that $\nabla_{\mathbf{y}_{m}} \mathbb{E}_{\mathcal{D}} [D_{F} (\mathbf{y}_{m}, \mathbf{y})] = 0$ (assume that $\mathbf{y}_{m}$ is independent from $\mathcal{D}$). And since $D_{F}$ is convex in its first argument $\mathbf{y}_{m}$ (one property of Bregman divergence), $\mathbf{y}_{m}$ is unique and the minimizer of $\mathbb{E}_{\mathcal{D}} [D_{F} (\mathbf{y}^{\prime}, \mathbf{y})]$.
+
+#### Note
+
+The lemma only holds for Bregman divergence with <b>un-bounded support</b>, e.g. $F$ is MSE. Otherwise, the gradient of $\mathbb{E}_{\mathcal{D}} [D_{F} (\mathbf{y}_{m}, \mathbf{y})]$ w.r.t. the first argument would not be zero, but the Lagrangean that consists of the additional constraints would. This will be presented in the subsequent section where the loss function is the KL divergence.
+:::
+</details>
+
+::: {#lem-bregman-optimal-prediction}
+(Part 2 of Lemma 0.1 in [@pfau2013generalized])
+The <em>optimal prediction</em> of Bregman divergence can be expressed as:
+$$
+    \mathbf{y}_{*} = \arg\min_{\mathbf{y}^{\prime}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F} (\mathbf{t}, \mathbf{y}^{\prime})] = \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}].
+$$
+:::
+
+<details>
+<summary>Detailed proof</summary>
+
+::: {.proof}
+
+The proof is quite straight-forward. One can calculate the gradient and solve for the root of the gradient as follows:
+$$
+    \begin{aligned}
+        \nabla_{\mathbf{y}^{\prime}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F} (\mathbf{t}, \mathbf{y}^{\prime})] & = \nabla_{\mathbf{y}^{\prime}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ F(\mathbf{t}) - F(\mathbf{y}^{\prime}) - \nabla^{\top} F(\mathbf{y}^{\prime}) \, (\mathbf{t} - \mathbf{y}^{\prime}) ]\\
+        & = - \nabla_{\mathbf{y}^{\prime}} F(\mathbf{y}^{\prime}) - \nabla^{2} F(\mathbf{y}^{\prime}) \times \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}] + \nabla^{2} F(\mathbf{y}^{\prime}) \times \mathbf{y}^{\prime} + \nabla_{\mathbf{y}^{\prime}} F(\mathbf{y}^{\prime}) \\
+        & = \nabla^{2} F(\mathbf{y}^{\prime}) (\mathbf{y}^{\prime} - \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}]) = 0
+    \end{aligned}
+$$
+And since $F(.)$ is strictly convex, its Hessian matrix $\nabla^{2} F(\mathbf{y}^{\prime})$ is positive definite and invertible. Hence, one can imply that:
+$$
+    \mathbf{y}^{\prime} = \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}].
+$$
+:::
+</details>
+
+::: {#lem-expected-bregman-divergence}
+(Part 1 of Theorem 0.1 in [@pfau2013generalized])
+The expected Bregman divergences w.r.t. the set of training sets $\mathcal{D}$ have the following exact decomposition:
+$$
+    \mathbb{E}_{\mathcal{D}} [ D_{F} (\mathbf{y}^{\prime}, \mathbf{y})] = D_{F}(\mathbf{y}^{\prime}, \mathbf{y}_{m}) + \mathbb{E}_{\mathcal{D}} [D_{F}(\mathbf{y}_{m}, \mathbf{y})],
+$$
+where: $\mathbf{y}_{m} = \arg\min_{\mathbf{y}^{\prime}} \mathbb{E}_{\mathcal{D}} [D_{F}(\mathbf{y}^{\prime}, \mathbf{y})]$ is the <em>mean prediction</em> of the model of interest, and $\mathbf{y}^{\prime}$ is a (random) prediction that is independent from $\mathcal{D}$.
+:::
+
+<details>
+<summary>Detailed proof</summary>
+
+::: {.proof}
+The is quite straight-forward:
+$$
+    \begin{aligned}
+        & D_{F}(\mathbf{y}^{\prime}, \mathbf{y}_{m}) + \mathbb{E}_{\mathcal{D}} [D_{F}(\mathbf{y}_{m}, \mathbf{y})] \\
+        & = F(\mathbf{y}^{\prime}) - F(\mathbf{y}_{m}) - \nabla^{\top} F(\mathbf{y}_{m}) \times (\mathbf{y}^{\prime} - \mathbf{y}_{m}) + \mathbb{E}_{\mathcal{D}} [F(\mathbf{y}_{m}) - F(\mathbf{y}) - \nabla^{\top} F(\mathbf{y}) \times (\mathbf{y}_{m} - \mathbf{y})] \\
+        & = F(\mathbf{y}^{\prime}) - \nabla^{\top} F(\mathbf{y}_{m}) \times (\mathbf{y}^{\prime} - \mathbf{y}_{m}) - \mathbb{E}_{\mathcal{D}} [ F(\mathbf{y}) + \nabla^{\top} F(\mathbf{y}) \times (\mathbf{y}_{m} - \mathbf{y})]\\
+        & = F(\mathbf{y}^{\prime}) - \mathbb{E}_{\mathcal{D}} [ \nabla^{\top} F(\mathbf{y}) ] \times (\mathbf{y}^{\prime} - \mathbf{y}_{m}) - \mathbb{E}_{\mathcal{D}} [ F(\mathbf{y}) + \nabla^{\top} F(\mathbf{y}) \times (\mathbf{y}_{m} - \mathbf{y})] \\
+        & = \mathbb{E}_{\mathcal{D}} [ F(\mathbf{y}^{\prime}) - F(\mathbf{y}) - \mathbb{E}_{\mathcal{D}} [ \nabla^{\top} F(\mathbf{y}) ] \times (\mathbf{y}^{\prime} - \mathbf{y}_{m} + \mathbf{y}_{m} - \mathbf{y}) ]\\
+        & = \mathbb{E}_{\mathcal{D}} [ D_{F} (\mathbf{y}^{\prime}, \mathbf{y})].
+    \end{aligned}
+$$
+The third inequality is due to [@lem-bregman-mean-prediction].
+:::
+</details>
+
+::: {#lem-expected-bregman-divergence-t}
+(Part 2 of Theorem 0.1 in [@pfau2013generalized])
+The expected Bregman divergences w.r.t. the underlying label distribution $p(\mathbf{t} | \mathbf{x})$ have the following exact decomposition:
+$$
+    \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ D_{F} (\mathbf{t}, \mathbf{y})] = D_{F}(\mathbf{y}_{*}, \mathbf{y}) + \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F}(\mathbf{t}, \mathbf{y}_{*})],
+$$
+where $\mathbf{y}_{*} = \arg\min_{\mathbf{y}^{\prime}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F} (\mathbf{t}, \mathbf{y}^{\prime})] = \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}]$ is the <em>optimal prediction</em> in [@lem-bregman-optimal-prediction].
+:::
+
+<details>
+<summary>Detailed proof</summary>
+
+::: {.proof}
+The proof is quite straight-forward:
+$$
+    \begin{aligned}
+        & D_{F}(\mathbf{y}_{*}, \mathbf{y}) + \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F}(\mathbf{t}, \mathbf{y}_{*})] \\
+        & = F(\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}]) - F(\mathbf{y}) - \nabla^{\top} F(\mathbf{y}) \times (\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}] - \mathbf{y}) \\
+        & \quad + \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [F(\mathbf{t}) - F(\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}]) - \nabla^{\top} F(\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}]) \times (\mathbf{t} - \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}])] \\
+        & = - F(\mathbf{y}) - \nabla^{\top} F(\mathbf{y}) \times (\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}] - \mathbf{y}) + \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [F(\mathbf{t}) - \nabla^{\top} F(\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}]) \times (\mathbf{t} - \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}])] \\
+        & = - F(\mathbf{y}) - \nabla^{\top} F(\mathbf{y}) \times (\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [\mathbf{t}] - \mathbf{y}) + \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [F(\mathbf{t})]\\
+        & = \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ F(\mathbf{t}) - F(\mathbf{y}) - \nabla^{\top} F(\mathbf{y}) \times (\mathbf{t} - \mathbf{y})] \\
+        & = \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ D_{F} (\mathbf{t}, \mathbf{y})].
+    \end{aligned}
+$$
+:::
+</details>
+
+### Decomposition for Bregman divergence
+The main result of bias-variance decomposition can be shown in the following:
+
+::: {#thm-decomposition-bregma-div}
+The expected Bregman divergence on a set of training set $\mathcal{D}$ can be decomposed into:
+$$
+\mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F} (\mathbf{t}, \mathbf{y})] = \textcolor{Crimson}{D_{F} (\mathbf{y}_{*}, \mathbf{y}_{m})} + \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} [D_{F}(\mathbf{y}_{m}, \mathbf{y})]} + \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} \left[ D_{F} (\mathbf{t}, \mathbf{y}_{*}) \right]}.
+$$
+:::
+
+<details>
+<summary>Detailed proof</summary>
+
+::: {.proof}
+The proof is a consequence of the previous lemma:
+$$
+    \begin{aligned}
+        \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F} (\mathbf{t}, \mathbf{y})] & = \mathbb{E}_{\mathcal{D}} [D_{F}(\mathbf{y}_{*}, \mathbf{y}) + \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F}(\mathbf{t}, \mathbf{y}_{*})]} ] \\
+        & = \mathbb{E}_{\mathcal{D}}[ D_{F}(\mathbf{y}_{*}, \mathbf{y})] + \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F}(\mathbf{t}, \mathbf{y}_{*})]}\\
+        & = \textcolor{Crimson}{D_{F} (\mathbf{y}_{*}, \mathbf{y}_{m})} + \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} [D_{F}(\mathbf{y}_{m}, \mathbf{y})]} + \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [D_{F}(\mathbf{t}, \mathbf{y}_{*})]}.
+    \end{aligned}
+$$
+The first equality is due to [@lem-expected-bregman-divergence-t] and the last equality of the above equation is due to [@lem-expected-bregman-divergence].
+:::
+</details>
+
+#### Square loss
+As MSE or square loss is a special instance of Bregman divergence, one can apply [@thm-decomposition-bregma-div] to obtain the result for MSE as shown in [@thm-mse].
+
+## Kullback-Leibler divergence
+KL divergence is a special case of Bregman divergence. However, the analysis done for the Bregman divergence presented in this post is considered on <em>un-bounded</em> support, where the support space for the KL divergence is the probability space. In addition, KL divergence is used to measure the difference between 2 distributions. Such differences result in a different in terms of bias-variance decomposition.
+
+In this section, $\mathbf{y}_{*}, \mathbf{y}$ and $\mathbf{y}_{m}$ are label distributions or probabilities. They will be replaced by $p(\mathbf{t} | \mathbf{x}), \hat{p}(\mathbf{t} | \mathbf{x})$ and $p_{m}(\mathbf{t} | \mathbf{x})$, respectively, to make the formulation easier to understand.
+
+::: {#lem-kl-div-model-prediction}
+(Main model prediction - Eq. (2.3) in [@heskes1998bias])
+The main model prediction when the loss is the KL divergence has the following property:
+$$
+    p_{m}(\mathbf{t} | \mathbf{x}) = \arg\min_{q(\mathbf{t} | \mathbf{x})} \mathbb{E}_{\mathcal{D}} [\mathrm{KL} [q(\mathbf{t} | \mathbf{x}) || \hat{p}(\mathbf{t} | \mathbf{x})]] \Rightarrow p_{m}(\mathbf{t} | \mathbf{x}) = \frac{1}{Z} \exp \left[ \mathbb{E}_{\mathcal{D}} [\ln \hat{p}(\mathbf{t} | \mathbf{x})] \right],
+$$
+where $Z$ is a normalization constant independent of model prediction $\hat{p}(\mathbf{t} | \mathbf{x})$.
+:::
+
+<details>
+<summary>Detailed proof</summary>
+
+::: {.proof}
+The proof is similar to [@lem-bregman-mean-prediction], except the constraint $\sum_{\mathbf{t}} p_{m}(\mathbf{t} | \mathbf{x}) = 1$ is taken into account. More specifically, the Lagrangean can be written as:
+$$
+    \mathsf{L} = \mathbb{E}_{\mathcal{D}} [ \mathrm{KL} [ p_{m}(\mathbf{t} | \mathbf{x}) || \hat{p}(\mathbf{t} | \mathbf{x})]] + \lambda (\pmb{1}^{\top} p_{m}(\mathbf{t} | \mathbf{x}) - 1),
+$$
+where $\lambda$ is the Lagrange multiplier.
+
+At the optimal point, the gradient of the Lagrangean is zero:
+$$
+    \begin{aligned}
+        \nabla_{p_{m}(\mathbf{t} | \mathbf{x})} \mathsf{L} & = \ln p_{m}(\mathbf{t} | \mathbf{x}) - \mathbb{E}_{\mathcal{D}} [ \ln \hat{p}(\mathbf{t} | \mathbf{x}) ] + \lambda = 0\\
+        & \Rightarrow \ln p_{m}(\mathbf{t} | \mathbf{x}) = \mathbb{E}_{\mathcal{D}} [ \ln \hat{p}(\mathbf{t} | \mathbf{x}) ] - \lambda\\
+        & \Rightarrow p_{m}(\mathbf{t} | \mathbf{x}) = \underbrace{\frac{1}{\exp(\lambda)}}_{\frac{1}{Z}} \exp[\mathbb{E}_{\mathcal{D}} [ \ln \hat{p}(\mathbf{t} | \mathbf{x}) ]].
+    \end{aligned}
+$$
+Actually, the normalization constant $Z$ is the negative variance:
+$$
+    \ln Z \times \pmb{1} = \mathbb{E}_{\mathcal{D}} [ \ln \hat{p}(\mathbf{t} | \mathbf{x}) ] - \ln p_{m}(\mathbf{t} | \mathbf{x})] = \mathbb{E}_{\mathcal{D}} \left[ \ln \frac{\hat{p}(\mathbf{t} | \mathbf{x})}{p_{m}(\mathbf{t} | \mathbf{x})} \right].
+$$
+Note that:
+$$
+    \ln Z = \mathbb{E}_{p_{m}(\mathbf{t} | \mathbf{x})} [ \ln Z \times \pmb{1}].
+$$
+Thus:
+$$
+        \ln Z = \mathbb{E}_{p_{m}(\mathbf{t} | \mathbf{x})} \mathbb{E}_{\mathcal{D}} \left[ \ln \frac{\hat{p}(\mathbf{t} | \mathbf{x})}{p_{m}(\mathbf{t} | \mathbf{x})} \right] = - \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} \left[ \mathrm{KL} [p_{m}(\mathbf{t} | \mathbf{x}) || \hat{p}(\mathbf{t} | \mathbf{x})] \right]}.
+$$
+:::
+</details>
+
+::: {#thm-kl-decomposition}
+(Decomposition for KL divergence)
+The bias-variance decomposition for KL divergence can be presented as:
+$$
+    \mathbb{E}_{\mathcal{D}} [ \mathrm{KL} [p(\mathbf{t} | \mathbf{x}) || \hat{p}(\mathbf{t} | \mathbf{x})] ] = \textcolor{Crimson}{\mathrm{KL} [ p(\mathbf{t} | \mathbf{x}) || p_{m}(\mathbf{t} | \mathbf{x}) ]} + \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} [ \mathrm{KL} [ p_{m}(\mathbf{t} | \mathbf{x}) || \hat{p}(\mathbf{t} | \mathbf{x}) ] ]}.
+$$
+:::
+
+::: {.proof}
+The proof is quite straight-forward from [@lem-kl-div-model-prediction].
+:::
+
+The result in [@thm-kl-decomposition] does not consist of an intrinsic noise since the loss defined by KL divergence is based on the true label distribution instead of each sample $\mathbf{t}$. To obtain the wellknown form of bias-variance decomposition based on label $\mathbf{t}$, the negative log likelihood $-\ln \hat{p}(\mathbf{t} | \mathbf{x})$ is used as the loss function. Note that $p_{m}(\mathbf{t} | \mathbf{x})$ is still defined with KL divergence as the loss function.
+
+From [@lem-kl-div-model-prediction], one can obtain:
+$$
+    \mathbb{E}_{\mathcal{D}} [ -\ln \hat{p}(\mathbf{t} | \mathbf{x}) ] = -\ln p_{m}(\mathbf{t} | \mathbf{x}) + \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} [ \mathrm{KL} [ p_{m}(\mathbf{t} | \mathbf{x}) || \hat{p}(\mathbf{t} | \mathbf{x}) ] ]}.
+$$
+
+Thus, the negative log-likelihood can be written as:
+$$
+    \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ -\ln \hat{p}(\mathbf{t} | \mathbf{x}) ] = -\mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ \ln p_{m}(\mathbf{t} | \mathbf{x})] + \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} [ \mathrm{KL} [ p_{m}(\mathbf{t} | \mathbf{x}) || \hat{p}(\mathbf{t} | \mathbf{x}) ] ]}.
+$$
+
+Or:
+$$
+    \mathbb{E}_{\mathcal{D}} \mathbb{E}_{p(\mathbf{t} | \mathbf{x})} [ -\ln \hat{p}(\mathbf{t} | \mathbf{x}) ] = \textcolor{Crimson}{\mathrm{KL}[p(\mathbf{t} | \mathbf{x}) || p_{m}(\mathbf{t} | \mathbf{x})]} + \textcolor{MidnightBlue}{\mathbb{E}_{\mathcal{D}} [ \mathrm{KL} [ p_{m}(\mathbf{t} | \mathbf{x}) || \hat{p}(\mathbf{t} | \mathbf{x}) ] ]} + \textcolor{Green}{\mathbb{E}_{p(\mathbf{t} | \mathbf{x})}[-\ln p(\mathbf{t} | \mathbf{x})]}.
+$$
+
+The bias-variance decomposition for negative log-likelihood in this case consists of an intrinsic noise term which equals to the Shannon entropy of the true label distribution $p(\mathbf{t} | \mathbf{x})$.
+
+## Conclusion
+In general, the bias - variance decomposition might not be always in the form of bias, variance and noise as commonly seen in MSE. Here, we show that different loss function might have a different decomposition. Nevertheless, the two most common loss functions, i.e., MSE and KL divergence, share a similar form. Note that, one needs to be careful when applying such bias - variance decomposition due to their difference in terms of *main model prediction* and *optimal label*.
+
+## References
+
+::: {#refs}
+:::

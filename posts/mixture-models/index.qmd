@@ -1,0 +1,300 @@
+---
+title: "Expectation - Maximisation algorithm and its applications for mixture models"
+date: "2022-07-17"
+---
+In machine learning or statistical inference, we often encounter problems relating to <em>missing data</em> or <em>hidden variables</em>. One typical example of such latent variable models is finite mixture models, e.g. Gaussian mixture or multinomial mixture models. Due to the nature of missing data or latent variables, calculating the likelihood of those models requires the marginalization over the distribution of the latent variables, and hence, complicates the maximum likelihood estimation (MLE). A general technique dealing with latent variable models is the <em>expectation - maximization</em> (EM)~[@dempster1977maximum]. The basic idea of EM algorithm is to alternate between estimating the posterior of the latent variables (or missing data) in the E-step (expectation step), then using the completed data to calculate the MLE in the M-step (maximization step). It has been proved that by iterating the process, the likelihood of interest is non-decreasing. In other words, EM algorithm guarantees to converge to a saddle point.
+
+In this post, we re-formulate a simpler form of the EM algorithm. We then demonstrate the application of the EM algorithm on two common MLE problems: Gaussian mixture models and multinomial mixture models. Readers could also refer to Chapter 9 in [@bishop2006pattern] (note that there are some typos which are corrected in <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/prml-errata-1st-20110921.pdf" alt="errata and additional comments">erratum</a>).
+
+## Notations
+Before diving into the formulation and examples, we define the notations used in the following table.
+
+| Notation  | Description  |
+|--------|--------|
+| $\mathbf{x} \in \mathbb{R}^{D}$ | observable data |
+| $\mathbf{z} \in \mathbb{R}^{K}$ | latent variable or missing data |
+| $\theta \in \Theta$ |the parameter of interest in MLE |
+
+: Notations used in the formulation of the EM algorithm. {.striped .hover}
+
+## EM algorithm
+
+### Derivation
+The aim of EM is to maximize the log-likelihood of the observed data:
+$$
+    \max_{\theta} \ln p(\mathbf{x} | \theta) = \max_{\theta} \ln \left[ \sum_{\mathbf{z}} p(\mathbf{x}, \mathbf{z} | \theta) \right].
+$$ {#eq-mle}
+
+Due to the presence of the sum over the latent variable $\mathbf{z}$, the logarithm cannot be evaluated directly on the joint distribution, resulting in complicated expressions for the maximum likelihood solution.
+
+
+To solve the MLE in [@eq-mle], we shall now assume that the completed log-likelihood $p(\mathbf{x}, \mathbf{z} | \theta)$ can be evaluated and maximized easily. Such assumption allows EM to get around the MLE in [@eq-mle] as follows. Let $q(\mathbf{z}) > 0$ be an arbitrary distribution of the latent variable $\mathbf{z}$. The observed data log-likelihood in [@eq-mle] can be written as:
+$$
+    \begin{aligned}
+        \ln p(\mathbf{x} | \theta) & = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) \right] \\
+        & = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln p(\mathbf{z} | \mathbf{x}, \theta) + \ln q(\mathbf{z}) - \ln q(\mathbf{z}) \right] \\
+        & = \mathbb{E}_{q(\mathbf{z})} \left\{ \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right] + \left[ \ln q(\mathbf{z}) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \right\} \\
+        & = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right] + \mathrm{KL} \left[ q(\mathbf{z}) \| p(\mathbf{z} | \mathbf{x}, \theta) \right],
+    \end{aligned}
+$$
+where: $\mathrm{KL}[ q \| p ]$ is the Kullback-Leibler divergence (KL divergence for short) between probability distributions $q$ and $p$.
+
+Since $\mathrm{KL}[ q \| p ] \ge 0$ and $\mathrm{KL}[ q \| p ] = 0$ iff $q = p$, the log-likelihood of interest can be lower-bounded as:
+$$
+    \ln p(\mathbf{x} | \theta) \ge \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right],
+$$
+and the equality occurs iff $q(\mathbf{z}) = p(\mathbf{z} | \mathbf{x}, \theta)$. The tightest bound can then be written as:
+$$
+    \begin{aligned}
+        \mathsf{L}(\theta, \theta^{\mathrm{old}}) & = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \underbrace{\ln p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})}_{\text{const. w.r.t. } \theta} ] \\
+        & = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x}, \mathbf{z} | \theta) ] + \mathrm{const.}
+    \end{aligned}
+$$ {#eq-tightest_bound}
+
+Note that we denote the posterior of the latent variable as $p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})$ to introduce the Expectation Maximization algorithm in the following. The reason why such $\theta^{\mathrm{old}}$ is introduced is that we need $\theta$ to calculate the posterior of $\mathbf{z}$, and we need the posterior to evaluate the lower-bound to optimize for $\theta$. That leads to an iterative approach, known as EM, to maximize the log-likelihood of interest.
+
+Hence, instead of maximizing the incomplete log-likelihood in [@eq-mle], we first tighten the lower-bound (E-step) and then maximize it (M-step). This allows an interative algorithm to perform the MLE on incomplete data, which is described as follows:
+
+<ul>
+    <li>**Initialization:** initialize the parameter of interest: $\theta^{\mathrm{old}} \gets \theta$</li>
+    <li>**E-step:** calculate the posterior of the latent variable $p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})$</li>
+    <li>**M-step:** maximize the tightest lower-bound: $\theta \gets \arg\max_{\theta} \mathsf{L}(\theta, \theta^{\mathrm{old}})$.</li>
+</ul>
+
+The whole algorithm can be referred to Algorithm 1.
+
+<pre class="pseudocode">
+\begin{algorithm}
+    \caption{MLE via expectation - maximization algorithm}
+    \begin{algorithmic}
+        \PROCEDURE{Maximum-likelihood-estimation}{observed data $\mathbf{x}$}
+            \STATE initialise parameter $\theta^{\mathrm{old}}$
+            \WHILE{$\mathsf{L}(\theta, \theta^{\mathrm{old}})$ not converged} \Comment{$\mathsf{L}(\theta, \theta^{\mathrm{old}})$ is defined in Eq. (2)}
+                \STATE calculate the posterior $p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})$ \Comment{E-step}
+                \STATE maximize the lower-bound: $\theta^{\mathrm{old}} \gets \arg\max_{\theta} \mathsf{L}(\theta, \theta^{\mathrm{old}})$ \COMMENT{M-step}
+            \ENDWHILE
+            \RETURN $\theta$
+        \ENDPROCEDURE
+    \end{algorithmic}
+\end{algorithm}
+</pre>
+
+::: {.remark}
+One can also apply MAP instead of MLE by adding the log prior in the optimization objective. In this case, the difference is at the M-step, while the E-step is still the same.
+:::
+
+### Convergence
+::: {#thm-convergence}
+After each EM iteration, the log-likelihood $\ln p(\mathbf{x} | \theta)$ is non-decreasing. Mathematically, it can be written as follows:
+$$
+    p(\mathbf{x} | \theta^{(n + 1)}) \ge p(\mathbf{x} | \theta^{(n)}),
+$$
+where the superscript denotes the result obtained after that iteration.
+:::
+
+::: {.proof}
+Note that the EM algorithm improves the lower-bound $\mathsf{L}(\theta, \theta^{(n)})$ after every iteration. Thus, we need to connect the lower-bound to the likelihood of interest to prove the theorem. The log-likelihood of interest can be written as:
+$$
+    \begin{aligned}
+        \ln p(\mathbf{x} | \theta) & = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{x} | \theta) \right] \\
+        & = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{x}, \mathbf{z} | \theta) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \\
+        & = \mathsf{L}(\theta, \theta^{(n)}) - \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta) \right].
+    \end{aligned}
+$$ {#eq-likelihood_theta}
+
+Since it holds for any $\theta$, we can substitute $\theta = \theta^{(n)})$ to obtain the likelihood after iteration $n$-th:
+$$
+    \ln p(\mathbf{x} | \theta^{(n)}) = \mathsf{L}(\theta^{(n)}, \theta^{(n)}) - \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) \right].
+$$ {#eq-likelihood_after_iteration_nth}
+
+Substracting side by side of [@eq-likelihood_theta] and [@eq-likelihood_after_iteration_nth] gives the following:
+$$
+    \begin{aligned}
+        \ln p(\mathbf{x} | \theta) - \ln p(\mathbf{x} | \theta^{(n)}) & = \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}) + \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \\
+        & = \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}) + \mathrm{KL} \left[ p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) \| p(\mathbf{z} | \mathbf{x}, \theta) \right].
+    \end{aligned}
+$$
+
+Since KL divergence is non-negative, one can imply that:
+$$
+    \ln p(\mathbf{x} | \theta) - \ln p(\mathbf{x} | \theta^{(n)}) \ge \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}).
+$$ {#eq-likelihood_difference}
+
+In the M-step, we obtain $\theta^{(n + 1)}$ by maximizing $\mathsf{L}(\theta, \theta^{(n)})$ w.r.t. $\theta$. Thus, according to the definition of the maximization:
+$$
+    \mathsf{L}(\theta^{(n + 1)}, \theta^{(n)}) \ge \mathsf{L}(\theta^{(n)}, \theta^{(n)}).
+$$
+
+Hence, one can conclude that:
+$$
+    \ln p(\mathbf{x} | \theta^{(n + 1)}) \ge \ln p(\mathbf{x} | \theta^{(n)}).
+$$
+:::
+
+## Applications of EM
+One of the typical applications of EM algorithm is to perform maximum likelihood for finite mixture models. This section is, therefore, dedicated to discuss the application of EM on Gaussian and multinomial mixture models.
+
+### Gaussian mixture models
+The Gaussian mixture distribution can be written as a <em>convex</em> combination of $K$ Gaussian components:
+$$
+    p(\mathbf{x}) = \sum_{k = 1}^{K} \pi_{k} \, \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}),
+$$
+where: $\pi_{k} \in [0, 1]$ and $\pmb{\pi}^{\top} \pmb{1} = 1$.
+
+A data-point of the above Gaussian mixture distribution can be generated as follows:
+
+<ul>
+    <li>sample a $K$-dimensional categorical (one-hot) vector from the distribution of mixture coefficient: $\mathbf{z} \sim \mathrm{Categorical}(\mathbf{z}; \pmb{\pi})$</li>
+    <li>sample a data-point from the corresponding Gaussian component: $\mathbf{x} \sim \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k})$, where $z_{k} = 1$.</li>
+</ul>
+
+In other words, the Gaussian mixture distribution can be written in the form of latent variable models as:
+
+$$
+    p(\mathbf{x}) = \sum_{\mathbf{z}} p(\mathbf{z}) \, p(\mathbf{x} | \mathbf{z}) = \sum_{k = 1}^{K} \pi_{k} \, \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}),
+$$
+
+where: $\mathbf{z}$ is the latent random variable.
+
+If the objective is to use MLE to find the Gaussian components from a given set of data-points $\mathbf{X} = \{\mathbf{x}_{n}\}_{n = 1}^{N}$ sampled from the Gaussian mixture distribution, the parameter of interest will be: $\theta = \{(\pmb{\mu}_{k}, \pmb{\Sigma}_{k})\}_{k = 1}^{K}$. In this case, one can simply follow the EM algorithm presented in Section 2. Note that the likelihood on $N$ iid data-points can be written as:
+
+$$
+    p(\mathbf{X} | \theta) = \prod_{n = 1}^{N} p(\mathbf{x}_{n} | \theta) = \prod_{n = 1}^{N} \sum_{k = 1}^{K} p(\mathbf{x}_{n} | z_{nk} = 1, \theta) \, p(z_{nk} = 1).
+$$
+
+**E-step:** calculate the posterior of the latent variable $\mathbf{z}_{n}$ given the observed data $\mathbf{x}_{n}$ and the model parameter $\{(\pmb{\mu}_{k}^{\mathrm{old}}, \pmb{\Sigma}_{k}^{\mathrm{old}})\}_{k = 1}^{K}$
+
+$$
+    \begin{aligned}
+        \gamma(z_{nk}) = p\left(z_{nk} = 1 | \mathbf{x}_{n}, \theta^{\mathrm{old}} \right) & = \frac{p(\mathbf{x}_{n} | z_{nk} = 1, \theta^{\mathrm{old}}) \, p(z_{nk} = 1)}{\sum_{j = 1}^{K} p(\mathbf{x}_{n} | z_{nj} = 1, \theta^{\mathrm{old}}) \, p(z_{nj} = 1)} \\
+        & = \frac{\pi_{k} \, \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{k}^{\mathrm{old}}, \pmb{\Sigma}_{k}^{\mathrm{old}})}{\sum_{j = 1}^{K} \pi_{j} \, \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{j}^{\mathrm{old}}, \pmb{\Sigma}_{j}^{\mathrm{old}})}.
+    \end{aligned}
+$$ {#eq-gmm_e_step}
+
+
+**M-step:** maximize the lower-bound w.r.t. model parameter $\theta$ where the lower-bound can be expressed as:
+$$
+    \begin{aligned}
+        \mathsf{L}\left(\theta, \theta^{\mathrm{old}} \right) & = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x}_{n} | \mathbf{z}_{n}, \theta) + \ln p(\mathbf{z}_{n}) ] \\
+        & = \sum_{n = 1}^{N} \sum_{k = 1}^{K} p(z_{nk} = 1 | \mathbf{x}_{n}, \theta) \ln p(\mathbf{x}_{n} | z_{nk} = 1, \theta) + \mathrm{const.} \\
+        & = \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma(z_{nk}) \ln \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}) + \mathrm{const.} \\
+        & = -\frac{1}{2} \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma(z_{nk}) \left[ \ln \left| \pmb{\Sigma}_{k} \right| + (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top} \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) \right] + \mathrm{const.}
+    \end{aligned}
+$$
+
+
+Taking derivative w.r.t. $\pmb{\mu}_{k}$ and setting it to zero give:
+
+
+$$
+    \begin{aligned}
+        & \Delta_{\pmb{\mu}_{k}} \mathsf{L} = \sum_{n = 1}^{N} \gamma(z_{nk}) \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) = 0 \\
+        & \Rightarrow \left[ \sum_{n = 1}^{N} \gamma(z_{nk}) \right] \pmb{\mu}_{k} = \sum_{n = 1}^{N} \gamma(z_{nk}) \mathbf{x}_{n}.
+    \end{aligned}
+$$
+
+Or:
+
+$$
+    \boxed{
+        \pmb{\mu}_{k} = \frac{\sum_{n = 1}^{N} \gamma(z_{nk}) \mathbf{x}_{n}}{\sum_{n = 1}^{N} \gamma(z_{nk})}.
+    }
+$$
+
+Similarly for $\pmb{\Sigma}_{k}$:
+
+$$
+    \begin{aligned}
+        \Delta_{\pmb{\Sigma}_{k}} & = -\frac{1}{2} \sum_{n = 1}^{N} \gamma(z_{nk}) \left[ \pmb{\Sigma}_{k}^{-1} - \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top} \pmb{\Sigma}_{k}^{-1} \right] = 0 \\
+        \Rightarrow & \boxed{
+            \pmb{\Sigma}_{k} = \frac{1}{\sum_{n = 1}^{N} \gamma(z_{nk})} \sum_{n = 1}^{N} \gamma(z_{nk}) (\mathbf{x}_{n} - \pmb{\mu}_{k}) (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top}.
+        }
+    \end{aligned}
+$$
+
+### Multinomial mixture models
+
+
+Similar to the Gaussian mixture models, a multinomial mixture model can also be written as:
+
+
+$$
+    p(\mathbf{x}) = \sum_{\mathbf{z}} p(\mathbf{z}) p(\mathbf{x} | \mathbf{z}) = \sum_{k = 1}^{K} \pi_{k} \mathrm{Mult}(\mathbf{x}; m, \rho_{k}).
+$$
+
+
+Note that we only consider the case where all the multinomial components have the same parameter $m$ (the number of trials).
+
+
+**E-step** This step is to calculate the posterior of the latent variable $\mathbf{z}_{n}$ given the data $\mathbf{x}_{n}$:
+$$
+    \begin{aligned}
+        \gamma_{nk} & = p(\mathbf{z}_{nk} = 1 | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)}) \\
+        & = \frac{p(\mathbf{x}_{n} | \mathbf{z}_{nk} = 1, \rho^{(t)}) \, p(\mathbf{z}_{nk} = 1 | \pi^{(t)})}{\sum_{k = 1}^{K} p(\mathbf{x}_{n} | \mathbf{z}_{nk} = 1, \rho^{(t)}) \, p(\mathbf{z}_{nk} = 1 | \pi^{(t)})} \\
+        & = \frac{\pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{n}; m, \rho_{k}^{(t)})}{\sum_{k = 1}^{K} \pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{n}; m, \rho_{k}^{(t)})}.
+    \end{aligned}
+$$ {#eq-mmm_e_step}
+
+
+**M-step** In the M-step, we maximise the following expected completed log-likelihood w.r.t. $\pi$ and $\rho$:
+
+
+$$
+    \begin{aligned}
+        \mathsf{L} = & \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \ln p(\mathbf{x}_{n}, \mathbf{z}_{n} | \pi, \rho) \right] \\
+        & = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \ln p(\mathbf{z}_{n} | \pi) + \ln p(\mathbf{x}_{n} | \mathbf{z}_{n}, \rho) \right] \\
+        & = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{nk} \ln \pi_{k} + \mathbf{z}_{nk} \ln \mathrm{Mult} (\mathbf{x}_{n}; m, \rho_{k}) \right] \\
+        & = \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma_{nk} \left[ \ln \pi_{k} + \sum_{d = 1}^{D} \mathbf{x}_{nd} \ln \rho_{kd} + \mathrm{const.} \right]
+    \end{aligned}
+$$
+
+
+The Lagrangian for $\pi$ can be written as:
+$$
+    \mathsf{L}_{\pi} = \mathsf{L} - \lambda \left( \sum_{k = 1}^{K} \pi_{k} - 1 \right),
+$$
+where $\lambda$ is the Lagrange multiplier.
+
+
+Taking derivative of the Lagrangian w.r.t. $\pi_{k}$ gives:
+$$
+    \frac{\partial \mathsf{L}_{\pi}}{\partial \pi_{k}} = \frac{1}{\pi_{k}} \sum_{n = 1}^{N} \gamma_{nk} - \lambda.
+$$
+
+
+Setting the derivative to zero and solving for $\pi_{k}$ gives:
+$$
+    \pi_{k} = \frac{1}{\lambda} \sum_{n = 1}^{N} \gamma_{nk}.
+$$
+
+
+And since $\sum_{k = 1}^{K} \pi_{k} = 1$, one can substitute and find that $\lambda = N$. Thus:
+$$
+    \boxed{
+        \pi_{k}^{(t + 1)} = \frac{1}{N} \sum_{n = 1}^{N} \gamma_{nk}.
+    }
+$$
+
+
+Similarly, the Lagrangian of $\rho$ can be expressed as:
+$$
+    \mathsf{L}_{\rho} = \mathsf{L} - \sum_{k = 1}^{K} \eta_{k} \left( \sum_{d = 1}^{D} \rho_{kd} - 1 \right),
+$$
+where $\eta_{k}$ is the Lagrange multiplier. Taking derivative w.r.t. $\rho_{kd}$ gives:
+$$
+    \frac{\partial \mathsf{L}_{\rho}}{\partial \rho_{kd}} = \frac{1}{\rho_{kd}} \sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd} - \eta_{k}.
+$$
+Setting the derivative to zero and solving for $\rho_{kd}$ gives:
+$$
+    \rho_{kd} = \frac{1}{\eta_{k}} \sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd}.
+$$
+The constraint on $\rho_{k}$ as a probability vector leads to $\eta_{k} = m \sum_{n = 1}^{N} \gamma_{nk}$. Thus:
+$$
+    \boxed{
+        \rho_{kd}^{(t + 1)} = \frac{\sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd}}{m \sum_{n = 1}^{N} \gamma_{nk}}.
+    }
+$$
+
+## References
+::: {#refs}
+:::
