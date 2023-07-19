@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Cuong Nguyen">
+<meta name="dcterms.date" content="2022-07-17">
+
+<title>Cuong Nguyen - Expectation - Maximisation algorithm and its applications for mixture models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../robot.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-NLRVZL0JSR"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script>
+  window.onload = async function() {
+    var options = {
+      indentSize: '1.2em',
+      commentDelimiter: '\u00A0\u00A0\u00A0\u00A0\u00A0 \u25B9 \u0020',
+      lineNumber: true,
+      lineNumberPunc: ':',
+      noEnd: false,
+      captionCount: undefined
+    };
+    pseudocode.renderClass("pseudocode", options);
+  }
+</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Cuong Nguyen - Expectation - Maximisation algorithm and its applications for mixture models">
+<meta name="twitter:description" content="">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Cuong Nguyen</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html" rel="" target=""><i class="bi bi-pencil-square" role="img">
+</i> 
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target=""><i class="bi bi-person-circle" role="img">
+</i> 
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#notations" id="toc-notations" class="nav-link active" data-scroll-target="#notations"><span class="header-section-number">1</span> Notations</a></li>
+  <li><a href="#em-algorithm" id="toc-em-algorithm" class="nav-link" data-scroll-target="#em-algorithm"><span class="header-section-number">2</span> EM algorithm</a>
+  <ul class="collapse">
+  <li><a href="#derivation" id="toc-derivation" class="nav-link" data-scroll-target="#derivation"><span class="header-section-number">2.1</span> Derivation</a></li>
+  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence"><span class="header-section-number">2.2</span> Convergence</a></li>
+  </ul></li>
+  <li><a href="#applications-of-em" id="toc-applications-of-em" class="nav-link" data-scroll-target="#applications-of-em"><span class="header-section-number">3</span> Applications of EM</a>
+  <ul class="collapse">
+  <li><a href="#gaussian-mixture-models" id="toc-gaussian-mixture-models" class="nav-link" data-scroll-target="#gaussian-mixture-models"><span class="header-section-number">3.1</span> Gaussian mixture models</a></li>
+  <li><a href="#multinomial-mixture-models" id="toc-multinomial-mixture-models" class="nav-link" data-scroll-target="#multinomial-mixture-models"><span class="header-section-number">3.2</span> Multinomial mixture models</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">4</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Expectation - Maximisation algorithm and its applications for mixture models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cuong Nguyen </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 17, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In machine learning or statistical inference, we often encounter problems relating to <em>missing data</em> or <em>hidden variables</em>. One typical example of such latent variable models is finite mixture models, e.g.&nbsp;Gaussian mixture or multinomial mixture models. Due to the nature of missing data or latent variables, calculating the likelihood of those models requires the marginalization over the distribution of the latent variables, and hence, complicates the maximum likelihood estimation (MLE). A general technique dealing with latent variable models is the <em>expectation - maximization</em> (EM)~<span class="citation" data-cites="dempster1977maximum">(<a href="#ref-dempster1977maximum" role="doc-biblioref">Dempster, Laird, and Rubin 1977</a>)</span>. The basic idea of EM algorithm is to alternate between estimating the posterior of the latent variables (or missing data) in the E-step (expectation step), then using the completed data to calculate the MLE in the M-step (maximization step). It has been proved that by iterating the process, the likelihood of interest is non-decreasing. In other words, EM algorithm guarantees to converge to a saddle point.</p>
+<p>In this post, we re-formulate a simpler form of the EM algorithm. We then demonstrate the application of the EM algorithm on two common MLE problems: Gaussian mixture models and multinomial mixture models. Readers could also refer to Chapter 9 in <span class="citation" data-cites="bishop2006pattern">(<a href="#ref-bishop2006pattern" role="doc-biblioref">Bishop and Nasrabadi 2006</a>)</span> (note that there are some typos which are corrected in <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/prml-errata-1st-20110921.pdf" alt="errata and additional comments">erratum</a>).</p>
+<section id="notations" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="notations"><span class="header-section-number">1</span> Notations</h2>
+<p>Before diving into the formulation and examples, we define the notations used in the following table.</p>
+<table class="table-striped table-hover table">
+<caption>Notations used in the formulation of the EM algorithm.</caption>
+<thead>
+<tr class="header">
+<th>Notation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\mathbf{x} \in \mathbb{R}^{D}</span></td>
+<td>observable data</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\mathbf{z} \in \mathbb{R}^{K}</span></td>
+<td>latent variable or missing data</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\theta \in \Theta</span></td>
+<td>the parameter of interest in MLE</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="em-algorithm" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="em-algorithm"><span class="header-section-number">2</span> EM algorithm</h2>
+<section id="derivation" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="derivation"><span class="header-section-number">2.1</span> Derivation</h3>
+<p>The aim of EM is to maximize the log-likelihood of the observed data: <span id="eq-mle"><span class="math display">
+    \max_{\theta} \ln p(\mathbf{x} | \theta) = \max_{\theta} \ln \left[ \sum_{\mathbf{z}} p(\mathbf{x}, \mathbf{z} | \theta) \right].
+\tag{1}</span></span></p>
+<p>Due to the presence of the sum over the latent variable <span class="math inline">\mathbf{z}</span>, the logarithm cannot be evaluated directly on the joint distribution, resulting in complicated expressions for the maximum likelihood solution.</p>
+<p>To solve the MLE in <a href="#eq-mle">Equation&nbsp;1</a>, we shall now assume that the completed log-likelihood <span class="math inline">p(\mathbf{x}, \mathbf{z} | \theta)</span> can be evaluated and maximized easily. Such assumption allows EM to get around the MLE in <a href="#eq-mle">Equation&nbsp;1</a> as follows. Let <span class="math inline">q(\mathbf{z}) &gt; 0</span> be an arbitrary distribution of the latent variable <span class="math inline">\mathbf{z}</span>. The observed data log-likelihood in <a href="#eq-mle">Equation&nbsp;1</a> can be written as: <span class="math display">
+    \begin{aligned}
+        \ln p(\mathbf{x} | \theta) &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) \right] \\
+        &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln p(\mathbf{z} | \mathbf{x}, \theta) + \ln q(\mathbf{z}) - \ln q(\mathbf{z}) \right] \\
+        &amp; = \mathbb{E}_{q(\mathbf{z})} \left\{ \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right] + \left[ \ln q(\mathbf{z}) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \right\} \\
+        &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right] + \mathrm{KL} \left[ q(\mathbf{z}) \| p(\mathbf{z} | \mathbf{x}, \theta) \right],
+    \end{aligned}
+</span> where: <span class="math inline">\mathrm{KL}[ q \| p ]</span> is the Kullback-Leibler divergence (KL divergence for short) between probability distributions <span class="math inline">q</span> and <span class="math inline">p</span>.</p>
+<p>Since <span class="math inline">\mathrm{KL}[ q \| p ] \ge 0</span> and <span class="math inline">\mathrm{KL}[ q \| p ] = 0</span> iff <span class="math inline">q = p</span>, the log-likelihood of interest can be lower-bounded as: <span class="math display">
+    \ln p(\mathbf{x} | \theta) \ge \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right],
+</span> and the equality occurs iff <span class="math inline">q(\mathbf{z}) = p(\mathbf{z} | \mathbf{x}, \theta)</span>. The tightest bound can then be written as: <span id="eq-tightest_bound"><span class="math display">
+    \begin{aligned}
+        \mathsf{L}(\theta, \theta^{\mathrm{old}}) &amp; = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \underbrace{\ln p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})}_{\text{const. w.r.t. } \theta} ] \\
+        &amp; = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x}, \mathbf{z} | \theta) ] + \mathrm{const.}
+    \end{aligned}
+\tag{2}</span></span></p>
+<p>Note that we denote the posterior of the latent variable as <span class="math inline">p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})</span> to introduce the Expectation Maximization algorithm in the following. The reason why such <span class="math inline">\theta^{\mathrm{old}}</span> is introduced is that we need <span class="math inline">\theta</span> to calculate the posterior of <span class="math inline">\mathbf{z}</span>, and we need the posterior to evaluate the lower-bound to optimize for <span class="math inline">\theta</span>. That leads to an iterative approach, known as EM, to maximize the log-likelihood of interest.</p>
+<p>Hence, instead of maximizing the incomplete log-likelihood in <a href="#eq-mle">Equation&nbsp;1</a>, we first tighten the lower-bound (E-step) and then maximize it (M-step). This allows an interative algorithm to perform the MLE on incomplete data, which is described as follows:</p>
+<ul>
+<li>
+<strong>Initialization:</strong> initialize the parameter of interest: <span class="math inline">\theta^{\mathrm{old}} \gets \theta</span>
+</li>
+<li>
+<strong>E-step:</strong> calculate the posterior of the latent variable <span class="math inline">p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})</span>
+</li>
+<li>
+<strong>M-step:</strong> maximize the tightest lower-bound: <span class="math inline">\theta \gets \arg\max_{\theta} \mathsf{L}(\theta, \theta^{\mathrm{old}})</span>.
+</li>
+</ul>
+<p>The whole algorithm can be referred to Algorithm 1.</p>
+<pre class="pseudocode">\begin{algorithm}
+    \caption{MLE via expectation - maximization algorithm}
+    \begin{algorithmic}
+        \PROCEDURE{Maximum-likelihood-estimation}{observed data $\mathbf{x}$}
+            \STATE initialise parameter $\theta^{\mathrm{old}}$
+            \WHILE{$\mathsf{L}(\theta, \theta^{\mathrm{old}})$ not converged} \Comment{$\mathsf{L}(\theta, \theta^{\mathrm{old}})$ is defined in Eq. (2)}
+                \STATE calculate the posterior $p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})$ \Comment{E-step}
+                \STATE maximize the lower-bound: $\theta^{\mathrm{old}} \gets \arg\max_{\theta} \mathsf{L}(\theta, \theta^{\mathrm{old}})$ \COMMENT{M-step}
+            \ENDWHILE
+            \RETURN $\theta$
+        \ENDPROCEDURE
+    \end{algorithmic}
+\end{algorithm}
+</pre>
+<div class="remark proof">
+<p><span class="proof-title"><em>Remark</em>. </span>One can also apply MAP instead of MLE by adding the log prior in the optimization objective. In this case, the difference is at the M-step, while the E-step is still the same.</p>
+</div>
+</section>
+<section id="convergence" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="convergence"><span class="header-section-number">2.2</span> Convergence</h3>
+<div id="thm-convergence" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 </strong></span>After each EM iteration, the log-likelihood <span class="math inline">\ln p(\mathbf{x} | \theta)</span> is non-decreasing. Mathematically, it can be written as follows: <span class="math display">
+    p(\mathbf{x} | \theta^{(n + 1)}) \ge p(\mathbf{x} | \theta^{(n)}),
+</span> where the superscript denotes the result obtained after that iteration.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Note that the EM algorithm improves the lower-bound <span class="math inline">\mathsf{L}(\theta, \theta^{(n)})</span> after every iteration. Thus, we need to connect the lower-bound to the likelihood of interest to prove the theorem. The log-likelihood of interest can be written as: <span id="eq-likelihood_theta"><span class="math display">
+    \begin{aligned}
+        \ln p(\mathbf{x} | \theta) &amp; = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{x} | \theta) \right] \\
+        &amp; = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{x}, \mathbf{z} | \theta) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \\
+        &amp; = \mathsf{L}(\theta, \theta^{(n)}) - \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta) \right].
+    \end{aligned}
+\tag{3}</span></span></p>
+<p>Since it holds for any <span class="math inline">\theta</span>, we can substitute <span class="math inline">\theta = \theta^{(n)})</span> to obtain the likelihood after iteration <span class="math inline">n</span>-th: <span id="eq-likelihood_after_iteration_nth"><span class="math display">
+    \ln p(\mathbf{x} | \theta^{(n)}) = \mathsf{L}(\theta^{(n)}, \theta^{(n)}) - \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) \right].
+\tag{4}</span></span></p>
+<p>Substracting side by side of <a href="#eq-likelihood_theta">Equation&nbsp;3</a> and <a href="#eq-likelihood_after_iteration_nth">Equation&nbsp;4</a> gives the following: <span class="math display">
+    \begin{aligned}
+        \ln p(\mathbf{x} | \theta) - \ln p(\mathbf{x} | \theta^{(n)}) &amp; = \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}) + \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \\
+        &amp; = \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}) + \mathrm{KL} \left[ p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) \| p(\mathbf{z} | \mathbf{x}, \theta) \right].
+    \end{aligned}
+</span></p>
+<p>Since KL divergence is non-negative, one can imply that: <span id="eq-likelihood_difference"><span class="math display">
+    \ln p(\mathbf{x} | \theta) - \ln p(\mathbf{x} | \theta^{(n)}) \ge \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}).
+\tag{5}</span></span></p>
+<p>In the M-step, we obtain <span class="math inline">\theta^{(n + 1)}</span> by maximizing <span class="math inline">\mathsf{L}(\theta, \theta^{(n)})</span> w.r.t. <span class="math inline">\theta</span>. Thus, according to the definition of the maximization: <span class="math display">
+    \mathsf{L}(\theta^{(n + 1)}, \theta^{(n)}) \ge \mathsf{L}(\theta^{(n)}, \theta^{(n)}).
+</span></p>
+<p>Hence, one can conclude that: <span class="math display">
+    \ln p(\mathbf{x} | \theta^{(n + 1)}) \ge \ln p(\mathbf{x} | \theta^{(n)}).
+</span></p>
+</div>
+</section>
+</section>
+<section id="applications-of-em" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="applications-of-em"><span class="header-section-number">3</span> Applications of EM</h2>
+<p>One of the typical applications of EM algorithm is to perform maximum likelihood for finite mixture models. This section is, therefore, dedicated to discuss the application of EM on Gaussian and multinomial mixture models.</p>
+<section id="gaussian-mixture-models" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="gaussian-mixture-models"><span class="header-section-number">3.1</span> Gaussian mixture models</h3>
+<p>The Gaussian mixture distribution can be written as a <em>convex</em> combination of <span class="math inline">K</span> Gaussian components: <span class="math display">
+    p(\mathbf{x}) = \sum_{k = 1}^{K} \pi_{k} \, \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}),
+</span> where: <span class="math inline">\pi_{k} \in [0, 1]</span> and <span class="math inline">\pmb{\pi}^{\top} \pmb{1} = 1</span>.</p>
+<p>A data-point of the above Gaussian mixture distribution can be generated as follows:</p>
+<ul>
+<li>
+sample a <span class="math inline">K</span>-dimensional categorical (one-hot) vector from the distribution of mixture coefficient: <span class="math inline">\mathbf{z} \sim \mathrm{Categorical}(\mathbf{z}; \pmb{\pi})</span>
+</li>
+<li>
+sample a data-point from the corresponding Gaussian component: <span class="math inline">\mathbf{x} \sim \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k})</span>, where <span class="math inline">z_{k} = 1</span>.
+</li>
+</ul>
+<p>In other words, the Gaussian mixture distribution can be written in the form of latent variable models as:</p>
+<p><span class="math display">
+    p(\mathbf{x}) = \sum_{\mathbf{z}} p(\mathbf{z}) \, p(\mathbf{x} | \mathbf{z}) = \sum_{k = 1}^{K} \pi_{k} \, \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}),
+</span></p>
+<p>where: <span class="math inline">\mathbf{z}</span> is the latent random variable.</p>
+<p>If the objective is to use MLE to find the Gaussian components from a given set of data-points <span class="math inline">\mathbf{X} = \{\mathbf{x}_{n}\}_{n = 1}^{N}</span> sampled from the Gaussian mixture distribution, the parameter of interest will be: <span class="math inline">\theta = \{(\pmb{\mu}_{k}, \pmb{\Sigma}_{k})\}_{k = 1}^{K}</span>. In this case, one can simply follow the EM algorithm presented in Section 2. Note that the likelihood on <span class="math inline">N</span> iid data-points can be written as:</p>
+<p><span class="math display">
+    p(\mathbf{X} | \theta) = \prod_{n = 1}^{N} p(\mathbf{x}_{n} | \theta) = \prod_{n = 1}^{N} \sum_{k = 1}^{K} p(\mathbf{x}_{n} | z_{nk} = 1, \theta) \, p(z_{nk} = 1).
+</span></p>
+<p><strong>E-step:</strong> calculate the posterior of the latent variable <span class="math inline">\mathbf{z}_{n}</span> given the observed data <span class="math inline">\mathbf{x}_{n}</span> and the model parameter <span class="math inline">\{(\pmb{\mu}_{k}^{\mathrm{old}}, \pmb{\Sigma}_{k}^{\mathrm{old}})\}_{k = 1}^{K}</span></p>
+<p><span id="eq-gmm_e_step"><span class="math display">
+    \begin{aligned}
+        \gamma(z_{nk}) = p\left(z_{nk} = 1 | \mathbf{x}_{n}, \theta^{\mathrm{old}} \right) &amp; = \frac{p(\mathbf{x}_{n} | z_{nk} = 1, \theta^{\mathrm{old}}) \, p(z_{nk} = 1)}{\sum_{j = 1}^{K} p(\mathbf{x}_{n} | z_{nj} = 1, \theta^{\mathrm{old}}) \, p(z_{nj} = 1)} \\
+        &amp; = \frac{\pi_{k} \, \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{k}^{\mathrm{old}}, \pmb{\Sigma}_{k}^{\mathrm{old}})}{\sum_{j = 1}^{K} \pi_{j} \, \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{j}^{\mathrm{old}}, \pmb{\Sigma}_{j}^{\mathrm{old}})}.
+    \end{aligned}
+\tag{6}</span></span></p>
+<p><strong>M-step:</strong> maximize the lower-bound w.r.t. model parameter <span class="math inline">\theta</span> where the lower-bound can be expressed as: <span class="math display">
+    \begin{aligned}
+        \mathsf{L}\left(\theta, \theta^{\mathrm{old}} \right) &amp; = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x}_{n} | \mathbf{z}_{n}, \theta) + \ln p(\mathbf{z}_{n}) ] \\
+        &amp; = \sum_{n = 1}^{N} \sum_{k = 1}^{K} p(z_{nk} = 1 | \mathbf{x}_{n}, \theta) \ln p(\mathbf{x}_{n} | z_{nk} = 1, \theta) + \mathrm{const.} \\
+        &amp; = \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma(z_{nk}) \ln \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}) + \mathrm{const.} \\
+        &amp; = -\frac{1}{2} \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma(z_{nk}) \left[ \ln \left| \pmb{\Sigma}_{k} \right| + (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top} \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) \right] + \mathrm{const.}
+    \end{aligned}
+</span></p>
+<p>Taking derivative w.r.t. <span class="math inline">\pmb{\mu}_{k}</span> and setting it to zero give:</p>
+<p><span class="math display">
+    \begin{aligned}
+        &amp; \Delta_{\pmb{\mu}_{k}} \mathsf{L} = \sum_{n = 1}^{N} \gamma(z_{nk}) \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) = 0 \\
+        &amp; \Rightarrow \left[ \sum_{n = 1}^{N} \gamma(z_{nk}) \right] \pmb{\mu}_{k} = \sum_{n = 1}^{N} \gamma(z_{nk}) \mathbf{x}_{n}.
+    \end{aligned}
+</span></p>
+<p>Or:</p>
+<p><span class="math display">
+    \boxed{
+        \pmb{\mu}_{k} = \frac{\sum_{n = 1}^{N} \gamma(z_{nk}) \mathbf{x}_{n}}{\sum_{n = 1}^{N} \gamma(z_{nk})}.
+    }
+</span></p>
+<p>Similarly for <span class="math inline">\pmb{\Sigma}_{k}</span>:</p>
+<p><span class="math display">
+    \begin{aligned}
+        \Delta_{\pmb{\Sigma}_{k}} &amp; = -\frac{1}{2} \sum_{n = 1}^{N} \gamma(z_{nk}) \left[ \pmb{\Sigma}_{k}^{-1} - \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top} \pmb{\Sigma}_{k}^{-1} \right] = 0 \\
+        \Rightarrow &amp; \boxed{
+            \pmb{\Sigma}_{k} = \frac{1}{\sum_{n = 1}^{N} \gamma(z_{nk})} \sum_{n = 1}^{N} \gamma(z_{nk}) (\mathbf{x}_{n} - \pmb{\mu}_{k}) (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top}.
+        }
+    \end{aligned}
+</span></p>
+</section>
+<section id="multinomial-mixture-models" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="multinomial-mixture-models"><span class="header-section-number">3.2</span> Multinomial mixture models</h3>
+<p>Similar to the Gaussian mixture models, a multinomial mixture model can also be written as:</p>
+<p><span class="math display">
+    p(\mathbf{x}) = \sum_{\mathbf{z}} p(\mathbf{z}) p(\mathbf{x} | \mathbf{z}) = \sum_{k = 1}^{K} \pi_{k} \mathrm{Mult}(\mathbf{x}; m, \rho_{k}).
+</span></p>
+<p>Note that we only consider the case where all the multinomial components have the same parameter <span class="math inline">m</span> (the number of trials).</p>
+<p><strong>E-step</strong> This step is to calculate the posterior of the latent variable <span class="math inline">\mathbf{z}_{n}</span> given the data <span class="math inline">\mathbf{x}_{n}</span>: <span id="eq-mmm_e_step"><span class="math display">
+    \begin{aligned}
+        \gamma_{nk} &amp; = p(\mathbf{z}_{nk} = 1 | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)}) \\
+        &amp; = \frac{p(\mathbf{x}_{n} | \mathbf{z}_{nk} = 1, \rho^{(t)}) \, p(\mathbf{z}_{nk} = 1 | \pi^{(t)})}{\sum_{k = 1}^{K} p(\mathbf{x}_{n} | \mathbf{z}_{nk} = 1, \rho^{(t)}) \, p(\mathbf{z}_{nk} = 1 | \pi^{(t)})} \\
+        &amp; = \frac{\pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{n}; m, \rho_{k}^{(t)})}{\sum_{k = 1}^{K} \pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{n}; m, \rho_{k}^{(t)})}.
+    \end{aligned}
+\tag{7}</span></span></p>
+<p><strong>M-step</strong> In the M-step, we maximise the following expected completed log-likelihood w.r.t. <span class="math inline">\pi</span> and <span class="math inline">\rho</span>:</p>
+<p><span class="math display">
+    \begin{aligned}
+        \mathsf{L} = &amp; \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \ln p(\mathbf{x}_{n}, \mathbf{z}_{n} | \pi, \rho) \right] \\
+        &amp; = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \ln p(\mathbf{z}_{n} | \pi) + \ln p(\mathbf{x}_{n} | \mathbf{z}_{n}, \rho) \right] \\
+        &amp; = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{nk} \ln \pi_{k} + \mathbf{z}_{nk} \ln \mathrm{Mult} (\mathbf{x}_{n}; m, \rho_{k}) \right] \\
+        &amp; = \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma_{nk} \left[ \ln \pi_{k} + \sum_{d = 1}^{D} \mathbf{x}_{nd} \ln \rho_{kd} + \mathrm{const.} \right]
+    \end{aligned}
+</span></p>
+<p>The Lagrangian for <span class="math inline">\pi</span> can be written as: <span class="math display">
+    \mathsf{L}_{\pi} = \mathsf{L} - \lambda \left( \sum_{k = 1}^{K} \pi_{k} - 1 \right),
+</span> where <span class="math inline">\lambda</span> is the Lagrange multiplier.</p>
+<p>Taking derivative of the Lagrangian w.r.t. <span class="math inline">\pi_{k}</span> gives: <span class="math display">
+    \frac{\partial \mathsf{L}_{\pi}}{\partial \pi_{k}} = \frac{1}{\pi_{k}} \sum_{n = 1}^{N} \gamma_{nk} - \lambda.
+</span></p>
+<p>Setting the derivative to zero and solving for <span class="math inline">\pi_{k}</span> gives: <span class="math display">
+    \pi_{k} = \frac{1}{\lambda} \sum_{n = 1}^{N} \gamma_{nk}.
+</span></p>
+<p>And since <span class="math inline">\sum_{k = 1}^{K} \pi_{k} = 1</span>, one can substitute and find that <span class="math inline">\lambda = N</span>. Thus: <span class="math display">
+    \boxed{
+        \pi_{k}^{(t + 1)} = \frac{1}{N} \sum_{n = 1}^{N} \gamma_{nk}.
+    }
+</span></p>
+<p>Similarly, the Lagrangian of <span class="math inline">\rho</span> can be expressed as: <span class="math display">
+    \mathsf{L}_{\rho} = \mathsf{L} - \sum_{k = 1}^{K} \eta_{k} \left( \sum_{d = 1}^{D} \rho_{kd} - 1 \right),
+</span> where <span class="math inline">\eta_{k}</span> is the Lagrange multiplier. Taking derivative w.r.t. <span class="math inline">\rho_{kd}</span> gives: <span class="math display">
+    \frac{\partial \mathsf{L}_{\rho}}{\partial \rho_{kd}} = \frac{1}{\rho_{kd}} \sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd} - \eta_{k}.
+</span> Setting the derivative to zero and solving for <span class="math inline">\rho_{kd}</span> gives: <span class="math display">
+    \rho_{kd} = \frac{1}{\eta_{k}} \sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd}.
+</span> The constraint on <span class="math inline">\rho_{k}</span> as a probability vector leads to <span class="math inline">\eta_{k} = m \sum_{n = 1}^{N} \gamma_{nk}</span>. Thus: <span class="math display">
+    \boxed{
+        \rho_{kd}^{(t + 1)} = \frac{\sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd}}{m \sum_{n = 1}^{N} \gamma_{nk}}.
+    }
+</span></p>
+</section>
+</section>
+<section id="references" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="references"><span class="header-section-number">4</span> References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bishop2006pattern" class="csl-entry" role="listitem">
+Bishop, Christopher M, and Nasser M Nasrabadi. 2006. <em>Pattern Recognition and Machine Learning</em>. Vol. 4. 4. Springer.
+</div>
+<div id="ref-dempster1977maximum" class="csl-entry" role="listitem">
+Dempster, Arthur P, Nan M Laird, and Donald B Rubin. 1977. <span>“Maximum Likelihood from Incomplete Data via the EM Algorithm.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 39 (1): 1–22.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

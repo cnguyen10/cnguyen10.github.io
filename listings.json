@@ -1,0 +1,13 @@
+[
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/posts/mixture-models/index.html",
+      "/posts/bias-variance-decomposition/index.html",
+      "/posts/meta-learning/index.html",
+      "/posts/Gauss-Newton-matrix/index.html",
+      "/posts/PAC-Bayes-bounds/index.html",
+      "/posts/vae-normalising-constant-matters/index.html"
+    ]
+  }
+]

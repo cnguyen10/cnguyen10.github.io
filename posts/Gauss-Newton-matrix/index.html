@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Cuong Nguyen">
+<meta name="dcterms.date" content="2021-04-12">
+
+<title>Cuong Nguyen - Outer product approximation of Hessian matrix</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../robot.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-NLRVZL0JSR"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script>
+  window.onload = async function() {
+    var options = {
+      indentSize: '1.2em',
+      commentDelimiter: '\u00A0\u00A0\u00A0\u00A0\u00A0 \u25B9 \u0020',
+      lineNumber: true,
+      lineNumberPunc: ':',
+      noEnd: false,
+      captionCount: undefined
+    };
+    pseudocode.renderClass("pseudocode", options);
+  }
+</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Cuong Nguyen - Outer product approximation of Hessian matrix">
+<meta name="twitter:description" content="">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Cuong Nguyen</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html" rel="" target=""><i class="bi bi-pencil-square" role="img">
+</i> 
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target=""><i class="bi bi-person-circle" role="img">
+</i> 
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#notations" id="toc-notations" class="nav-link active" data-scroll-target="#notations"><span class="header-section-number">1</span> Notations</a></li>
+  <li><a href="#derivation-of-the-approximated-hessian-matrix" id="toc-derivation-of-the-approximated-hessian-matrix" class="nav-link" data-scroll-target="#derivation-of-the-approximated-hessian-matrix"><span class="header-section-number">2</span> Derivation of the approximated Hessian matrix</a></li>
+  <li><a href="#derivation-for-mathbfh_sigma" id="toc-derivation-for-mathbfh_sigma" class="nav-link" data-scroll-target="#derivation-for-mathbfh_sigma"><span class="header-section-number">3</span> Derivation for <span class="math inline">\mathbf{H}_{\sigma}</span></a>
+  <ul class="collapse">
+  <li><a href="#mean-square-error-in-regression" id="toc-mean-square-error-in-regression" class="nav-link" data-scroll-target="#mean-square-error-in-regression"><span class="header-section-number">3.1</span> Mean square error in regression</a></li>
+  <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression"><span class="header-section-number">3.2</span> Logistic regression</a></li>
+  <li><a href="#cross-entropy-loss-in-classification" id="toc-cross-entropy-loss-in-classification" class="nav-link" data-scroll-target="#cross-entropy-loss-in-classification"><span class="header-section-number">3.3</span> Cross entropy loss in classification</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">4</span> Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">5</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Outer product approximation of Hessian matrix</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cuong Nguyen </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 12, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Hessian matrix is heavily studied in the optimization community. The purpose is to utilize the second order derivative to optimize a function of interest (also known as Newton’s method). In machine learning, especially Bayesian inference, Hessian matrix can be found in some applications, such as Laplace’s method which approximates a distribution by a Gaussian distribution. Although Hessian matrix provides additional information which improves the convergence rate in optimization or reduces a complicated distribution to a Gaussian distribution, calculating a Hessian matrix often increases computation complexity. In neural networks where the number of model parameters is very large, Hessian matrix is often intractable due to the limited computation and memory.</p>
+<p>Many efficient approximations of Hessian matrix have been developed to either reduce the running time complexity or decompose the Hessian matrix to reduce the amount of memory storage. Hessian-free approaches which utilizes the Hessian-vector product are also attracted much research interest. This post will present an approximation of Hessian matrix using the outer product. Note that this approximation represents an approximated Hessian matrix by a set of matrices whose sizes are reasonable to store in GPU memory. The trade-off is that the running time complexity to obtain the Hessian matrix is still quadractic. Note that this approximation is also known as Gauss-Newton matrix.</p>
+<section id="notations" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="notations"><span class="header-section-number">1</span> Notations</h2>
+<p>Before going into details, let’s define some notations used:</p>
+<ul>
+<li><span class="math inline">\{x_{i}, t_{i}\}_{i = 1}^{N}</span> is the input and label of data-point <span class="math inline">i</span>-th,</li>
+<li><span class="math inline">\mathbf{w} \in \mathbb{R}^{W}</span> is the parameter of the model of interest, or the weight of a neural network,</li>
+<li><span class="math inline">\ell(.) \in \mathbb{R}</span> is the loss function, e.g.&nbsp;MSE or cross-entropy,</li>
+<li><span class="math inline">\mathbf{f}(x_{i}, \mathbf{w}) \in \mathbb{R}^{C}</span> is the pre-nonlinearity output of the neural network at the final layer that has <span class="math inline">C</span> hidden units,</li>
+<li><span class="math inline">\sigma\left[ \mathbf{f}\left(x_{i}, \mathbf{w}\right) \right] \in \mathbb{R}^{C}</span> is the activation output at the final layer. For example, in regression, <span class="math inline">\sigma(z) = z</span> is the identity function, or in logistic regression, <span class="math inline">\sigma(.)</span> is the sigmoid function, while in multi-class classification, <span class="math inline">\sigma(.)</span> is the softmax function,</li>
+</ul>
+<p>The loss function of interest is defined as the sum of losses over each data point: <span class="math display">
+L = \sum_{i = 1}^{N} \ell\left( \sigma(\mathbf{f}(x_{i}, \mathbf{w}), t_{i}\right).
+</span> Note that in the following, we will omit the notation of the label <span class="math inline">t_{i}</span> from the loss <span class="math inline">\ell(.)</span> to make the notation unclutered.</p>
+</section>
+<section id="derivation-of-the-approximated-hessian-matrix" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="derivation-of-the-approximated-hessian-matrix"><span class="header-section-number">2</span> Derivation of the approximated Hessian matrix</h2>
+<p>An element of the Hessian matrix can then be written as: <span class="math display">
+\begin{aligned}
+\mathbf{H}_{jk} &amp; = \frac{\partial}{\partial\mathbf{w}_{k}} \left( \frac{\partial L}{\partial \mathbf{w}_{j}} \right) = \frac{\partial}{\partial\mathbf{w}_{k}} \left( \sum_{i=1}^{N} \frac{\partial \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{w}_{j}} \right) \\
+&amp; = \frac{\partial}{\partial \mathbf{w}_{k}} \left( \sum_{i=1}^{N} \sum_{c=1}^{C} \frac{\partial\ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})} \frac{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j}} \right) \quad \text{\textcolor{ForestGreen}{(chain rule)}}\\
+&amp; = \sum_{i=1}^{N} \sum_{c=1}^{C} \frac{\partial}{\partial \mathbf{w}_{k}} \left( \frac{\partial \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})} \frac{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j}} \right).
+\end{aligned}
+</span></p>
+<p>Applying the chain rule for the first term gives: <span class="math display">
+\begin{aligned}
+\mathbf{H}_{jk} &amp; = \sum_{i=1}^{N} \sum_{c=1}^{C} \left[ \sum_{l=1}^{C} \left( \frac{\partial^{2} \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w}) \, \partial \mathbf{f}_{l}(x_{i}, \mathbf{w})} \frac{\partial \mathbf{f}_{l}(x_{i}, \mathbf{w})}{\partial \mathbf{w}_{k}} \right) \frac{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j}} \right] \\
+&amp; \qquad \qquad \quad + \frac{\partial \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})} \frac{\partial^{2} \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j} \, \partial \mathbf{w}_{k}}.
+\end{aligned}
+</span></p>
+<p>Rearranging gives: <span class="math display">
+\begin{aligned}
+\mathbf{H}_{jk} &amp; = \sum_{i=1}^{N} \sum_{c=1}^{C} \frac{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j}} \sum_{l=1}^{C} \frac{\partial^{2} \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w}) \, \partial \mathbf{f}_{l}(x_{i}, \mathbf{w})} \frac{\partial \mathbf{f}_{l}(x_{i}, \mathbf{w})}{\partial \mathbf{w}_{k}} \\
+&amp; \quad + \sum_{i=1}^{N} \sum_{c=1}^{C} \underbrace{\frac{\partial \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}}_{\approx 0} \frac{\partial^{2} \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j} \, \partial \mathbf{w}_{k}}.
+\end{aligned}
+</span></p>
+<p>Near the optimum, the scalar <span class="math inline">\mathbf{f}_{c}</span> would be very closed to its target <span class="math inline">\mathbf{t}_{ic}</span>. Hence, the derivative of the loss w.r.t. <span class="math inline">\mathbf{f}_{c}</span> is very small, and we can approximate the Hessian as: <span class="math display">
+\mathbf{H}_{jk} \approx \sum_{i=1}^{N} \sum_{c=1}^{C} \frac{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w})}{\partial \mathbf{w}_{j}} \sum_{l=1}^{C} \frac{\partial^{2} \ell \left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w}) \right)\right]}{\partial \mathbf{f}_{c} (x_{i}, \mathbf{w}) \, \partial \mathbf{f}_{l}(x_{i}, \mathbf{w})} \frac{\partial \mathbf{f}_{l}(x_{i}, \mathbf{w})}{\partial \mathbf{w}_{k}}.
+</span></p>
+<p>Rewriting this with matrix notation yields a much simpler formulation: <span class="math display">
+\boxed{
+\mathbf{H} \approx \sum_{i=1}^{N} \mathbf{J}_{fi}^{\top} \mathbf{H}_{\sigma i} \mathbf{J}_{fi},
+}
+</span> where: <span class="math display">
+\begin{aligned}
+\mathbf{J}_{fi} &amp; = \nabla_{\mathbf{w}} \mathbf{f}(x_{i}, \mathbf{w}) \in \mathbb{R}^{C \times W} \quad \text{\textcolor{ForestGreen}{(Jacobian matrix of \textbf{f} w.r.t. \textbf{w})}}\\
+\mathbf{H}_{\sigma i} &amp; = \nabla_{\mathbf{f}}^{2} \ell\left[ \sigma \left( \mathbf{f}(x_{i}, \mathbf{w} \right) \right] \in \mathbb{R}^{C \times C} \quad \text{\textcolor{ForestGreen}{(Hessian of loss w.r.t. \textbf{f})}}.
+\end{aligned}
+</span></p>
+<p>Note that the Hessian matrix <span class="math inline">\mathbf{H}_{\sigma}</span> can be manually calculated.</p>
+<div class="remark proof">
+<p><span class="proof-title"><em>Remark</em>. </span>Instead of storing the Hessian matrix <span class="math inline">\mathbf{H}</span> with size <span class="math inline">{W \times W}</span> which needs a large amount of memory, we can store the two matrices <span class="math inline">\{\mathbf{J}_{fi}, \mathbf{H}_{\sigma i}\}_{i=1}^{N}</span>. This will reduce the amount of memory required. Of course, the trade-off is the increasing of the computation when performing the multiplication to obtain the Hessian matrix <span class="math inline">\mathbf{H}</span>.</p>
+</div>
+<p>The following section will present how to calculate the matrix <span class="math inline">\mathbf{H}_{\sigma}</span> for some commonly-used losses.</p>
+</section>
+<section id="derivation-for-mathbfh_sigma" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="derivation-for-mathbfh_sigma"><span class="header-section-number">3</span> Derivation for <span class="math inline">\mathbf{H}_{\sigma}</span></h2>
+<section id="mean-square-error-in-regression" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="mean-square-error-in-regression"><span class="header-section-number">3.1</span> Mean square error in regression</h3>
+<p>In the regression:</p>
+<ul>
+<li><span class="math inline">C = 1</span></li>
+<li><span class="math inline">\sigma(.)</span> is the identity function</li>
+<li><span class="math inline">\ell(f(x_{i}, \mathbf{w}) = \frac{1}{2} \left( f(x_{i}, \mathbf{w}) - t_{i} \right)^{2}</span>.</li>
+</ul>
+<p>Hence, <span class="math inline">\mathbf{H}_{\sigma} = \mathbf{I}_{1}</span>, resulting in: <span class="math display">
+\boxed{
+    \mathbf{H} = \sum_{i=1}^{N} \mathbf{J}_{fi}^{\top} \mathbf{J}_{fi},
+}
+</span> which agrees with the results in <span class="citation" data-cites="bishop2006pattern">(<a href="#ref-bishop2006pattern" role="doc-biblioref">Bishop and Nasrabadi 2006</a> - Eq.(5.84))</span>.</p>
+</section>
+<section id="logistic-regression" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="logistic-regression"><span class="header-section-number">3.2</span> Logistic regression</h3>
+<p>In this case:</p>
+<ul>
+<li><span class="math inline">C = 1</span></li>
+<li><span class="math inline">\sigma(.)</span> is the sigmoid function</li>
+<li><span class="math inline">\ell(\sigma(f(x_{i}, \mathbf{w})) = - t_{i} \ln \sigma \left( f(x_{i}, \mathbf{w}) \right) - (1 - t_{i}) \ln \left( 1 - \sigma \left( f(x_{i}, \mathbf{w}) \right) \right)</span>.</li>
+</ul>
+<p>The first derivative is expressed as: <span class="math display">
+\frac{\partial \ell(\sigma(f(x_{i}, \mathbf{w}))}{\partial f(x_{i}, \mathbf{w})} = - t_{i} \left( 1 - \sigma \left( f(x_{i}, \mathbf{w}) \right) \right) + (1 - t_{i}) \sigma \left( f(x_{i}, \mathbf{w}) \right) = \sigma \left( f(x_{i}, \mathbf{w}) \right) - t_{i}.
+</span></p>
+<p>The second derivative is therefore: <span class="math display">
+\frac{\partial^{2} \ell(\sigma(f(x_{i}, \mathbf{w}))}{\partial f(x_{i}, \mathbf{w})^{2}} = \sigma \left( f(x_{i}, \mathbf{w}) \right) \left[ 1 - \sigma \left( f(x_{i}, \mathbf{w}) \right) \right].
+</span></p>
+<p>Hence: <span class="math display">
+\boxed{
+    \mathbf{H} \approx \sum_{i=1}^{n} \sigma \left( f(x_{i}, \mathbf{w}) \right) \left[ 1 - \sigma \left( f(x_{i}, \mathbf{w}) \right) \right] \mathbf{J}_{fi}^{\top} \mathbf{J}_{fi},
+}
+</span> which agrees with the result derived in the literature <span class="citation" data-cites="bishop2006pattern">(<a href="#ref-bishop2006pattern" role="doc-biblioref">Bishop and Nasrabadi 2006</a> - Eq. (5.85))</span>.</p>
+</section>
+<section id="cross-entropy-loss-in-classification" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="cross-entropy-loss-in-classification"><span class="header-section-number">3.3</span> Cross entropy loss in classification</h3>
+<p>In this case:</p>
+<ul>
+<li><span class="math inline">\sigma(\mathbf{f})</span> is the softmax function,</li>
+<li><span class="math inline">\ell(\sigma(\mathbf{f}(x_{i}, \mathbf{w}))) = -\sum_{c=1}^{C} \mathbf{t}_{ic} \ln \sigma_{c}(\mathbf{f}(x_{i}, \mathbf{w}))</span>.</li>
+</ul>
+<p>According to the definition of the softmax function: <span class="math display">
+    \sigma_{c} \left( \mathbf{f} \right) = \frac{\exp(\mathbf{f}_{c})}{\sum_{k=1}^{C} \exp(\mathbf{f}_{k})}.
+</span></p>
+<p>Hence, the derivative can be written as: <span class="math display">
+    \frac{\partial \sigma_{c}(\mathbf{f})}{\partial \mathbf{f}_{c}} = \frac{\exp(\mathbf{f}_{c}) \sum_{k=1}^{C} \exp(\mathbf{f}_{k}) - \exp(2 \mathbf{f}_{c})}{\left[ \sum_{k=1}^{C} \exp(\mathbf{f}_{k}) \right]^{2}} = \sigma_{c}(\mathbf{f}) \left[ 1 - \sigma_{c}(\mathbf{f}) \right],
+</span> and <span class="math display">
+    \frac{\partial \sigma_{c}(\mathbf{f})}{\partial \mathbf{f}_{k}} = - \sigma_{c}(\mathbf{f}) \sigma_{k}(\mathbf{f}), \forall k \neq j.
+</span></p>
+<p>An element of the Jacobian vector of the loss w.r.t. <span class="math inline">\mathbf{f}</span> can be written as: <span class="math display">
+\begin{aligned}
+    \frac{\partial \ell(\sigma(\mathbf{f}(x_{i}, \mathbf{w})))}{\partial \mathbf{f}_{c}(x_{i}, \mathbf{w})} &amp; = - \sum_{k=1}^{C} \frac{\mathbf{t}_{ik}}{\sigma_{k}(\mathbf{f})} \frac{\partial \sigma_{k}(\mathbf{f})}{\partial \mathbf{f}_{c}} \\
+    &amp; = - \mathbf{t}_{ic} \left[ 1 - \sigma_{c}(\mathbf{f}) \right] + \sum_{\substack{k=1\\k \neq c}}^{C} \mathbf{t}_{ik} \sigma_{c}(\mathbf{f}) \\
+    &amp; = - \mathbf{t}_{ic} + \sigma_{c}(\mathbf{f}) \underbrace{\sum_{k=1}^{C} \mathbf{t}_{ik}}_{1}\\
+    &amp; = \sigma_{c}(\mathbf{f}) - \mathbf{t}_{ic}.
+\end{aligned}
+</span></p>
+<p>Hence, the Jacobian vector can be expressed as: <span class="math display">
+    \nabla_{\mathbf{f}} \ell(\sigma(\mathbf{f}(x_{i}, \mathbf{w}))) = \sigma(\mathbf{f}(x_{i}, \mathbf{w})) - \mathbf{t}_{i}.
+</span></p>
+<p>The Hessian matrix is given as: <span class="math display">
+    \nabla_{\mathbf{f}}^{2} \ell(\sigma(\mathbf{f}(x_{i}, \mathbf{w}))) = \nabla_{\mathbf{f}} \sigma(\mathbf{f}(x_{i}, \mathbf{w})).
+</span></p>
+<p>Or, in the explicit matrix form: <span class="math display">
+    \mathbf{H}_{\sigma} = \begin{bmatrix}
+    \sigma_{1}(\mathbf{f}) \left[ 1 - \sigma_{1}(\mathbf{f}) \right] &amp; - \sigma_{1}(\mathbf{f}) \sigma_{2}(\mathbf{f}) &amp; - \sigma_{1}(\mathbf{f}) \sigma_{3}(\mathbf{f}) &amp; \ldots &amp; - \sigma_{1}(\mathbf{f}) \sigma_{C}(\mathbf{f})\\
+    - \sigma_{2}(\mathbf{f}) \sigma_{1}(\mathbf{f}) &amp; \sigma_{2}(\mathbf{f}) \left[ 1 - \sigma_{2}(\mathbf{f}) \right] &amp; - \sigma_{2}(\mathbf{f}) \sigma_{3}(\mathbf{f}) &amp; \ldots &amp; - \sigma_{2}(\mathbf{f}) \sigma_{C}(\mathbf{f})\\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots\\
+    - \sigma_{C}(\mathbf{f}) \sigma_{1}(\mathbf{f}) &amp; - \sigma_{C}(\mathbf{f}) \sigma_{2}(\mathbf{f}) &amp; - \sigma_{C}(\mathbf{f}) \sigma_{3}(\mathbf{f}) &amp; \ldots &amp; \sigma_{C}(\mathbf{f}) \left[ 1 - \sigma_{C}(\mathbf{f}) \right]
+    \end{bmatrix}.
+</span></p>
+</section>
+</section>
+<section id="conclusion" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">4</span> Conclusion</h2>
+<p>In this post, we derive an approximation of the Hessian matrix. The Gauss-Newton matrix is a good approximation since it is positive-definite and more efficient to store under the form of a set of smaller matrices. Of course, we have not got away from the curse of dimensionality since the running time complexity to obtain the Hessian matrix is still quadratic w.r.t. the number of the model parameters. One final note is that one should use the approximated Hessian matrix with care since the approximation is assumed to be near the minimal value of the considered loss function.</p>
+</section>
+<section id="references" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="references"><span class="header-section-number">5</span> References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bishop2006pattern" class="csl-entry" role="listitem">
+Bishop, Christopher M, and Nasser M Nasrabadi. 2006. <em>Pattern Recognition and Machine Learning</em>. Vol. 4. 4. Springer.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Cuong Nguyen">
+<meta name="dcterms.date" content="2020-11-24">
+
+<title>Cuong Nguyen - VAE: normalising constant matters</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../robot.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-NLRVZL0JSR"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script>
+  window.onload = async function() {
+    var options = {
+      indentSize: '1.2em',
+      commentDelimiter: '\u00A0\u00A0\u00A0\u00A0\u00A0 \u25B9 \u0020',
+      lineNumber: true,
+      lineNumberPunc: ':',
+      noEnd: false,
+      captionCount: undefined
+    };
+    pseudocode.renderClass("pseudocode", options);
+  }
+</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Cuong Nguyen - VAE: normalising constant matters">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://i.stack.imgur.com/QKrOM.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Cuong Nguyen</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html" rel="" target=""><i class="bi bi-pencil-square" role="img">
+</i> 
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target=""><i class="bi bi-person-circle" role="img">
+</i> 
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#variational-auto-encoder" id="toc-variational-auto-encoder" class="nav-link active" data-scroll-target="#variational-auto-encoder"><span class="header-section-number">1</span> Variational auto-encoder</a></li>
+  <li><a href="#reconstruction-likelihood-with-gaussian-assumption" id="toc-reconstruction-likelihood-with-gaussian-assumption" class="nav-link" data-scroll-target="#reconstruction-likelihood-with-gaussian-assumption"><span class="header-section-number">2</span> Reconstruction likelihood with Gaussian assumption</a></li>
+  <li><a href="#reconstruction-likelihood-with-continuous-bernoulli-assumption" id="toc-reconstruction-likelihood-with-continuous-bernoulli-assumption" class="nav-link" data-scroll-target="#reconstruction-likelihood-with-continuous-bernoulli-assumption"><span class="header-section-number">3</span> Reconstruction likelihood with continuous Bernoulli assumption</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">4</span> Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">5</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">VAE: normalising constant matters</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cuong Nguyen </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 24, 2020</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Variational auto-encoder (VAE) is one of the most popular generative models in machine learning nowadays. However, the rapid development of the field has made many machine learning practitioners (or, maybe only me) focus too much on deep learning without paying much attention to some fundamentals, such as linear regression. That causes much confusion due to the discrepancy between the derivation and the practical implementation, in which the regularization of the loss, or specifically the Kullback-Leibler (KL) divergence, is weighted by some factor <span class="math inline">\beta</span>. I myself did experience and struggle at the beginning of my research. Even though weighting the KL divergence term by a factor $ $ could temporarily resolve the issue, I has been questioning why the balancing between reconstruction and KL divergence is necessary. Eventually, the answer is quite simple: the normalizing constant in the reconstruction loss (or negative log-likelihood) that has been often ignored. This ignorance is the main cause of the imbalance between the two losses.</p>
+<section id="variational-auto-encoder" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="variational-auto-encoder"><span class="header-section-number">1</span> Variational auto-encoder</h2>
+<p>Given data points <span class="math inline">\mathbf{x} = \{x_{i}\}_{n=1}^{N}</span>, the model of a VAE assumes that there is a corresponding latent variable <span class="math inline">\mathbf{z} = \{ z_{n} \}_{n=1}^{N}</span> that generates data <span class="math inline">\mathbf{x}</span>. In short, the objective function of a VAE is to minimize the variational-free energy (VFE) given as: <span class="math display">
+    \min_{q} \underbrace{\mathbb{E}_{q(\mathbf{z})} \left[ - \ln p(\mathbf{x} | \mathbf{z}) \right]}_{\text{reconstruction loss}} + \textcolor{red}{\beta} \mathrm{KL} \left[ q(\mathbf{z}) \Vert p(\mathbf{x}) \right], \tag{vfe}
+</span> where <span class="math inline">q(\mathbf{z})</span> is the variational distribution of the latent variable, and <span class="math inline">\textcolor{red}{\beta} = 1</span> is the weighting factor.</p>
+<p>In practice, people often “specify” the reconstruction loss as mean squared error (MSE) or binary cross-entropy loss and use gradient descent to minimize VFE. With <span class="math inline">\beta = 1</span> as in (vfe), the reconstruction of different images seem to be the same image (see Figure 1 (top)), whereas setting $ $ results in much better reconstructed images (see Figure 1 (bottom)).</p>
+<figure class="figure">
+<img src="https://i.stack.imgur.com/QKrOM.jpg" alt="same reconstructed images" style="width:100%" class="figure-img"> <img src="https://i.stack.imgur.com/63xvp.jpg" alt="decent reconstructed images" style="width:100%" class="figure-img">
+<figcaption class="figure-caption">
+Figure 1. The reconstructed images from VAE with β = 1 (top) and β ≪ 1 (bottom). Source: <a href="https://stats.stackexchange.com/questions/341954/balancing-reconstruction-vs-kl-loss-variational-autoencoder">stats.stackexchange.com</a>
+</figcaption>
+</figure>
+<p>This does not make me satisfied, although some justifications for setting <span class="math inline">\beta</span> to some small value are made. For example: - Setting <span class="math inline">\beta \ll 1</span> leads to even a “further lower-bound”. Hence, maximizing this “further lower-bound” is still mathematically reasonable. However, this bound is very loose. Can we do something better? - One can cast the problem to a constrained optimization as in <a href="https://openreview.net/forum?id=Sy2fzU9gl">β-VAE paper</a>. However, β in that case is the Lagrange multiplier, and should be obtained through the optimization. Is it mathematically correct if considering β as a hyper-parameter? I doubt that.</p>
+<p>Later on, I figure out that the main reason of the imbalance between the two losses is due to the “specification” of the reconstruction loss. Simply specifying the type of the loss <span class="math inline">-\ln p(\mathbf{x} \vert \mathbf{z})</span> as MSE or binary cross-entropy would ignore the normalizing constant, resulting in an incorrect reconstruction loss. The correct way is to specify the modeling assumption of the likelihood <span class="math inline">p(\mathbf{x} \vert \mathbf{z})</span>, which, in the case of VAE, goes back to linear regression.</p>
+<p>In the following sections, <span class="math inline">f(\mathbf{z}; \theta)</span> denotes the output of the decoder parameterized by a neural network with weight <span class="math inline">\theta</span>. Usually, <span class="math inline">f(\mathbf{z}; \theta)</span> is assumed to be the reconstructed images, but this might not always true depending on the assumption used.</p>
+</section>
+<section id="reconstruction-likelihood-with-gaussian-assumption" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="reconstruction-likelihood-with-gaussian-assumption"><span class="header-section-number">2</span> Reconstruction likelihood with Gaussian assumption</h2>
+<p>This corresponds to linear regression with Gaussian noise assumption.</p>
+<p>The variable of interest <span class="math inline">\mathbf{x}</span> is assumed to be a deterministic function <span class="math inline">f(\mathbf{z}; \theta)</span> with additional Gaussian noise, so that: <span class="math display">
+    \mathbf{x} = f(\mathbf{z}; \theta) + \epsilon,
+</span> where: <span class="math inline">\epsilon \sim \mathcal{N}\left( \epsilon; 0, \Lambda^{-1} \right)</span>. Thus, the reconstruction likelihood can be written as: <span class="math display">
+    p(\mathbf{x} \vert \mathbf{z}, \theta, \Lambda) = \mathcal{N}(\mathbf{x}; f(\mathbf{z}; \theta), \Lambda^{-1}) = \prod_{n=1}^{N} \mathcal{N}(x_{n}; f(z_{n}; \theta), \Lambda^{-1}).
+</span> Hence, the negative log-likelihood, or the reconstruction loss in the VAE, can be expressed as: <span class="math display">
+    -\ln p(\mathbf{x} \vert \mathbf{z}, \theta, \Lambda) = - \frac{N}{2} \ln \frac{\Lambda}{2 \pi} + \Lambda \times \frac{1}{2} \underbrace{\sum_{n=1}^{N} \left[ x_{n} - f(z_{n}; \theta) \right]^{2}}_{N \times \text{MSE}}. \tag{nll-G}
+</span></p>
+<blockquote class="blockquote">
+<p>Note that current practice uses only MSE, which ignores the first term and the scaling factor relating to the noise precision <span class="math inline">\Lambda</span>.</p>
+</blockquote>
+<p>Under this modeling approach, the decoder would consist of 2 networks: one for mean <span class="math inline">\bar{x} = f(z; \theta)</span> and the other for noise precision <span class="math inline">\Lambda = g(z; \phi)</span>. Of course, one can consider <span class="math inline">\Lambda</span> as a hyper-parameter to simplify further the implementation.</p>
+<p>The “full” loss function of a VAE is, therefore, presented as: <span class="math display">
+    \boxed{
+    \mathbb{E}_{q(\mathbf{z})} \left[ \frac{N}{2} \ln(2\pi) - \frac{N}{2} \ln \Lambda + \frac{\Lambda}{2} \sum_{n=1}^{N} \left[ x_{n} - f(z_{n}; \theta) \right]^{2} \right] + \mathrm{KL} \left[ q(\mathbf{z}) \Vert p(\mathbf{x}) \right]. \tag{vfe-G}
+    }
+</span></p>
+<p>After training, one can pass an image to the encoder <span class="math inline">h(.; \phi)</span> and decoder to get the predicted mean and precision. The reconstructed images can then be obtained as: <span class="math display">
+    \hat{x} \sim \mathcal{N}(x; f(z; \theta), \Lambda), \text{where } z = h(x; \phi).
+</span> Although this approach is easy to understand, one drawback is the unbounded support of the Gaussian distribution, resulting in reconstructed pixel intensity values out of the desired range <span class="math inline">[0, 1]</span>. Consequently, when visualizing, the pixels that are out of that range will be truncated to 0 or 1, potentially making the reconstructed images blurrier.</p>
+</section>
+<section id="reconstruction-likelihood-with-continuous-bernoulli-assumption" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="reconstruction-likelihood-with-continuous-bernoulli-assumption"><span class="header-section-number">3</span> Reconstruction likelihood with continuous Bernoulli assumption</h2>
+<p>This corresponding to linear regression in <span class="math inline">[0, 1]</span> (not $ {0, 1 } $ as in logistic regression), and hence, the words “continuous Bernoulli”.</p>
+<p>This modeling approach is not as intuitive as the one with <a href="#reconstruction-likelihood-with-Gaussian-assumption">Gaussian assumption</a>, but please bear with me for a moment.</p>
+<p>The likelihood of interest, <span class="math inline">p(\mathbf{x} \vert \mathbf{z})</span>, is assumed to be a <a href="https://papers.nips.cc/paper/2019/hash/f82798ec8909d23e55679ee26bb26437-Abstract.html">continuous Bernoulli distribution</a>: <span class="math display">
+    p(\mathbf{x} \vert \mathbf{z}) = \mathcal{CB}(\mathbf{x}; f(\mathbf{z}; \theta)) = \prod_{n=1}^{N} \underbrace{C \left( f(z_{n}; \theta) \right)}_{\text{normalizing const.}}  \underbrace{\left[ f(z_{n}; \theta) \right]^{x_{n}} \left[ 1 - f(z_{n}; \theta) \right]^{1 - x_{n}}}_{\text{Bernoulli pdf}},
+</span> and $f(z_{n}; )) , n {1, , N } $.</p>
+<p>Note that: - the usage of continuous Bernoulli distribution is due to the fact that VAE tries to regress the pixel intensity <span class="math inline">x_{n}</span> which falls in <span class="math inline">[0, 1]</span>, not $ {0, 1 } $ as in classification, - the pdf of a continuous Bernoulli distribution differs from a Bernoulli distribution at the normalizing constant term, - the output of the decoder now is not the mean of the reconstructed pixel intensity as in the case of Gaussian distribution, - due to the assumption of the continuous Bernoulli distribution, the last layer of the decoder must be activated by sigmoid function to ensure the output falling in $[0, 1] $.</p>
+<p>The negative log-likelihood, or reconstruction loss, can be easily derived as: <span class="math display">
+    - \ln p(\mathbf{x} \vert \mathbf{z}) = \sum_{n=1}^{N} \underbrace{ - \left[ x_{n} \ln f(z_{n}; \theta) + (1 - x_{n}) \ln \left[1 - f(z_{n}; \theta) \right] \right]}_{\text{binary cross-entropy}} - \underbrace{\ln C \left( f(z_{n}; \theta) \right)}_{\text{log normalizing const.}}. \tag{nll-CB}
+</span></p>
+<blockquote class="blockquote">
+<p>Current practice uses binary cross-entropy loss only, corresponding to Bernoulli distribution. To me, that practice is not correct, since the learning is to infer the parameter of the Bernoulli distribution, which is the probability when the outcome is 1. In that case, the pixel intensity is in $ {0, 1 } $, not $[0, 1] $. This explains why VAE using binary cross-entropy loss often works well for gray-scale, but not color, images.</p>
+</blockquote>
+<p>Substituting (nll-CB) into (vfe) gives the “full” objective function for VAE: <span class="math display">
+    \boxed{
+        \begin{aligned}
+        &amp; - \mathbb{E}_{q(\mathbf{z})} \left[ \sum_{n=1}^{N} x_{n} \ln f(z_{n}; \theta) + (1 - x_{n}) \ln \left[1 - f(z_{n}; \theta) \right] \right. \\
+        &amp; \quad \left. + \ln C \left( f(z_{n}; \theta) \right) \right] + \mathrm{KL} \left[ q(\mathbf{z}) \Vert p(\mathbf{x}) \right].
+        \end{aligned}
+        \tag{vfe-CB}
+    }
+</span></p>
+<p>Note that after training, direct plotting <span class="math inline">f(z; \theta)</span> as the pixel intensity might result in an incorrect reconstructed image, since the mean of the continuous Bernoulli distribution is not equal to its parameter. To reconstruct an image <span class="math inline">x</span>, one needs to pass that image through the encoder and decoder, and then: <span class="math display">
+    \hat{x} \sim \mathcal{CB}\left(x; f(z; \theta) \right),
+</span> and plot <span class="math inline">\hat{x}</span> to visualize the reconstructed image.</p>
+</section>
+<section id="conclusion" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">4</span> Conclusion</h2>
+<p>VAE is often considered as a basic generative model. However, most machine learning practitioners often learn by memorization about the “type” of reconstruction loss. This leads to the weighting trick in the implementation. Understanding the nature of the reconstruction loss as the log-likelihood in linear regression allows one to obtain the “full” objective function without applying any weighting tricks. Hopefully, this post would be useful to save time for ones who start to practise machine learning.</p>
+</section>
+<section id="references" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="references"><span class="header-section-number">5</span> References</h2>
+<ol type="1">
+<li>Higgins, I., Matthey, L., Pal, A., Burgess, C., Glorot, X., Botvinick, M., Mohamed, S. and Lerchner, A., 2016. <a href="https://openreview.net/forum?id=Sy2fzU9gl">β-VAE: Learning basic visual concepts with a constrained variational framework</a>. In International Conference on Learning Representation.</li>
+<li>Loaiza-Ganem, G. and Cunningham, J.P., 2019. <a href="https://papers.nips.cc/paper/2019/hash/f82798ec8909d23e55679ee26bb26437-Abstract.html">The continuous Bernoulli: fixing a pervasive error in variational autoencoders</a>. In Advances in Neural Information Processing Systems (pp.&nbsp;13287-13297).</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
