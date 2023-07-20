@@ -25,6 +25,9 @@ author:
 
 bibliography: references.bib
 
+toc: true
+toc-expand: true
+
 comments:
   hypothesis: true
 

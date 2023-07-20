@@ -23,10 +23,8 @@ website:
 
 format:
   html:
-    theme:
-      light: [cosmo, theme.scss]
-    toc: true
-    toc-expand: true
+    theme: simplex
+    toc: false
     html-math-method: katex
     number-sections: true
     anchor-sections: true

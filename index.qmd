@@ -8,11 +8,12 @@ format:
   html:
     toc: false
     number-sections: false
+
+comments: false
 ---
 
 :::: {layout="[ 80, 20 ]"}
 ::: {#first-column}
-<br />
 <br />
 
 Hello, my name is **C&#x1B0;&#x1EDD;ng Cao Nguy&#x1EC5;n** (pronounced similarly to: *Ker-uhng Kao Ner-win*). I am currently a **Research Associate** at the Australian Institute for Machine Learning (AIML), University of Adelaide working with Professor Gustavo Carneiro.

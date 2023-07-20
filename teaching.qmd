@@ -5,4 +5,4 @@
 | 2021 | 1 | Foundations on Computer Science | Master | Tutor |
 | 2021 | 2 | Foundations on Computer Science | Master | Tutor |
 
-: Courses taught at The University of Adelaide {tbl-colwidths="[15, 15, 30, 20, 20]" .strip .hover}
+: Courses taught at The University of Adelaide {tbl-colwidths="[15, 15, 30, 20, 20]" .striped .hover}
