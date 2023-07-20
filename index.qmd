@@ -29,7 +29,7 @@ I am currently working on *noisy-label learning* where the aim is to infer a goo
 ::::
 
 ## Research interest
-My interest is in the mathematical modelling and theoretical analysis to gain insights and deepen my understanding. In particular, I prefer to work on the following topics:
+My interest is in the mathematical modelling and theoretical analysis to gain insights and deepen my understanding. In particular, I am interested in the following topics, including but not limited to:
 
 - Probabilistic machine learning
 - Bayesian inference
