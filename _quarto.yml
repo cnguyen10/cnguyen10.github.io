@@ -11,7 +11,7 @@ website:
     right:
       - icon: pencil-square
         text: Blog
-        file:  blog.qmd
+        file: blog.qmd
       - icon: person-circle
         text: About
         file: about.qmd
@@ -25,6 +25,7 @@ format:
   html:
     theme: simplex
     toc: false
+    mainfont: Arial
     html-math-method: katex
     number-sections: true
     anchor-sections: true

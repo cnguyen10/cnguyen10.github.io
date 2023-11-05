@@ -16,17 +16,15 @@ comments: false
 ::: {#first-column}
 <br />
 
-Hello, my name is **C&#x1B0;&#x1EDD;ng Cao Nguy&#x1EC5;n** (pronounced similarly to: *Ker-uhng Kao Ner-win*). I am currently a **Research Associate** at the Australian Institute for Machine Learning (AIML), University of Adelaide working with Professor Gustavo Carneiro.
-
-<br />
+Hello, my name is **C&#x1B0;&#x1EDD;ng Cao Nguy&#x1EC5;n** (pronounced similarly to: *Ker-uhng Kao Ner-win*). I am currently a **Research Associate** at the Australian Institute for Machine Learning (AIML), University of Adelaide working with Professor [Gustavo Carneiro](https://www.surrey.ac.uk/people/gustavo-carneiro) and Dr [Toan Do](https://sites.google.com/view/thanhtoando/home).
 
 I am currently working on *noisy-label learning* where the aim is to infer a good model in the presence of noisy annotation. I also engage into teaching undergraduate courses.
 :::
 
 ::: {#second-column}
 <img src="https://avatars.githubusercontent.com/u/15698019" width="200" style="border-radius: 50%; margin: 10px;">
-:::
 
+:::
 ::::
 
 ## Research interest
@@ -37,7 +35,17 @@ My interest is in the mathematical modelling and theoretical analysis to gain in
 - Statistical machine learning (i.e., PAC-learning)
 
 ## Publications
+<details>
+<summary>List of first-author papers</summary>
+
 {{< include publication.qmd >}}
 
+</details>
+
 ## Teaching
+<details>
+<summary>List of courses</summary>
+
 {{< include teaching.qmd >}}
+
+</details>

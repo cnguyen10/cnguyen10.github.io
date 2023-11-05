@@ -32,14 +32,41 @@ I am a Mechanical Engineer turn into a Machine Learning researcher. My interest 
 Beside my academic life, I have a simple life as a country guy coming from a small town in the South of Vietname, where the Mekong river flows out to the South China Sea. It has a complex river system which provides illuvi to plant different kinds of fruit-trees.
 
 ### Education
+:::: {layout="[ 10, 90 ]"}
+::: {#first-column}
+<img src="img/uofa_logo.svg" width="50" style="border-radius: none; margin: 10px;">
+
+:::
+::: {#second-column}
 **University of Adelaide**,  South Australia, AU\
-<span class="bi bi-mortarboard-fill"></span> <span class="bi bi-laptop"></span> <em>PhD in Computer Science</em>\
+</span> <span class="bi bi-laptop"></span> PhD in Computer Science\
 April 2018 - March 2022
 
-**University of Adelaide**, South Australia, AU\
-<span class="bi bi-mortarboard-fill"></span> <span class="bi bi-cpu"></span> <em>MPhil. in Electronics Engineering</em>\
-Aug 2015 - Jan 2018
+:::
+::::
 
+:::: {layout="[ 10, 90 ]"}
+::: {#first-column}
+<img src="img/uofa_logo.svg" width="50" style="border-radius: none; margin: 10px;">
+
+:::
+::: {#second-column}
+**University of Adelaide**, South Australia, AU\
+</span> <span class="bi bi-cpu"></span> MPhil. in Electronics Engineering\
+August 2015 - January 2018
+
+:::
+::::
+
+:::: {layout="[ 10, 90 ]"}
+::: {#first-column}
+<img src="img/pdx_logo.svg" width="50" style="border-radius: none; margin: 10px;">
+
+:::
+::: {#second-column}
 **Portland State University**, Oregon, US\
-<span class="bi bi-mortarboard-fill"></span> <span class="bi bi-wrench-adjustable"></span> <em>B.S. in Mechanical Engineering</em>\
-Jul 2011 - June 2012
+</span> <span class="bi bi-wrench-adjustable"></span> B.S. in Mechanical Engineering\
+July 2011 - June 2012
+
+:::
+::::
