@@ -6,67 +6,151 @@ about:
   image-shape: round
   image-width: 10em
   links:
+    - icon: mortarboard-fill
+      text: Google Scholar
+      href: https://scholar.google.com.au/citations?user=eAkq43kAAAAJ
+    - icon: github
+      text: Github
+      href: https://github.com/cnguyen10
     - icon: twitter
       text: Twitter
       href: https://twitter.com/cuongcn10
     - icon: linkedin
       text: LinkedIn
       href: https://linkedin.com/in/cuong-c-nguyen
-    - icon: github
-      text: Github
-      href: https://github.com/cnguyen10
-    - icon: mortarboard-fill
-      text: Google Scholar
-      href: https://scholar.google.com.au/citations?user=eAkq43kAAAAJ
     - icon: envelope-at
       text: Email
-      href: mailto:cuong@aiml.team
+      href: mailto:cuong.c.nguyen@hotmail.com
 format:
   html:
     toc: false
     number-sections: false
 ---
-
+::: {.text-start}
 I am a Mechanical Engineer turn into a Machine Learning researcher. My interest is on the mathematical modelling and theoretical analysis to gain insights into the problems of interest. Before getting into the academic career, I worked as a Process and Equipment Engineer at Intel Products Vietnam for three years.
 
 Beside my academic life, I have a simple life as a country guy coming from a small town in the South of Vietname, where the Mekong river flows out to the South China Sea. It has a complex river system which provides illuvi to plant different kinds of fruit-trees.
+:::
+
+---
+
+## Work experience
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">
+
+:::
+
+::: {.g-col-10 .text-start}
+**Research associate**\
+<span class="bi bi-briefcase"> The University of Adelaide</span>\
+<i class="bi bi-hourglass-split"> April 2021 - present</i>\
+<span class="bi bi-geo-alt"> South Australia, AU</span>
+
+:::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+<img src="img/intel_logo.svg" width="50" style="margin-top: 10px;">
+
+:::
+
+::: {.g-col-10 .text-start}
+**Process & equipment engineer**\
+<span class="bi bi-briefcase"> Intel Products Vietnam</span>\
+<i class="bi bi-hourglass-bottom"> July 2012 - July 2015</i>\
+<span class="bi bi-geo-alt"> Ho Chi Minh, VN</span>
+
+:::
+
+:::
+
+---
 
 ### Education
-:::: {layout="[ 10, 90 ]"}
-::: {#first-column}
-<img src="img/uofa_logo.svg" width="50" style="border-radius: none; margin: 10px;">
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+[<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">](https://www.adelaide.edu.au/)
 
 :::
-::: {#second-column}
-**University of Adelaide**,  South Australia, AU\
-</span> <span class="bi bi-laptop"></span> PhD in Computer Science\
-April 2018 - March 2022
+
+::: {.g-col-10 .text-start}
+**The University of Adelaide**\
+<span class="bi bi-laptop"> PhD in Computer Science</span>\
+<i class="bi bi-hourglass-bottom"> April 2018 - March 2022</i>\
+<span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
-::::
-
-:::: {layout="[ 10, 90 ]"}
-::: {#first-column}
-<img src="img/uofa_logo.svg" width="50" style="border-radius: none; margin: 10px;">
 
 :::
-::: {#second-column}
-**University of Adelaide**, South Australia, AU\
-</span> <span class="bi bi-cpu"></span> MPhil. in Electronics Engineering\
-August 2015 - January 2018
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+[<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">](https://www.adelaide.edu.au/)
+:::
+
+::: {.g-col-10 .text-start}
+**The University of Adelaide**\
+<span class="bi bi-cpu"> MPhil. in Electronic Engineering</span>\
+<i class="bi bi-hourglass-bottom"> August 2015 - January 2018</i>\
+<span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
-::::
-
-:::: {layout="[ 10, 90 ]"}
-::: {#first-column}
-<img src="img/pdx_logo.svg" width="50" style="border-radius: none; margin: 10px;">
 
 :::
-::: {#second-column}
-**Portland State University**, Oregon, US\
-</span> <span class="bi bi-wrench-adjustable"></span> B.S. in Mechanical Engineering\
-July 2011 - June 2012
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+[<img src="img/pdx_logo.svg" width="50" style="margin-top: 10px;">](https://www.pdx.edu/)
+:::
+
+::: {.g-col-10 .text-start}
+**Portland State University**\
+<span class="bi bi-wrench-adjustable"> B.S. in Mechanical Engineering</span>\
+<i class="bi bi-hourglass-bottom"> July 2010 - June 2012</i>\
+<span class="bi bi-geo-alt"> Oregon, USA</span>
 
 :::
-::::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+[<img src="img/hcmcut_logo.svg" width="50" style="margin-top: 10px;">](https://oisp.hcmut.edu.vn/en/)
+:::
+
+::: {.g-col-10 .text-start}
+**HCMC University of Technology**\
+<span class="bi bi-wrench-adjustable"> B.S. in Mechatronic Engineering</span>\
+<i class="bi bi-hourglass-top"> September 2007 - June 2010</i>\
+<span class="bi bi-geo-alt"> Ho Chi Minh, VN</span>
+
+:::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+[<img src="img/ctg_logo.svg" width="50" style="margin-top: 10px;">](http://chuyentiengiang.edu.vn)
+:::
+
+::: {.g-col-10 .text-start}
+**Tien Giang Gifted Highschool**\
+<span class="bi bi-calculator"> Mathematics</span>\
+<i class="bi bi-hourglass-bottom"> August 2004 - June 2007</i>\
+<span class="bi bi-geo-alt"> Tien Giang, VN</span>
+
+:::
+
+:::
