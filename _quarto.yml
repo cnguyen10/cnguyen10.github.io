@@ -23,6 +23,7 @@ website:
         menu:
           - teaching.qmd
           - publication.qmd
+  back-to-top-navigation: true
   google-analytics: G-NLRVZL0JSR
 
 format:
