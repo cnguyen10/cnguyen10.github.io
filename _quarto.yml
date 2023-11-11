@@ -19,6 +19,10 @@ website:
       #   href: https://github.com/cnguyen10
       # - icon: twitter
       #   href: https://twitter.com/cuongcn10
+      - text: "More"
+        menu:
+          - teaching.qmd
+          - publication.qmd
   google-analytics: G-NLRVZL0JSR
 
 format:
@@ -47,6 +51,8 @@ format:
             pseudocode.renderClass("pseudocode", options);
           }
         </script>
+    citations-hover: true
+    footnotes-hover: true
 
 execute:
   freeze: auto
