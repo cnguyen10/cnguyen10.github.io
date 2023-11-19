@@ -112,69 +112,6 @@
     "text": "5 References\n\nHiggins, I., Matthey, L., Pal, A., Burgess, C., Glorot, X., Botvinick, M., Mohamed, S. and Lerchner, A., 2016. β-VAE: Learning basic visual concepts with a constrained variational framework. In International Conference on Learning Representation.\nLoaiza-Ganem, G. and Cunningham, J.P., 2019. The continuous Bernoulli: fixing a pervasive error in variational autoencoders. In Advances in Neural Information Processing Systems (pp. 13287-13297)."
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Blog",
-    "section": "",
-    "text": "Expectation - Maximisation algorithm and its applications for mixture models\n\n\n\n\n\n\n\n\n\n\n\n\nJul 17, 2022\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nBias - variance decomposition\n\n\n\n\n\n\n\n\n\n\n\n\nMay 3, 2022\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nFrom hyper-parameter optimisation to meta-learning\n\n\n\n\n\n\n\n\n\n\n\n\nNov 22, 2021\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nOuter product approximation of Hessian matrix\n\n\n\n\n\n\n\n\n\n\n\n\nApr 12, 2021\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nPAC-Bayes bounds for generalisation error\n\n\n\n\n\n\n\n\n\n\n\n\nDec 26, 2020\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nVAE: normalising constant matters\n\n\n\n\n\n\n\n\n\n\n\n\nNov 24, 2020\n\n\nCuong Nguyen\n\n\n\n\n\n\nNo matching items\n\n Back to top"
-  },
-  {
-    "objectID": "about.html#biography",
-    "href": "about.html#biography",
-    "title": "About",
-    "section": "Biography",
-    "text": "Biography\n\nI am a research associate at the School of Computer Science, The University of Adelaide. I received my Ph.D. in Computer Science from The University of Adelaide in 2022, an M.Phil. in Electronic Engineering also from The University of Adelaide in 2018, and a B.S. in Mechanical Engineering from Portland State University in 2012."
-  },
-  {
-    "objectID": "about.html#areas-of-specialism",
-    "href": "about.html#areas-of-specialism",
-    "title": "About",
-    "section": "Areas of specialism",
-    "text": "Areas of specialism\nMachine learning"
-  },
-  {
-    "objectID": "about.html#current-and-previous-roles",
-    "href": "about.html#current-and-previous-roles",
-    "title": "About",
-    "section": "Current and previous roles",
-    "text": "Current and previous roles\n\n\n\n\n\nResearch associate\n The University of Adelaide\n Apr. 2021 - present\n South Australia, AU\n\n\n\n\n\nProcess & equipment engineer\n Intel Products Vietnam\n July 2012 - July 2015\n Ho Chi Minh, VN"
-  },
-  {
-    "objectID": "about.html#my-qualifications",
-    "href": "about.html#my-qualifications",
-    "title": "About",
-    "section": "My qualifications",
-    "text": "My qualifications\n\n\n\n\n\nPh.D. in Computer Science\n The University of Adelaide\n Apr. 2018 - Mar. 2022\n South Australia, AU\n\n\n\n\n\nM.Phil. in Electronic Engineering\n The University of Adelaide\n Aug. 2015 - Jan. 2018\n South Australia, AU\n\n\n\n\n\nB.S. in Mechanical Engineering\n Portland State University\n Jul. 2010 - Jun. 2012\n Oregon, USA"
-  },
-  {
-    "objectID": "teaching.html",
-    "href": "teaching.html",
-    "title": "Teaching",
-    "section": "",
-    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor"
-  },
-  {
-    "objectID": "teaching.html#the-university-of-adelaide",
-    "href": "teaching.html#the-university-of-adelaide",
-    "title": "Teaching",
-    "section": "",
-    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
-    "section": "",
-    "text": "Hello, my name is Cường Cao Nguyễn (pronounced similarly to: Ker-uhng Kao Ner-win). I am a research associate at the School of Computer Science, The University of Adelaide working with Professor Gustavo Carneiro and Dr Toan Do.\nMy main research interest lies in the modelling, formulating and understanding machine learning algorithms and their applications in medical data analysis.\n\n\n\n\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "publication.html",
-    "href": "publication.html",
-    "title": "Publication",
-    "section": "",
-    "text": "Please see the list of my publications at my Google Scholar page\n\n\n\n\n Back to top"
-  },
-  {
     "objectID": "posts/Gauss-Newton-matrix/index.html",
     "href": "posts/Gauss-Newton-matrix/index.html",
     "title": "Outer product approximation of Hessian matrix",
@@ -215,6 +152,139 @@
     "title": "Outer product approximation of Hessian matrix",
     "section": "5 References",
     "text": "5 References\n\n\nBishop, Christopher M, and Nasser M Nasrabadi. 2006. Pattern Recognition and Machine Learning. Vol. 4. 4. Springer."
+  },
+  {
+    "objectID": "publication.html",
+    "href": "publication.html",
+    "title": "Publication",
+    "section": "",
+    "text": "Please see the list of my publications at my Google Scholar page\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "Hello, my name is Cường Cao Nguyễn (pronounced similarly to: Ker-uhng Kao Ner-win). I am a research associate at the School of Computer Science, The University of Adelaide working with Professor Gustavo Carneiro and Dr Toan Do.\nMy main research interest lies in the modelling, formulating and understanding machine learning algorithms and their applications in medical data analysis.\n\n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "teaching.html",
+    "href": "teaching.html",
+    "title": "Teaching",
+    "section": "",
+    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor"
+  },
+  {
+    "objectID": "teaching.html#the-university-of-adelaide",
+    "href": "teaching.html#the-university-of-adelaide",
+    "title": "Teaching",
+    "section": "",
+    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor"
+  },
+  {
+    "objectID": "about.html#biography",
+    "href": "about.html#biography",
+    "title": "About",
+    "section": "Biography",
+    "text": "Biography\n\nI am a research associate at the School of Computer Science, The University of Adelaide. I received my Ph.D. in Computer Science from The University of Adelaide in 2022, an M.Phil. in Electronic Engineering also from The University of Adelaide in 2018, and a B.S. in Mechanical Engineering from Portland State University in 2012."
+  },
+  {
+    "objectID": "about.html#areas-of-specialism",
+    "href": "about.html#areas-of-specialism",
+    "title": "About",
+    "section": "Areas of specialism",
+    "text": "Areas of specialism\nMachine learning"
+  },
+  {
+    "objectID": "about.html#current-and-previous-roles",
+    "href": "about.html#current-and-previous-roles",
+    "title": "About",
+    "section": "Current and previous roles",
+    "text": "Current and previous roles\n\n\n\n\n\nResearch associate\n The University of Adelaide\n Apr. 2021 - present\n South Australia, AU\n\n\n\n\n\nProcess & equipment engineer\n Intel Products Vietnam\n July 2012 - July 2015\n Ho Chi Minh, VN"
+  },
+  {
+    "objectID": "about.html#my-qualifications",
+    "href": "about.html#my-qualifications",
+    "title": "About",
+    "section": "My qualifications",
+    "text": "My qualifications\n\n\n\n\n\nPh.D. in Computer Science\n The University of Adelaide\n Apr. 2018 - Mar. 2022\n South Australia, AU\n\n\n\n\n\nM.Phil. in Electronic Engineering\n The University of Adelaide\n Aug. 2015 - Jan. 2018\n South Australia, AU\n\n\n\n\n\nB.S. in Mechanical Engineering\n Portland State University\n Jul. 2010 - Jun. 2012\n Oregon, USA"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Stochastic gradient and Hamiltonian Monte Carlo\n\n\n\n\n\n\n\n\n\n\n\n\nNov 19, 2023\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nExpectation - Maximisation algorithm and its applications for mixture models\n\n\n\n\n\n\n\n\n\n\n\n\nJul 17, 2022\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nBias - variance decomposition\n\n\n\n\n\n\n\n\n\n\n\n\nMay 3, 2022\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nFrom hyper-parameter optimisation to meta-learning\n\n\n\n\n\n\n\n\n\n\n\n\nNov 22, 2021\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nOuter product approximation of Hessian matrix\n\n\n\n\n\n\n\n\n\n\n\n\nApr 12, 2021\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nPAC-Bayes bounds for generalisation error\n\n\n\n\n\n\n\n\n\n\n\n\nDec 26, 2020\n\n\nCuong Nguyen\n\n\n\n\n\n\n  \n\n\n\n\nVAE: normalising constant matters\n\n\n\n\n\n\n\n\n\n\n\n\nNov 24, 2020\n\n\nCuong Nguyen\n\n\n\n\n\n\nNo matching items\n\n Back to top"
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "",
+    "text": "This post is to introduce the formulation of stochastic gradient descent as a Monte Carlo sampling to approximate the posterior of the variables of interest."
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#motivation-of-monte-carlo-sampling",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#motivation-of-monte-carlo-sampling",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "1 Motivation of Monte Carlo sampling",
+    "text": "1 Motivation of Monte Carlo sampling\nAccording to (MacKay 2003, chap. 29), Monte Carlo based methods make use of random numbers (or in particular, random variables) to solve one or both of the following problems.\n\n\n\n\n\n\nProblem 1 - generate samples\n\n\n\nGenerate samples \\{\\theta^{(r)}\\}_{r = 1}^{R} from a given probability distribution P(\\theta).\n\n\n\n\n\n\n\n\nProblem 2 - estimate an expected value\n\n\n\nEstimate the expectation of a given function \\ell(\\theta) under a given distribution P(\\theta): \n    \\overline{\\ell} = \\int \\ell(\\theta) \\, P(\\theta) \\, \\operatorname{d}^{N} \\theta,\n where \\theta is assumed to be an N-dimensional vector with real components \\theta_{n}.\n\n\nIt is assumed that P(\\theta) is sufficiently complex that we cannot either (i) sample from it by some conventional techniques, and (ii) evaluate those expectations by exact methods. That motivates us to study Monte Carlo approximation methods.\nMajority of studies in Monte Carlo methods focus on the first problem (sampling) because if we have solved the first problem, then we can solve the second problem by using the Monte Carlo approximation to give an estimation about the expectation: \n    \\hat{\\ell} = \\frac{1}{R} \\sum_{r = 1}^{R} \\ell(\\theta^{(r)}),\n where: \\{\\theta^{(r)}\\}_{r = 1}^{R} are generated from P(\\theta).\nUnder this approximation, \\hat{\\ell} is an un-biased estimator of the exact expectation \\overline{\\ell}.\n\n\n\n\n\n\nWhy is sampling from P(\\theta) hard?\n\n\n\nWe will assume that the density from which we wish to draw samples, P(\\theta), can be evaluated, at least to within a multiplicative constant. In other words, we can evaluate a function P^{*}(\\theta) such that: \n    P(\\theta) = \\frac{P^{*}(\\theta)}{Z},\n\\tag{1} where Z is the normalising constant (that we do not know): \n    Z = \\int P^{*}(\\theta) \\, \\operatorname{d}^{N}\\theta.\n\\tag{2} Thus, it is hard to draw samples from P(\\theta) since Z is often assumed to be unknown. Even if we know Z, drawing samples from P(\\theta) is still challenging problem, especially in high-dimensional spaces because there is no obvious way to sample from P(\\theta) without enumerating all of the possible states.\n\n\nThere are various sampling techniques to generate samples from a given distribution, such as important sampling, rejection sampling or Metropolis - Hastings method. Here, we focus on a specific method, known as Hamiltonian Monte Carlo, which belongs to the family of the Metropolis - Hastings method."
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#the-metropolis---hastings-method",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#the-metropolis---hastings-method",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "2 The Metropolis - Hastings method",
+    "text": "2 The Metropolis - Hastings method\nThe Metropolis - Hastings algorithm uses a proposal density Q(\\theta | \\theta^{(t)}) which depends on the current state \\theta^{(t)}. For example, Q(\\theta; \\theta^{(t)}) might be a simple Gaussian distribution centred on the current \\theta^{(t)}. The proposal density Q(\\theta; \\theta^{(t)}) can be any fixed probability distribution from which we can easily sample.\nAs before, it is assumed that the un-normalised probability P^{*}(\\theta) can be evaluated for any \\theta. One can generate the next state \\theta^{\\prime} from the proposal distribution Q(\\theta; \\theta^{(t)}). To decide whether to accept the new state, a quantity (also known as Metropolis - Hastings score) is calculated. Depending on the value of the score, the next state can be (i) accepted, or (ii) accepted with certain probability depending on the value of the score.\n\nIf the step is accepted, then \\theta^{(t + 1)} = \\theta^{\\prime}.\nOtherwise, the previous state is kept: \\theta^{(t + 1)} = \\theta^{(t)}.\n\nThe details of the Metropolis - Hastings algorithm can be seen in Algorithm Metropolis - Hastings.\n\\begin{algorithm}\n    \\caption{The Metropolis - Hastings sampling method}\n    \\begin{algorithmic}\n        \\REQUIRE un-normalised probability distribution $P^{*}(\\theta)$\n        \\REQUIRE proposal distribution $Q(\\theta; \\theta^{(t)})$\n        \\STATE initialise $\\theta^{(0)}$\n        \\WHILE{$t = 0, 1, \\dots, T, \\dots, T_{\\mathrm{end}}$}\n            \\STATE $\\theta^{\\prime} \\gets$ \\Call{sample-from-proposal-distribution}{$Q(\\theta; \\theta^{(t)})$} \\Comment{generate a new state}\n            \\STATE $a \\gets \\displaystyle \\frac{p^{*}(\\theta^{\\prime})}{p^{*}(\\theta^{(t)})} \\frac{q(\\theta^{(t)}; \\theta^{\\prime})}{q(\\theta^{\\prime}; \\theta^{(t)})}$ \\Comment{calculate Metropolis - Hastings score}\n            \\IF{$a \\ge 1$}\n                \\STATE $\\theta^{(t + 1)} \\gets \\theta^{\\prime}$ \\Comment{accept the new state}\n            \\ELSE\n                \\STATE $\\theta^{(t + 1)} \\gets \\theta^{(t)}$ \\Comment{reject the new state}\n            \\ENDIF\n        \\ENDWHILE\n        \\RETURN $\\{\\theta^{(t)}\\}_{t = T}^{T_{\\mathrm{end}}}$\n    \\end{algorithmic}\n\\end{algorithm}\n\n\n\n\n\n\n\nDifferent from rejection sampling\n\n\n\nIn rejection sampling, rejected points are discarded and have no influence on the list of samples \\{\\theta^{(r)}\\} that are collected to represent the distribution P(\\theta). In Metropolis - Hastings method, although rejected points are also discarded, the difference is that a rejection causes the current state \\theta^{(t)} to be written again onto the list.\n\n\nConvergence of the Metropolis - Hastings method   It has been shown that for any positive proposal distribution, i.e., Q(\\theta; \\theta^{(t)}) &gt; 0, \\forall \\theta, \\theta^{(t)}, as t\\to+\\infin, the probability distribution of \\theta^{(t)} converges to its true distribution P(\\theta) defined in Equation 1.\n\n\n\n\n\n\nDependency of samples generated from the Metropolis - Hastings method\n\n\n\nThe Metropolis - Hastings method is an example of a Markov chain Monte Carlo method (abbreviated MCMC). In MCMC methods, a Markov process is employed to generate a sequence of states \\{\\theta\\}, where each sample \\theta^{(t)} has a probability distribution depend on the previous state, \\theta^{(t - 1)}. And because successive samples are dependent, the Markov chain may need to be run for a considerable amount of time to effectively generate independent samples from the hidden distribution P(\\theta)."
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#the-hamiltonian-monte-carlo-method",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#the-hamiltonian-monte-carlo-method",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "3 The Hamiltonian Monte Carlo method",
+    "text": "3 The Hamiltonian Monte Carlo method\nThe Hamiltonian Monte Carlo method is an instance of the Metropolis - Hastings method that is applicable to continuous domain. It makes use of gradient information to reduce random walk behaviour, potentially resulting in a more efficient MCMC method. In particular, it replaces the proposal distribution Q(\\theta; \\theta^{(t)}) by an implicit distribution in the form of a differential equation.\nSimilar to the Metropolis - Hastings method, we assume that the density P(\\theta) is known up to a normalised constant and written in the form of the potential energy U(\\theta) as follows: \n    P(\\theta) = \\frac{\\exp(-U(\\theta))}{Z}.\n\nThe potential energy, U(\\theta), is defined as: \n\\boxed{\n    U(\\theta) = - \\sum_{x \\in \\mathcal{D}} \\ln p(x | \\theta) - \\ln p(\\theta),\n}\n\\tag{3} where p(x | \\theta) is a likelihood function, and p(\\theta) is the prior distribution of \\theta.\nThe Hamiltonian Monte Carlo method augments the variable of interest, \\theta, by an N_{\\rho}-dimensional momentum variables vector \\rho. A common analogy is that \\theta is the position, while \\rho is the velocity of an object of interest. In that case, the kinetic energy K(\\rho) is defined as follows: \n\\boxed{\n    K(\\rho) = \\frac{1}{2} \\rho^{\\top} M^{-1} \\rho,\n}\n\\tag{4} where M \\in \\mathbb{R}^{N_{\\rho} \\times N_{\\rho}} is symmetric positive definite matrix known as mass matrix.\nThe Hamiltonian dynamics of the whole system can then be defined as: \n    H(\\theta, \\rho) = U(\\theta) + K(\\rho).\n\nOne can then define the joint probability density as: \n    p_{H}(\\theta, \\rho) = \\frac{\\exp(-H(\\theta, \\rho))}{Z_{H}} = \\frac{1}{Z_{H}} \\exp(-U(\\theta)) \\, \\exp(-K(\\rho)).\n\\tag{5}\nSince the probability distribution p_{H} is separable, the marginal distribution of \\theta is the desired distribution p(\\theta) = \\frac{\\exp(-U(\\theta))}{Z}. Thus, simply discarding the momentum variables \\rho would allow to obtain a sequence of samples \\{\\theta^{(t)}\\} that asymptotically come from P(\\theta).\nThe characteristics of a Hamiltonian dynamics can be written as: \n\\begin{dcases}\n    \\frac{\\operatorname{d}\\theta}{\\operatorname{d}t} & = \\frac{\\partial H(\\theta, \\rho)}{\\partial \\rho} = M^{-1} \\rho \\\\\n    & \\\\\n    \\frac{\\operatorname{d}\\rho}{\\operatorname{d}t} & = - \\frac{\\partial H(\\theta, \\rho)}{\\partial \\theta} = -\\nabla_{\\theta} U(\\theta).\n\\end{dcases}\n\\tag{6}\n\n\n\n\n\n\n2D analogy of the Hamiltonian dynamics (Chen, Fox, and Guestrin 2014)\n\n\n\nTo analogise the Hamiltonian dynamics, one can imagine a hockey puck sliding over a frictionless ice surface of varying height. The potential energy is proportional to the height of the surface at the current position, \\theta, of the puck, while the kinectic energy is proportional to the momentum, \\rho, and the mass, M, of the hockey puck.\nIf the surface is flat: \\nabla_{\\theta} U(\\theta) = 0, then the hockey puck will move at a constant speed.\nIf it is going uphill (positive slope: \\nabla_{\\theta} U(\\theta) &gt; 0), the kinetic energy decreases as the potential energy increases util the kinetic reaches 0 (equivalently, \\rho = 0). The hockey puck stops in an instant and begins to slide back down the hill, resulting in increasing the kinectic energy and decreasing the potential energy.\n\n\nEquation 6 defines the transformation of the two variables (\\theta, \\rho) from time t to time t + \\Delta t. This transformation is reversible. Moreover, the Hamiltonian is invariant (or the preservation of the Hamiltonian H(\\theta, \\rho)): \n    \\frac{\\operatorname{d} H}{\\operatorname{d} t} = \\sum_{i = 1}^{N} \\frac{\\operatorname{d} \\theta_{i}}{\\operatorname{d} t} \\frac{\\partial H}{\\partial \\theta_{i}} + \\frac{\\operatorname{d} \\rho_{i}}{\\operatorname{d} t} \\frac{\\partial H}{\\partial \\rho_{i}} = \\sum_{d = 1}^{N} \\frac{\\partial H}{\\partial \\rho_{i}} \\frac{\\partial H}{\\partial \\theta_{i}} -\\frac{\\partial H}{\\partial \\theta_{i}} \\frac{\\partial H}{\\partial \\rho_{i}} = 0.\n\nThis makes any proposal (\\theta, \\rho) obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in H(\\theta, \\rho), which is zero if the simulation is perfect. Please refer to Algorithm Hamiltonian MC for further details of the Hamiltonian Monte Carlo method.\n\\begin{algorithm}\n    \\caption{Hamiltonian Monte Carlo method}\n    \\begin{algorithmic}\n        \\REQUIRE potential energy $U(.)$\n        \\REQUIRE mass matrix $M$\n        \\REQUIRE step size used in the integration to solve PDE $\\varepsilon$\n        \\STATE initialise $\\theta^{(1)}$\n        \\WHILE{$t = 1, 2, \\dots, T, \\dots, T_{\\mathrm{end}}$}\n            \\STATE sample momentum: $\\rho^{(t)} \\sim \\mathcal{N}(0, M^{-1})$\n            \\STATE evaluate total energy: $H \\gets U(\\theta^{(t)}) + K(\\rho^{(t)})$\n            \\STATE $\\theta^{(t, 1)} \\gets \\theta^{(t)}$\n            \\STATE $\\rho^{(t, 1)} \\gets \\rho^{(t)}$\n            \\FOR{$i = 1, 2, \\dots, \\tau$} \\Comment{Simulate for next state}\n                \\STATE $\\rho^{(t, i + \\frac{1}{2})} \\gets \\rho^{(t, i)} - \\frac{1}{2} \\varepsilon \\nabla_{\\theta} U(\\theta^{(t, i)})$ \\Comment{make a half-step in $\\rho$}\n                \\STATE $\\theta^{(t, i + 1)} \\gets \\theta^{(t, i)} + \\varepsilon M^{-1} \\rho^{(t, i + \\frac{1}{2})}$ \\Comment{make a step in $\\theta$}\n                \\STATE $\\rho^{(t, i + 1)} \\gets \\rho^{(t, i + \\frac{1}{2})} - \\frac{1}{2} \\varepsilon \\nabla_{\\theta} U(\\theta^{(t, i)})$ \\Comment{make another half-step in $\\rho$}\n            \\ENDFOR\n            \\STATE $\\theta^{\\prime} \\gets \\theta^{(t, \\tau)}$ \\Comment{new state of $\\theta$}\n            \\STATE $\\rho^{\\prime} \\gets \\rho^{(t, \\tau)}$ \\Comment{new state of momentum}\n            \\STATE evaluate total energy with the new state: $H_{\\mathrm{new}} \\gets U(\\theta^{\\prime}) + K(\\rho^{\\prime})$\n            \\STATE calculate: $\\operatorname{d}H \\gets H_{\\mathrm{new}} - H$\n            \\STATE sample: $u \\sim \\mathrm{uniform}(0, 1)$\n            \\IF{$u &lt; \\exp(-\\operatorname{d}H)$} \\Comment{Metropolis - Hastings step}\n                \\STATE $\\theta^{(t + 1)} \\gets \\theta^{\\prime}$ \\Comment{accept the new state}\n            \\ELSE\n                \\STATE $\\theta^{(t + 1)} \\gets \\theta^{(t)}$ \\Comment{reject the new state}\n            \\ENDIF\n        \\ENDWHILE\n        \\RETURN $\\{\\theta^{(t)}\\}_{t = T}^{T_{\\mathrm{end}}}$\n    \\end{algorithmic}\n\\end{algorithm}\n\nDespite its efficiency, the Hamiltonian Monte Carlo method still requires to run through the entire dataset to perform the integration for \\theta as well as the Metropolis - Hastings step to decide whether to accept or reject the new state generated from the Hamiltonian dynamics. Hence, in the lense of machine learning, it is, however, impractical, especially for large-scaled datasets. It, therefore, motivates further studies and development to make the method practical."
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#stochastic-gradient-hamiltonian-monte-carlo",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#stochastic-gradient-hamiltonian-monte-carlo",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "4 Stochastic gradient Hamiltonian Monte Carlo",
+    "text": "4 Stochastic gradient Hamiltonian Monte Carlo\nTo reduce the cost calculating \\nabla_{\\theta} U(\\theta) on the entire dataset \\mathcal{D}, stochastic versions of Hamiltonian Monte Carlo are proposed in (Welling and Teh 2011; Chen, Fox, and Guestrin 2014). In this case, the whole-batch gradient, \\nabla_{\\theta} U(\\theta), is estimated by a noisy estimator, \\nabla_{\\theta} \\tilde{U}(\\theta), which is based on a single mini-batch, \\tilde{\\mathcal{D}}, of data. Such a noisy estimator can be written as follows: \n    \\nabla_{\\theta} \\tilde{U}(\\theta) = - \\frac{|\\mathcal{D}|}{|\\tilde{\\mathcal{D}|}} \\sum_{x \\in \\tilde{\\mathcal{D}}} \\ln p(x | \\theta) - \\ln p(\\theta).\n\\tag{7}\nIf there are many mini-batches, we can apply the Central Limit Theorem to approximate the noisy gradient of the potential energy as follows: \n    \\nabla_{\\theta} \\tilde{U}(\\theta) \\approx \\nabla_{\\theta} U(\\theta) + \\sqrt{V(\\theta)} \\epsilon, \\quad \\epsilon \\sim \\mathcal{N}(0, I),\n where V(\\theta) is the covariance matrix of the stochastic gradient noise (Welling and Teh 2011, Eq. (6)): \n    V(\\theta) = \\mathbb{E}_{\\text{mini-batch of } x \\in \\tilde{\\mathcal{D}}} \\left[ \\nabla_{\\theta} \\tilde{U}(\\theta) \\, \\nabla_{\\theta}^{\\top} \\tilde{U}(\\theta) \\right] - \\nabla_{\\theta} U(\\theta) \\, \\nabla_{\\theta}^{\\top} U(\\theta),\n and \\sqrt{V}(\\theta) denotes the matrix such that \\sqrt{V(\\theta)} \\left( \\sqrt{V(\\theta)} \\right)^{\\top} = V(\\theta) (e.g., Cholesky decomposition).\n\n4.1 Naive stochastic gradient Hamiltonian Monte Carlo\nA naive way is to directly substitute the noisy estimator in Equation 7 into the Hamiltonian dynamics in Equation 6: \n\\boxed{\n    \\begin{dcases}\n        \\frac{\\operatorname{d} \\theta}{\\operatorname{d} t} & =  M^{-1} \\rho \\\\\n        & \\\\\n        \\frac{\\operatorname{d} \\rho}{\\operatorname{d} t} & = -\\nabla_{\\theta} \\tilde{U}(\\theta) = - \\nabla_{\\theta} U(\\theta) + \\sqrt{V(\\theta)} \\epsilon, \\quad \\epsilon \\sim \\mathcal{N}(0, I).\n    \\end{dcases}\n}\n\\tag{8}\nIn this case, the Hamiltonian is not guaranteed to be invariant: \n\\begin{aligned}\n    \\frac{\\operatorname{d} H}{\\operatorname{d} t} & = \\sum_{i = 1}^{N} \\frac{\\operatorname{d}\\theta_{i}}{\\operatorname{d} t} \\frac{\\partial H}{\\partial \\theta_{i}} + \\frac{\\operatorname{d} \\rho_{i}}{\\operatorname{d} t} \\frac{\\partial H}{\\partial \\rho_{i}} \\\\\n    & = \\sum_{i = 1}^{N} (M^{-1} \\rho)_{i} \\, \\frac{\\partial U(\\theta)}{\\partial \\theta_{i}} - \\left( \\frac{\\partial U(\\theta)}{\\partial \\theta_{i}} + \\left( \\sqrt{V(\\theta)} \\epsilon \\right)_{i} \\right) \\, (M^{-1} \\rho)_{i}, \\\\\n    & = \\left[ \\sqrt{V(\\theta)} \\epsilon \\right]^{\\top} M^{-1} \\rho.\n\\end{aligned}\n\nWhen using a larger mini-batch size: \\tilde{\\mathcal{D}} \\to \\mathcal{D}, the variance V(\\theta) is smaller: V(\\theta) \\to 0, resulting in \\frac{\\operatorname{d} H}{\\operatorname{d} t} \\to 0. At the limit, the total energy H(\\theta, \\rho) is preserved, which is the full-batch Hamiltonian Monte Carlo mentioned above.\nWhen using a much smaller mini-batch size: |\\tilde{\\mathcal{D}}| \\ll |\\mathcal{D}|, the noise induced by the mini-batch, V(\\theta), is large (e.g., in terms of matrix norm), resulting in \\frac{\\operatorname{d} H}{\\operatorname{d} t} \\neq 0. Consequently, the Hamiltonian is no longer invariant.\nTo correct the error due to the effect of mini-batches, one needs to perform one Metropolis - Hastings step to either reject or accept the new state. Either running a short or long simulation (corresponding to a small or large \\tau in Algorithm Hamiltonian Monte Carlo), the cost of a Metropolis - Hastings step is still extremely large and wasteful if the sample is rejected. One workaround solution is to run a Metropolis - Hastings step on a subset of data instead of the entire dataset (Korattikara, Chen, and Welling 2014; Bardenet, Doucet, and Holmes 2014). There are, of course, some tradeoffs using such approaches.\n\n\n\n\n\n\nHockey puck on ice surface with random wind\n\n\n\nTo continue with the same analogy of a hockey puck, the environment is now different with random wind blowing over the ice surface. That random wind may push the hockey puck further away in some random direction.\n\n\nIndeed, the joint distribution p_{H}(\\theta, \\rho) can be determined to be stationary or not by analysing the corresponding Fokker - Planck equation as shown in the Appendix about the stationary of stochastic gradient due to mini-batches. In this case, p_{H}(\\theta, \\rho) is proved to be non-stationary.\nIn (Chaudhari and Soatto 2018), the joint distribution p_{H}(\\theta, \\rho) \\propto \\exp(-H(\\theta, \\rho)) in Equation 5 is assumed to be stationary under the stochastic dynamics in Equation 8. This is equivalent to proving that the left hand side term in the Fokker - Planck equation is zero: \\frac{\\partial p_{H}(\\theta, \\rho)}{\\partial t} = 0. The authors then analyse and show that the stationary distribution does not converge to the desired posterior distribution in general (Chaudhari and Soatto 2018). This is, however, only true if the stationary distribution exists. And in this case, we prove that it does not (the distribution is non-stationary as shown in Section stationary of stochastic gradient due to mini-batches).\n\n\n4.2 Stochastic gradient Hamiltonian Monte Carlo with “friction”\nOne way to overcome the stochastic estimation for the gradient of the potential energy, \\nabla_{\\theta} \\tilde{U}(\\theta), is to introduce a “friction” term to the momentum update: \n\\begin{dcases}\n    \\frac{\\operatorname{d} \\theta}{\\operatorname{d} t} & =  M^{-1} \\rho \\\\\n    & \\\\\n    \\frac{\\operatorname{d} \\rho}{\\operatorname{d} t} & = - \\nabla_{\\theta} U(\\theta) \\textcolor{Crimson}{- F M^{-1} \\rho} + \\sqrt{V(\\theta)} \\epsilon, \\quad \\epsilon \\sim \\mathcal{N}(0, I),\n\\end{dcases}\n where: F \\in \\mathbb{R}^{N_{\\rho} \\times N_{\\rho}} denotes friction coefficient matrix. One requirement for F is that: F \\succeq \\sqrt{V} (see the section on stationary SGD with injected noise for further details).\n\n\n\n\n\n\nHockey puck on a friction surface with random wind\n\n\n\nTo continue with the same analogy, the hockey puck is now sliding not on a frictionless ice surface, but a street surface which induces friction from the asphalt. There is still a random wind blowing. However, the friction of the surface prevents the hockey puck from moving too far away than the position it is expected.\n\n\nIn this case, one can prove that the joint distribution p_{H}(\\theta, \\rho) is stationary.\nTo link this sampling to the stochastic gradient descent, one can sample \\rho(t) \\sim \\mathcal{N}(0, M) and apply one leapfrog step as follows: \n\\begin{dcases}\n    \\rho\\left( t + \\frac{1}{2} \\right) & = \\rho(t) + \\frac{\\alpha}{2} \\left[ - \\nabla_{\\theta} U(\\theta) \\textcolor{Crimson}{- F M^{-1} \\rho} + \\sqrt{V(\\theta)} \\epsilon \\right] \\\\\n    \\theta (t + 1) & = \\theta(t) + \\alpha M^{-1} \\rho\\left( t + \\frac{1}{2} \\right).\n\\end{dcases}\n\nIt can be simplified by substituting \\rho(t + \\frac{\\alpha}{2}) into the expression of \\theta to obtain: \n\\boxed{\n    \\theta(t + 1) = \\theta(t) + \\frac{\\alpha^{2}}{2} M^{-1} \\left[ - \\nabla_{\\theta} U(\\theta) \\textcolor{Crimson}{- F M^{-1} \\rho} + \\sqrt{V(\\theta)} \\epsilon \\right] + \\alpha M^{-1} \\rho(t),\n}\n which has a similar form as the Stochastic Gradient Langevin Dynamics (Welling and Teh 2011)."
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#conclusion",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#conclusion",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "5 Conclusion",
+    "text": "5 Conclusion\nThis post reviews some seminar studies in stochastic gradient and Monte Carlo sampling. There have been many successive studies that explored and extended further. Of course, they have mostly developed on top of these studies and achieved better performance. However, it is important to understand the basic before moving to advance. Hopefully, this post would be found useful in one or another way."
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#appendices",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#appendices",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "Appendices",
+    "text": "Appendices"
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#fokker---planck-equation",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#fokker---planck-equation",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "6 Fokker - Planck equation",
+    "text": "6 Fokker - Planck equation\n\nThe Fokker - Planck equation is used to analyse the evolution of the distribution of the variables in stochastic differential equation: \n    \\operatorname{d} x(t) = - \\nabla f(x) \\operatorname{d} t + \\sqrt{2 \\tau V(x)} \\operatorname{d} W(t),\n\\tag{9} where f(x) is some function (e.g., loss function), V(x) is a diffusion matrix and W(t) is the Brownian motion, and \\tau is a temperature.\n\n\n\n\n\n\nLemma\n\n\n\nThe distribution p(x) \\propto \\exp\\left( -H(x) \\right) of the variable x in Equation 9 evolves following the Fokker - Planck equation: \n    \\frac{\\partial p(x)}{\\partial t} = \\nabla \\cdot \\left[ \\nabla f(x) p(x) + \\tau \\nabla \\cdot \\left[ V(x) p(x) \\right] \\right],\n\\tag{10} where: \\nabla \\cdot denotes the divergence, and the divergence operator is applied column-wise to matrices.\n\n\nThus, one can prove that the distribution of the solution in the stochastic equation Equation 9 is invariant by simply proving that \\partial p(x)/\\partial t = 0."
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#stationary-distribution-of-parameters-obtained-from-sgd",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#stationary-distribution-of-parameters-obtained-from-sgd",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "7 Stationary distribution of parameters obtained from SGD",
+    "text": "7 Stationary distribution of parameters obtained from SGD\n\nThe main focus of this section is to investigate the stationary distribution p(\\theta, \\rho) obtained through the stochastic gradient Hamiltonian Monte Carlo. Two types of noises are considered: (i) noise due to mini-batch effect and (ii) injected noise as in (Welling and Teh 2011). The main tool is the Fokker - Planck equation presented in the section about the Fokker - Planck equation. To use the Fokker - Planck equation, the two variables of interest are coupled into a single vector: \n    z = \\begin{bmatrix}\n        \\theta & \\rho\n    \\end{bmatrix}^{\\top}."
+  },
+  {
+    "objectID": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#references",
+    "href": "posts/stochastic_grad_hamiltonian_monte_carlo/index.html#references",
+    "title": "Stochastic gradient and Hamiltonian Monte Carlo",
+    "section": "References",
+    "text": "References\n\n\n\nBardenet, Rémi, Arnaud Doucet, and Chris Holmes. 2014. “Towards Scaling up Markov Chain Monte Carlo: An Adaptive Subsampling Approach.” In International Conference on Machine Learning, 405–13. PMLR.\n\n\nChaudhari, Pratik, and Stefano Soatto. 2018. “Stochastic Gradient Descent Performs Variational Inference, Converges to Limit Cycles for Deep Networks.” In International Conference on Learning Representations.\n\n\nChen, Tianqi, Emily Fox, and Carlos Guestrin. 2014. “Stochastic Gradient Hamiltonian Monte Carlo.” In International Conference on Machine Learning, 1683–91. PMLR.\n\n\nKorattikara, Anoop, Yutian Chen, and Max Welling. 2014. “Austerity in MCMC Land: Cutting the Metropolis - Hastings Budget.” In International Conference on Machine Learning, 181–89. PMLR.\n\n\nMacKay, David JC. 2003. Information Theory, Inference and Learning Algorithms. Cambridge university press.\n\n\nWelling, Max, and Yee W Teh. 2011. “Bayesian Learning via Stochastic Gradient Langevin Dynamics.” In International Conference on Machine Learning, 681–88."
   },
   {
     "objectID": "posts/PAC-Bayes-bounds/index.html",

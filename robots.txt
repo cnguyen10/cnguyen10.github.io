@@ -1,1 +1,1 @@
-Sitemap: https://github.com/cnguyen10/cnguyen10.github.io/sitemap.xml
+Sitemap: https://cnguyen10.github.io/sitemap.xml

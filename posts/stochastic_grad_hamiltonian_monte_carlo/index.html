@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-11-19">
+
+<title>Cuong Nguyen - Stochastic gradient and Hamiltonian Monte Carlo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../robot.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-NLRVZL0JSR"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script>
+  window.onload = async function() {
+    var options = {
+      indentSize: '1.2em',
+      commentDelimiter: '\u00A0\u00A0\u00A0\u00A0\u00A0 \u25B9 \u0020',
+      lineNumber: true,
+      lineNumberPunc: ':',
+      noEnd: false,
+      captionCount: undefined
+    };
+    pseudocode.renderClass("pseudocode", options);
+  }
+</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Cuong Nguyen - Stochastic gradient and Hamiltonian Monte Carlo">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Cuong Nguyen</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html" rel="" target=""><i class="bi bi-pencil-square" role="img">
+</i> 
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target=""><i class="bi bi-person-circle" role="img">
+</i> 
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-more" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">More</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-more">    
+        <li>
+    <a class="dropdown-item" href="../../teaching.html" rel="" target="">
+ <span class="dropdown-text">Teaching</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../publication.html" rel="" target="">
+ <span class="dropdown-text">Publication</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#motivation-of-monte-carlo-sampling" id="toc-motivation-of-monte-carlo-sampling" class="nav-link active" data-scroll-target="#motivation-of-monte-carlo-sampling"><span class="header-section-number">1</span> Motivation of Monte Carlo sampling</a></li>
+  <li><a href="#the-metropolis---hastings-method" id="toc-the-metropolis---hastings-method" class="nav-link" data-scroll-target="#the-metropolis---hastings-method"><span class="header-section-number">2</span> The Metropolis - Hastings method</a></li>
+  <li><a href="#the-hamiltonian-monte-carlo-method" id="toc-the-hamiltonian-monte-carlo-method" class="nav-link" data-scroll-target="#the-hamiltonian-monte-carlo-method"><span class="header-section-number">3</span> The Hamiltonian Monte Carlo method</a></li>
+  <li><a href="#stochastic-gradient-hamiltonian-monte-carlo" id="toc-stochastic-gradient-hamiltonian-monte-carlo" class="nav-link" data-scroll-target="#stochastic-gradient-hamiltonian-monte-carlo"><span class="header-section-number">4</span> Stochastic gradient Hamiltonian Monte Carlo</a>
+  <ul class="collapse">
+  <li><a href="#naive-stochastic-gradient-hamiltonian-monte-carlo" id="toc-naive-stochastic-gradient-hamiltonian-monte-carlo" class="nav-link" data-scroll-target="#naive-stochastic-gradient-hamiltonian-monte-carlo"><span class="header-section-number">4.1</span> Naive stochastic gradient Hamiltonian Monte Carlo</a></li>
+  <li><a href="#stochastic-gradient-hamiltonian-monte-carlo-with-friction" id="toc-stochastic-gradient-hamiltonian-monte-carlo-with-friction" class="nav-link" data-scroll-target="#stochastic-gradient-hamiltonian-monte-carlo-with-friction"><span class="header-section-number">4.2</span> Stochastic gradient Hamiltonian Monte Carlo with “friction”</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">5</span> Conclusion</a></li>
+  
+  
+  
+  
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Stochastic gradient and Hamiltonian Monte Carlo</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Cuong Nguyen <a href="https://orcid.org/0000-0003-2672-6291" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="www.adelaide.edu.au">
+            The University of Adelaide
+            </a>
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 19, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This post is to introduce the formulation of stochastic gradient descent as a Monte Carlo sampling to approximate the posterior of the variables of interest.</p>
+<section id="motivation-of-monte-carlo-sampling" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="motivation-of-monte-carlo-sampling"><span class="header-section-number">1</span> Motivation of Monte Carlo sampling</h2>
+<p>According to <span class="citation" data-cites="mackay2003information">(<a href="#ref-mackay2003information" role="doc-biblioref">MacKay 2003, chap. 29</a>)</span>, Monte Carlo based methods make use of random numbers (or in particular, random variables) to solve one or both of the following problems.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Problem 1 - generate samples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Generate samples <span class="math inline">\{\theta^{(r)}\}_{r = 1}^{R}</span> from a given probability distribution <span class="math inline">P(\theta)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Problem 2 - estimate an expected value
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Estimate the expectation of a given function <span class="math inline">\ell(\theta)</span> under a given distribution <span class="math inline">P(\theta)</span>: <span class="math display">
+    \overline{\ell} = \int \ell(\theta) \, P(\theta) \, \operatorname{d}^{N} \theta,
+</span> where <span class="math inline">\theta</span> is assumed to be an <span class="math inline">N</span>-dimensional vector with real components <span class="math inline">\theta_{n}</span>.</p>
+</div>
+</div>
+<p>It is assumed that <span class="math inline">P(\theta)</span> is sufficiently complex that we cannot either <em>(i)</em> sample from it by some conventional techniques, and <em>(ii)</em> evaluate those expectations by exact methods. That motivates us to study Monte Carlo approximation methods.</p>
+<p>Majority of studies in Monte Carlo methods focus on the first problem (sampling) because if we have solved the first problem, then we can solve the second problem by using the Monte Carlo approximation to give an estimation about the expectation: <span class="math display">
+    \hat{\ell} = \frac{1}{R} \sum_{r = 1}^{R} \ell(\theta^{(r)}),
+</span> where: <span class="math inline">\{\theta^{(r)}\}_{r = 1}^{R}</span> are generated from <span class="math inline">P(\theta)</span>.</p>
+<p>Under this approximation, <span class="math inline">\hat{\ell}</span> is an un-biased estimator of the exact expectation <span class="math inline">\overline{\ell}</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why is sampling from <span class="math inline">P(\theta)</span> hard?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We will assume that the density from which we wish to draw samples, <span class="math inline">P(\theta)</span>, can be evaluated, at least to within a multiplicative constant. In other words, we can evaluate a function <span class="math inline">P^{*}(\theta)</span> such that: <span id="eq-exact-distribution"><span class="math display">
+    P(\theta) = \frac{P^{*}(\theta)}{Z},
+\tag{1}</span></span> where <span class="math inline">Z</span> is the normalising constant (that we do not know): <span id="eq-normalising-constant"><span class="math display">
+    Z = \int P^{*}(\theta) \, \operatorname{d}^{N}\theta.
+\tag{2}</span></span> Thus, it is hard to draw samples from <span class="math inline">P(\theta)</span> since <span class="math inline">Z</span> is often assumed to be unknown. Even if we know <span class="math inline">Z</span>, drawing samples from <span class="math inline">P(\theta)</span> is still challenging problem, especially in high-dimensional spaces because there is no obvious way to sample from <span class="math inline">P(\theta)</span> without enumerating all of the possible states.</p>
+</div>
+</div>
+<p>There are various sampling techniques to generate samples from a given distribution, such as <em>important sampling</em>, <em>rejection sampling</em> or <em>Metropolis - Hastings</em> method. Here, we focus on a specific method, known as <em>Hamiltonian Monte Carlo</em>, which belongs to the family of the <em>Metropolis - Hastings</em> method.</p>
+</section>
+<section id="the-metropolis---hastings-method" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="the-metropolis---hastings-method"><span class="header-section-number">2</span> The Metropolis - Hastings method</h2>
+<p>The Metropolis - Hastings algorithm uses a proposal density <span class="math inline">Q(\theta | \theta^{(t)})</span> which depends on the current state <span class="math inline">\theta^{(t)}</span>. For example, <span class="math inline">Q(\theta; \theta^{(t)})</span> might be a simple Gaussian distribution centred on the current <span class="math inline">\theta^{(t)}</span>. The proposal density <span class="math inline">Q(\theta; \theta^{(t)})</span> can be any fixed probability distribution from which we can easily sample.</p>
+<p>As before, it is assumed that the un-normalised probability <span class="math inline">P^{*}(\theta)</span> can be evaluated for any <span class="math inline">\theta</span>. One can generate the next state <span class="math inline">\theta^{\prime}</span> from the proposal distribution <span class="math inline">Q(\theta; \theta^{(t)})</span>. To decide whether to accept the new state, a quantity (also known as Metropolis - Hastings score) is calculated. Depending on the value of the score, the next state can be <em>(i)</em> accepted, or <em>(ii)</em> accepted with certain probability depending on the value of the score.</p>
+<ul>
+<li>If the step is accepted, then <span class="math inline">\theta^{(t + 1)} = \theta^{\prime}</span>.</li>
+<li>Otherwise, the previous state is kept: <span class="math inline">\theta^{(t + 1)} = \theta^{(t)}</span>.</li>
+</ul>
+<p>The details of the Metropolis - Hastings algorithm can be seen in <a href="#metropolis-hastings">Algorithm Metropolis - Hastings</a>.</p>
+<pre id="metropolis-hastings" class="pseudocode">\begin{algorithm}
+    \caption{The Metropolis - Hastings sampling method}
+    \begin{algorithmic}
+        \REQUIRE un-normalised probability distribution $P^{*}(\theta)$
+        \REQUIRE proposal distribution $Q(\theta; \theta^{(t)})$
+        \STATE initialise $\theta^{(0)}$
+        \WHILE{$t = 0, 1, \dots, T, \dots, T_{\mathrm{end}}$}
+            \STATE $\theta^{\prime} \gets$ \Call{sample-from-proposal-distribution}{$Q(\theta; \theta^{(t)})$} \Comment{generate a new state}
+            \STATE $a \gets \displaystyle \frac{p^{*}(\theta^{\prime})}{p^{*}(\theta^{(t)})} \frac{q(\theta^{(t)}; \theta^{\prime})}{q(\theta^{\prime}; \theta^{(t)})}$ \Comment{calculate Metropolis - Hastings score}
+            \IF{$a \ge 1$}
+                \STATE $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state}
+            \ELSE
+                \STATE $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state}
+            \ENDIF
+        \ENDWHILE
+        \RETURN $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$
+    \end{algorithmic}
+\end{algorithm}
+</pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Different from rejection sampling
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In rejection sampling, rejected points are discarded and have no influence on the list of samples <span class="math inline">\{\theta^{(r)}\}</span> that are collected to represent the distribution <span class="math inline">P(\theta)</span>. In Metropolis - Hastings method, although rejected points are also discarded, the difference is that a rejection causes the current state <span class="math inline">\theta^{(t)}</span> to be written again onto the list.</p>
+</div>
+</div>
+<p><strong>Convergence of the Metropolis - Hastings method</strong> &nbsp; It has been shown that for any positive proposal distribution, i.e., <span class="math inline">Q(\theta; \theta^{(t)}) &gt; 0, \forall \theta, \theta^{(t)}</span>, as <span class="math inline">t\to+\infin</span>, the probability distribution of <span class="math inline">\theta^{(t)}</span> converges to its true distribution <span class="math inline">P(\theta)</span> defined in <a href="#eq-exact-distribution">Equation&nbsp;1</a>.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dependency of samples generated from the Metropolis - Hastings method
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Metropolis - Hastings method is an example of a <em>Markov chain Monte Carlo</em> method (abbreviated MCMC). In MCMC methods, a Markov process is employed to generate a sequence of states <span class="math inline">\{\theta\}</span>, where each sample <span class="math inline">\theta^{(t)}</span> has a probability distribution depend on the previous state, <span class="math inline">\theta^{(t - 1)}</span>. And because successive samples are dependent, the Markov chain may need to be run for a considerable amount of time to effectively generate independent samples from the hidden distribution <span class="math inline">P(\theta)</span>.</p>
+</div>
+</div>
+</section>
+<section id="the-hamiltonian-monte-carlo-method" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="the-hamiltonian-monte-carlo-method"><span class="header-section-number">3</span> The Hamiltonian Monte Carlo method</h2>
+<p>The Hamiltonian Monte Carlo method is an instance of the Metropolis - Hastings method that is applicable to continuous domain. It makes use of gradient information to reduce random walk behaviour, potentially resulting in a more efficient MCMC method. In particular, it replaces the proposal distribution <span class="math inline">Q(\theta; \theta^{(t)})</span> by an implicit distribution in the form of a differential equation.</p>
+<p>Similar to <a href="#the-metropolis---hastings-method">the Metropolis - Hastings method</a>, we assume that the density <span class="math inline">P(\theta)</span> is known up to a normalised constant and written in the form of the <em>potential energy</em> <span class="math inline">U(\theta)</span> as follows: <span class="math display">
+    P(\theta) = \frac{\exp(-U(\theta))}{Z}.
+</span></p>
+<p>The <em>potential energy</em>, <span class="math inline">U(\theta)</span>, is defined as: <span id="eq-potential-energy"><span class="math display">
+\boxed{
+    U(\theta) = - \sum_{x \in \mathcal{D}} \ln p(x | \theta) - \ln p(\theta),
+}
+\tag{3}</span></span> where <span class="math inline">p(x | \theta)</span> is a likelihood function, and <span class="math inline">p(\theta)</span> is the prior distribution of <span class="math inline">\theta</span>.</p>
+<p>The Hamiltonian Monte Carlo method augments the variable of interest, <span class="math inline">\theta</span>, by an <span class="math inline">N_{\rho}</span>-dimensional <em>momentum variables</em> vector <span class="math inline">\rho</span>. A common analogy is that <span class="math inline">\theta</span> is the position, while <span class="math inline">\rho</span> is the velocity of an object of interest. In that case, the <em>kinetic energy</em> <span class="math inline">K(\rho)</span> is defined as follows: <span id="eq-kinetic-energy"><span class="math display">
+\boxed{
+    K(\rho) = \frac{1}{2} \rho^{\top} M^{-1} \rho,
+}
+\tag{4}</span></span> where <span class="math inline">M \in \mathbb{R}^{N_{\rho} \times N_{\rho}}</span> is symmetric positive definite matrix known as <em>mass matrix</em>.</p>
+<p>The Hamiltonian dynamics of the whole system can then be defined as: <span class="math display">
+    H(\theta, \rho) = U(\theta) + K(\rho).
+</span></p>
+<p>One can then define the joint probability density as: <span id="eq-joint-distribution"><span class="math display">
+    p_{H}(\theta, \rho) = \frac{\exp(-H(\theta, \rho))}{Z_{H}} = \frac{1}{Z_{H}} \exp(-U(\theta)) \, \exp(-K(\rho)).
+\tag{5}</span></span></p>
+<p>Since the probability distribution <span class="math inline">p_{H}</span> is separable, the marginal distribution of <span class="math inline">\theta</span> is the desired distribution <span class="math inline">p(\theta) = \frac{\exp(-U(\theta))}{Z}</span>. Thus, simply discarding the momentum variables <span class="math inline">\rho</span> would allow to obtain a sequence of samples <span class="math inline">\{\theta^{(t)}\}</span> that asymptotically come from <span class="math inline">P(\theta)</span>.</p>
+<p>The characteristics of a Hamiltonian dynamics can be written as: <span id="eq-hamiltonian-dynamics"><span class="math display">
+\begin{dcases}
+    \frac{\operatorname{d}\theta}{\operatorname{d}t} &amp; = \frac{\partial H(\theta, \rho)}{\partial \rho} = M^{-1} \rho \\
+    &amp; \\
+    \frac{\operatorname{d}\rho}{\operatorname{d}t} &amp; = - \frac{\partial H(\theta, \rho)}{\partial \theta} = -\nabla_{\theta} U(\theta).
+\end{dcases}
+\tag{6}</span></span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+2D analogy of the Hamiltonian dynamics <span class="citation" data-cites="chen2014stochastic">(<a href="#ref-chen2014stochastic" role="doc-biblioref">Chen, Fox, and Guestrin 2014</a>)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To analogise the Hamiltonian dynamics, one can imagine a hockey puck sliding over a frictionless ice surface of varying height. The potential energy is proportional to the height of the surface at the current position, <span class="math inline">\theta</span>, of the puck, while the kinectic energy is proportional to the momentum, <span class="math inline">\rho</span>, and the mass, <span class="math inline">M</span>, of the hockey puck.</p>
+<p>If the surface is flat: <span class="math inline">\nabla_{\theta} U(\theta) = 0,</span> then the hockey puck will move at a constant speed.</p>
+<p>If it is going uphill (positive slope: <span class="math inline">\nabla_{\theta} U(\theta) &gt; 0</span>), the kinetic energy decreases as the potential energy increases util the kinetic reaches 0 (equivalently, <span class="math inline">\rho = 0</span>). The hockey puck stops in an instant and begins to slide back down the hill, resulting in increasing the kinectic energy and decreasing the potential energy.</p>
+</div>
+</div>
+<p><a href="#eq-hamiltonian-dynamics">Equation&nbsp;6</a> defines the transformation of the two variables <span class="math inline">(\theta, \rho)</span> from time <span class="math inline">t</span> to time <span class="math inline">t + \Delta t.</span> This transformation is <em>reversible</em>. Moreover, the Hamiltonian is invariant (or the preservation of the Hamiltonian <span class="math inline">H(\theta, \rho)</span>): <span class="math display">
+    \frac{\operatorname{d} H}{\operatorname{d} t} = \sum_{i = 1}^{N} \frac{\operatorname{d} \theta_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \theta_{i}} + \frac{\operatorname{d} \rho_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \rho_{i}} = \sum_{d = 1}^{N} \frac{\partial H}{\partial \rho_{i}} \frac{\partial H}{\partial \theta_{i}} -\frac{\partial H}{\partial \theta_{i}} \frac{\partial H}{\partial \rho_{i}} = 0.
+</span></p>
+<p>This makes any proposal <span class="math inline">(\theta, \rho)</span> obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in <span class="math inline">H(\theta, \rho)</span>, which is zero if the simulation is perfect. Please refer to <a href="#hamiltonian-mc">Algorithm Hamiltonian MC</a> for further details of the Hamiltonian Monte Carlo method.</p>
+<pre id="hamiltonian-mc" class="pseudocode">\begin{algorithm}
+    \caption{Hamiltonian Monte Carlo method}
+    \begin{algorithmic}
+        \REQUIRE potential energy $U(.)$
+        \REQUIRE mass matrix $M$
+        \REQUIRE step size used in the integration to solve PDE $\varepsilon$
+        \STATE initialise $\theta^{(1)}$
+        \WHILE{$t = 1, 2, \dots, T, \dots, T_{\mathrm{end}}$}
+            \STATE sample momentum: $\rho^{(t)} \sim \mathcal{N}(0, M^{-1})$
+            \STATE evaluate total energy: $H \gets U(\theta^{(t)}) + K(\rho^{(t)})$
+            \STATE $\theta^{(t, 1)} \gets \theta^{(t)}$
+            \STATE $\rho^{(t, 1)} \gets \rho^{(t)}$
+            \FOR{$i = 1, 2, \dots, \tau$} \Comment{Simulate for next state}
+                \STATE $\rho^{(t, i + \frac{1}{2})} \gets \rho^{(t, i)} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make a half-step in $\rho$}
+                \STATE $\theta^{(t, i + 1)} \gets \theta^{(t, i)} + \varepsilon M^{-1} \rho^{(t, i + \frac{1}{2})}$ \Comment{make a step in $\theta$}
+                \STATE $\rho^{(t, i + 1)} \gets \rho^{(t, i + \frac{1}{2})} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make another half-step in $\rho$}
+            \ENDFOR
+            \STATE $\theta^{\prime} \gets \theta^{(t, \tau)}$ \Comment{new state of $\theta$}
+            \STATE $\rho^{\prime} \gets \rho^{(t, \tau)}$ \Comment{new state of momentum}
+            \STATE evaluate total energy with the new state: $H_{\mathrm{new}} \gets U(\theta^{\prime}) + K(\rho^{\prime})$
+            \STATE calculate: $\operatorname{d}H \gets H_{\mathrm{new}} - H$
+            \STATE sample: $u \sim \mathrm{uniform}(0, 1)$
+            \IF{$u &lt; \exp(-\operatorname{d}H)$} \Comment{Metropolis - Hastings step}
+                \STATE $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state}
+            \ELSE
+                \STATE $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state}
+            \ENDIF
+        \ENDWHILE
+        \RETURN $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$
+    \end{algorithmic}
+\end{algorithm}
+</pre>
+<p>Despite its efficiency, the Hamiltonian Monte Carlo method still requires to run through the <em>entire</em> dataset to perform the integration for <span class="math inline">\theta</span> as well as the Metropolis - Hastings step to decide whether to accept or reject the new state generated from the Hamiltonian dynamics. Hence, in the lense of machine learning, it is, however, impractical, especially for large-scaled datasets. It, therefore, motivates further studies and development to make the method practical.</p>
+</section>
+<section id="stochastic-gradient-hamiltonian-monte-carlo" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="stochastic-gradient-hamiltonian-monte-carlo"><span class="header-section-number">4</span> Stochastic gradient Hamiltonian Monte Carlo</h2>
+<p>To reduce the cost calculating <span class="math inline">\nabla_{\theta} U(\theta)</span> on the entire dataset <span class="math inline">\mathcal{D}</span>, stochastic versions of Hamiltonian Monte Carlo are proposed in <span class="citation" data-cites="welling2011bayesian chen2014stochastic">(<a href="#ref-welling2011bayesian" role="doc-biblioref">Welling and Teh 2011</a>; <a href="#ref-chen2014stochastic" role="doc-biblioref">Chen, Fox, and Guestrin 2014</a>)</span>. In this case, the <em>whole-batch</em> gradient, <span class="math inline">\nabla_{\theta} U(\theta)</span>, is estimated by a noisy estimator, <span class="math inline">\nabla_{\theta} \tilde{U}(\theta)</span>, which is based on a single mini-batch, <span class="math inline">\tilde{\mathcal{D}}</span>, of data. Such a noisy estimator can be written as follows: <span id="eq-noisey-potential-energy"><span class="math display">
+    \nabla_{\theta} \tilde{U}(\theta) = - \frac{|\mathcal{D}|}{|\tilde{\mathcal{D}|}} \sum_{x \in \tilde{\mathcal{D}}} \ln p(x | \theta) - \ln p(\theta).
+\tag{7}</span></span></p>
+<p>If there are many mini-batches, we can apply the <em>Central Limit Theorem</em> to approximate the noisy gradient of the potential energy as follows: <span class="math display">
+    \nabla_{\theta} \tilde{U}(\theta) \approx \nabla_{\theta} U(\theta) + \sqrt{V(\theta)} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I),
+</span> where <span class="math inline">V(\theta)</span> is the covariance matrix of the stochastic gradient noise <span class="citation" data-cites="welling2011bayesian">(<a href="#ref-welling2011bayesian" role="doc-biblioref">Welling and Teh 2011</a>, Eq. (6))</span>: <span class="math display">
+    V(\theta) = \mathbb{E}_{\text{mini-batch of } x \in \tilde{\mathcal{D}}} \left[ \nabla_{\theta} \tilde{U}(\theta) \, \nabla_{\theta}^{\top} \tilde{U}(\theta) \right] - \nabla_{\theta} U(\theta) \, \nabla_{\theta}^{\top} U(\theta),
+</span> and <span class="math inline">\sqrt{V}(\theta)</span> denotes the matrix such that <span class="math inline">\sqrt{V(\theta)} \left( \sqrt{V(\theta)} \right)^{\top} = V(\theta)</span> (e.g., Cholesky decomposition).</p>
+<section id="naive-stochastic-gradient-hamiltonian-monte-carlo" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="naive-stochastic-gradient-hamiltonian-monte-carlo"><span class="header-section-number">4.1</span> Naive stochastic gradient Hamiltonian Monte Carlo</h3>
+<p>A naive way is to directly substitute the noisy estimator in <a href="#eq-noisey-potential-energy">Equation&nbsp;7</a> into the Hamiltonian dynamics in <a href="#eq-hamiltonian-dynamics">Equation&nbsp;6</a>: <span id="eq-noisy-hamiltonian-dynamics"><span class="math display">
+\boxed{
+    \begin{dcases}
+        \frac{\operatorname{d} \theta}{\operatorname{d} t} &amp; =  M^{-1} \rho \\
+        &amp; \\
+        \frac{\operatorname{d} \rho}{\operatorname{d} t} &amp; = -\nabla_{\theta} \tilde{U}(\theta) = - \nabla_{\theta} U(\theta) + \sqrt{V(\theta)} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I).
+    \end{dcases}
+}
+\tag{8}</span></span></p>
+<p>In this case, the Hamiltonian is not guaranteed to be invariant: <span class="math display">
+\begin{aligned}
+    \frac{\operatorname{d} H}{\operatorname{d} t} &amp; = \sum_{i = 1}^{N} \frac{\operatorname{d}\theta_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \theta_{i}} + \frac{\operatorname{d} \rho_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \rho_{i}} \\
+    &amp; = \sum_{i = 1}^{N} (M^{-1} \rho)_{i} \, \frac{\partial U(\theta)}{\partial \theta_{i}} - \left( \frac{\partial U(\theta)}{\partial \theta_{i}} + \left( \sqrt{V(\theta)} \epsilon \right)_{i} \right) \, (M^{-1} \rho)_{i}, \\
+    &amp; = \left[ \sqrt{V(\theta)} \epsilon \right]^{\top} M^{-1} \rho.
+\end{aligned}
+</span></p>
+<p>When using a larger mini-batch size: <span class="math inline">\tilde{\mathcal{D}} \to \mathcal{D}</span>, the variance <span class="math inline">V(\theta)</span> is smaller: <span class="math inline">V(\theta) \to 0</span>, resulting in <span class="math inline">\frac{\operatorname{d} H}{\operatorname{d} t} \to 0.</span> At the limit, the total energy <span class="math inline">H(\theta, \rho)</span> is preserved, which is the <em>full-batch</em> Hamiltonian Monte Carlo mentioned <a href="#the-hamiltonian-monte-carlo-method">above</a>.</p>
+<p>When using a much smaller mini-batch size: <span class="math inline">|\tilde{\mathcal{D}}| \ll |\mathcal{D}|</span>, the noise induced by the mini-batch, <span class="math inline">V(\theta)</span>, is large (e.g., in terms of matrix norm), resulting in <span class="math inline">\frac{\operatorname{d} H}{\operatorname{d} t} \neq 0.</span> Consequently, the Hamiltonian is no longer invariant.</p>
+<p>To correct the error due to the effect of mini-batches, one needs to perform one Metropolis - Hastings step to either reject or accept the new state. Either running a short or long simulation (corresponding to a small or large <span class="math inline">\tau</span> in <a href="#hamiltonian-mc">Algorithm Hamiltonian Monte Carlo</a>), the cost of a Metropolis - Hastings step is still extremely large and wasteful if the sample is rejected. One workaround solution is to run a Metropolis - Hastings step on a subset of data instead of the entire dataset <span class="citation" data-cites="korattikara2014austerity bardenet2014towards">(<a href="#ref-korattikara2014austerity" role="doc-biblioref">Korattikara, Chen, and Welling 2014</a>; <a href="#ref-bardenet2014towards" role="doc-biblioref">Bardenet, Doucet, and Holmes 2014</a>)</span>. There are, of course, some tradeoffs using such approaches.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hockey puck on ice surface with random wind
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To continue with the same analogy of a hockey puck, the environment is now different with random wind blowing over the ice surface. That random wind may push the hockey puck further away in some random direction.</p>
+</div>
+</div>
+<p>Indeed, the joint distribution <span class="math inline">p_{H}(\theta, \rho)</span> can be determined to be stationary or not by analysing the corresponding Fokker - Planck equation as shown in <a href="#stationary-distribution-of-parameters-obtained-from-sgd">the Appendix about the stationary of stochastic gradient due to mini-batches</a>. In this case, <span class="math inline">p_{H}(\theta, \rho)</span> is proved to be non-stationary.</p>
+<p>In <span class="citation" data-cites="chaudhari2018stochastic">(<a href="#ref-chaudhari2018stochastic" role="doc-biblioref">Chaudhari and Soatto 2018</a>)</span>, the joint distribution <span class="math inline">p_{H}(\theta, \rho) \propto \exp(-H(\theta, \rho))</span> in <a href="#eq-joint-distribution">Equation&nbsp;5</a> is assumed to be stationary under the stochastic dynamics in <a href="#eq-noisy-hamiltonian-dynamics">Equation&nbsp;8</a>. This is equivalent to proving that the left hand side term in the Fokker - Planck equation is zero: <span class="math inline">\frac{\partial p_{H}(\theta, \rho)}{\partial t} = 0</span>. The authors then analyse and show that <em>the stationary distribution does not converge to the desired posterior distribution in general</em> <span class="citation" data-cites="chaudhari2018stochastic">(<a href="#ref-chaudhari2018stochastic" role="doc-biblioref">Chaudhari and Soatto 2018</a>)</span>. This is, however, only true if the stationary distribution exists. And in this case, we prove that it does not (the distribution is non-stationary as shown in <a href="#stochastic-gradient-with-mini-batches">Section stationary of stochastic gradient due to mini-batches</a>).</p>
+</section>
+<section id="stochastic-gradient-hamiltonian-monte-carlo-with-friction" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="stochastic-gradient-hamiltonian-monte-carlo-with-friction"><span class="header-section-number">4.2</span> Stochastic gradient Hamiltonian Monte Carlo with “friction”</h3>
+<p>One way to overcome the stochastic estimation for the gradient of the potential energy, <span class="math inline">\nabla_{\theta} \tilde{U}(\theta)</span>, is to introduce a “friction” term to the momentum update: <span class="math display">
+\begin{dcases}
+    \frac{\operatorname{d} \theta}{\operatorname{d} t} &amp; =  M^{-1} \rho \\
+    &amp; \\
+    \frac{\operatorname{d} \rho}{\operatorname{d} t} &amp; = - \nabla_{\theta} U(\theta) \textcolor{Crimson}{- F M^{-1} \rho} + \sqrt{V(\theta)} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I),
+\end{dcases}
+</span> where: <span class="math inline">F \in \mathbb{R}^{N_{\rho} \times N_{\rho}}</span> denotes friction coefficient matrix. One requirement for <span class="math inline">F</span> is that: <span class="math inline">F \succeq \sqrt{V}</span> (see the section on <a href="#stochastic-gradient-with-friction">stationary SGD with injected noise</a> for further details).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hockey puck on a friction surface with random wind
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To continue with the same analogy, the hockey puck is now sliding not on a frictionless ice surface, but a street surface which induces friction from the asphalt. There is still a random wind blowing. However, the friction of the surface prevents the hockey puck from moving too far away than the position it is expected.</p>
+</div>
+</div>
+<p>In this case, one can prove that the joint distribution <span class="math inline">p_{H}(\theta, \rho)</span> is stationary.</p>
+<p>To link this sampling to the stochastic gradient descent, one can sample <span class="math inline">\rho(t) \sim \mathcal{N}(0, M)</span> and apply one leapfrog step as follows: <span class="math display">
+\begin{dcases}
+    \rho\left( t + \frac{1}{2} \right) &amp; = \rho(t) + \frac{\alpha}{2} \left[ - \nabla_{\theta} U(\theta) \textcolor{Crimson}{- F M^{-1} \rho} + \sqrt{V(\theta)} \epsilon \right] \\
+    \theta (t + 1) &amp; = \theta(t) + \alpha M^{-1} \rho\left( t + \frac{1}{2} \right).
+\end{dcases}
+</span></p>
+<p>It can be simplified by substituting <span class="math inline">\rho(t + \frac{\alpha}{2})</span> into the expression of <span class="math inline">\theta</span> to obtain: <span class="math display">
+\boxed{
+    \theta(t + 1) = \theta(t) + \frac{\alpha^{2}}{2} M^{-1} \left[ - \nabla_{\theta} U(\theta) \textcolor{Crimson}{- F M^{-1} \rho} + \sqrt{V(\theta)} \epsilon \right] + \alpha M^{-1} \rho(t),
+}
+</span> which has a similar form as the <em>Stochastic Gradient Langevin Dynamics</em> <span class="citation" data-cites="welling2011bayesian">(<a href="#ref-welling2011bayesian" role="doc-biblioref">Welling and Teh 2011</a>)</span>.</p>
+</section>
+</section>
+<section id="conclusion" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">5</span> Conclusion</h2>
+<p>This post reviews some seminar studies in <em>stochastic gradient</em> and <em>Monte Carlo sampling</em>. There have been many successive studies that explored and extended further. Of course, they have mostly developed on top of these studies and achieved better performance. However, it is important to understand the basic before moving to advance. Hopefully, this post would be found useful in one or another way.</p>
+</section>
+
+
+
+
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="appendices" class="level2 appendix unnumbered"><h2 class="anchored quarto-appendix-heading">Appendices</h2><div class="quarto-appendix-contents">
+
+</div></section><section id="fokker---planck-equation" class="level2 appendix" data-number="6"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">6</span> Fokker - Planck equation</h2><div class="quarto-appendix-contents">
+
+<p>The Fokker - Planck equation is used to analyse the evolution of the distribution of the variables in stochastic differential equation: <span id="eq-sde"><span class="math display">
+    \operatorname{d} x(t) = - \nabla f(x) \operatorname{d} t + \sqrt{2 \tau V(x)} \operatorname{d} W(t),
+\tag{9}</span></span> where <span class="math inline">f(x)</span> is some function (e.g., loss function), <span class="math inline">V(x)</span> is a diffusion matrix and <span class="math inline">W(t)</span> is the Brownian motion, and <span class="math inline">\tau</span> is a temperature.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lemma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The distribution <span class="math inline">p(x) \propto \exp\left( -H(x) \right)</span> of the variable <span class="math inline">x</span> in <a href="#eq-sde">Equation&nbsp;9</a> evolves following the Fokker - Planck equation: <span id="eq-fokker-planck-equation"><span class="math display">
+    \frac{\partial p(x)}{\partial t} = \nabla \cdot \left[ \nabla f(x) p(x) + \tau \nabla \cdot \left[ V(x) p(x) \right] \right],
+\tag{10}</span></span> where: <span class="math inline">\nabla \cdot</span> denotes the divergence, and the divergence operator is applied column-wise to matrices.</p>
+</div>
+</div>
+<p>Thus, one can prove that the distribution of the solution in the stochastic equation <a href="#eq-sde">Equation&nbsp;9</a> is invariant by simply proving that <span class="math inline">\partial p(x)/\partial t = 0</span>.</p>
+</div></section><section id="stationary-distribution-of-parameters-obtained-from-sgd" class="level2 appendix" data-number="7"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7</span> Stationary distribution of parameters obtained from SGD</h2><div class="quarto-appendix-contents">
+
+<p>The main focus of this section is to investigate the stationary distribution <span class="math inline">p(\theta, \rho)</span> obtained through the stochastic gradient Hamiltonian Monte Carlo. Two types of noises are considered: <em>(i)</em> noise due to mini-batch effect and <em>(ii)</em> injected noise as in <span class="citation" data-cites="welling2011bayesian">(<a href="#ref-welling2011bayesian" role="doc-biblioref">Welling and Teh 2011</a>)</span>. The main tool is the Fokker - Planck equation presented in <a href="#fokker---planck-equation">the section about the Fokker - Planck equation</a>. To use the Fokker - Planck equation, the two variables of interest are coupled into a single vector: <span class="math display">
+    z = \begin{bmatrix}
+        \theta &amp; \rho
+    \end{bmatrix}^{\top}.
+</span></p>
+
+
+</div></section><section id="stochastic-gradient-with-mini-batches" class="level3 appendix" data-number="7.1"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7.1</span> Stochastic gradient with mini-batches</h2><div class="quarto-appendix-contents">
+
+<p>The dynamics in <a href="#eq-noisy-hamiltonian-dynamics">Equation&nbsp;8</a> can be rewritten as: <span id="eq-stochastic-hamiltonian-mc-naive"><span class="math display">
+    \frac{\operatorname{d} z}{\operatorname{d} t} = \frac{\operatorname{d}}{\operatorname{d} t} \begin{bmatrix}
+        \theta \\
+        \rho
+    \end{bmatrix} = - \underbrace{\begin{bmatrix}
+        0 &amp; -I \\
+        I &amp; 0
+    \end{bmatrix}}_{G} \underbrace{\begin{bmatrix}
+        \nabla_{\theta} U(\theta) \\
+        M^{-1} \rho
+    \end{bmatrix}}_{\nabla H(z)} + \underbrace{\begin{bmatrix}
+        0 &amp; 0 \\
+        0 &amp; \sqrt{V(\theta)}
+    \end{bmatrix}}_{D(z)} \underbrace{\begin{bmatrix}
+        0 \\
+        \epsilon
+    \end{bmatrix}}_{\epsilon^{\prime}},
+\tag{11}</span></span> where: <span class="math inline">\epsilon \sim \mathcal{N}(0, I)</span>.</p>
+<p>The corresponding Fokker - Planck equation can be written as: <span class="math display">
+    \frac{\partial p(z)}{\partial t} = \nabla \cdot \left[ G \, \nabla H(z) \, p(z) + \nabla \cdot \left[ D(z) p(z) \right] \right].
+</span></p>
+<p>Note that: <span class="math inline">p(z) = \exp\left( -H(z) \right) / Z</span> (assuming the temperature: <span class="math inline">\tau = 1</span>), then <span class="math inline">H(z) = - \ln p(z) - \ln Z</span>. Thus, we can rewrite the Fokker - Planck equation as follows: <span id="eq-fokker-sgd-minibatch"><span class="math display">
+\begin{aligned}
+    \frac{\partial p(z)}{\partial t} &amp; = \nabla \cdot \left[ G \, \nabla \left[ -\ln p(z) \right] \, p(z) + \nabla \cdot \left[ D(z) p(z) \right] \right] \\
+    &amp; = \nabla \cdot \left[ - G \, \nabla p(z) + \nabla \cdot \left[ D(z) p(z) \right] \right] \\
+    &amp; = \nabla \cdot \left[ - G \, \nabla p(z) \right] + \nabla \cdot \left[ \nabla \cdot \left[ D(z) p(z) \right] \right] \\
+    &amp; = \nabla \cdot \left[ \nabla \cdot \left[ D(z) p(z) \right] \right].
+\end{aligned}
+\tag{12}</span></span></p>
+<p>For the last equality, we use the fact that: <span class="math display">
+    \nabla \cdot \left[ G \, \nabla p(z) \right] = -\frac{\partial^{2} p(\theta, \rho)}{\partial \theta \, \partial \rho} + \frac{\partial^{2} p(\theta, \rho)}{\partial \theta \, \partial \rho} = 0.
+</span></p>
+<p>The result in <a href="#eq-fokker-sgd-minibatch">Equation&nbsp;12</a> does not guarantee that <span class="math inline">\partial p(\theta, \rho) / \partial t = 0.</span> In other words, there is not enough evidence to prove that <span class="math inline">p(\theta, \rho)</span> is stationary.</p>
+<p>In practice, when we perform SGD, the covariance matrix <span class="math inline">V(\theta)</span> becomes smaller and smaller. In such case, we can assume that <span class="math inline">V(\theta) \approx 0</span>, and hence, the distribution <span class="math inline">p(\theta, \rho)</span> is stationary.</p>
+</div></section><section id="stochastic-gradient-with-friction" class="level3 appendix" data-number="7.2"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7.2</span> Stochastic gradient with friction</h2><div class="quarto-appendix-contents">
+
+
+
+</div></section><section id="known-covariance-matrix" class="level4 appendix" data-number="7.2.1"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7.2.1</span> Known covariance matrix </h2><div class="quarto-appendix-contents">
+
+<p>According to <span class="citation" data-cites="chen2014stochastic">(<a href="#ref-chen2014stochastic" role="doc-biblioref">Chen, Fox, and Guestrin 2014</a>)</span>, if the covariance matrix <span class="math inline">V(\theta)</span> induced by the mini-batch effect is known, then one can introduce a friction force to the system as follows: <span class="math display">
+\begin{dcases}
+    \frac{\operatorname{d} \theta}{\operatorname{d} t} &amp; =  M^{-1} \rho \\
+    \frac{\operatorname{d} \rho}{\operatorname{d} t} &amp; = - \nabla_{\theta} U(\theta) \textcolor{Crimson}{- \sqrt{V(\theta)} M^{-1} \rho} + \sqrt{V(\theta)} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I).
+\end{dcases}
+</span></p>
+<p>This can be rewritten in the form of vectors and matrices as follows: <span class="math display">
+    \frac{\operatorname{d}}{\operatorname{d} t} \begin{bmatrix}
+        \theta \\
+        \rho
+    \end{bmatrix} = - \begin{bmatrix}
+        0 &amp; -I \\
+        I &amp; \sqrt{V(\theta)}
+    \end{bmatrix} \begin{bmatrix}
+        \nabla_{\theta} U(\theta) \\
+        M^{-1} \rho
+    \end{bmatrix} + \begin{bmatrix}
+        0 &amp; 0 \\
+        0 &amp; \sqrt{V(\theta)}
+    \end{bmatrix} \begin{bmatrix}
+        0 \\
+        \epsilon
+    \end{bmatrix}.
+</span></p>
+<p>Following the notations defined in <a href="#eq-stochastic-hamiltonian-mc-naive">Equation&nbsp;11</a>, the system dynamics can be rewritten as: <span class="math display">
+    \frac{\operatorname{d} z}{\operatorname{d} t} = - \left[ G + D(z) \right] \nabla H(z) + D(z) \epsilon^{\prime}.
+</span></p>
+<p>The corresponding Fokker - Planck equation is then written as: <span class="math display">
+\begin{aligned}
+    \frac{\partial p(z, t)}{\partial t} &amp; = \nabla \cdot \left[ \left[ G + D(z) \right] \nabla H(z) \, p(z) + \nabla \cdot \left[ D(z) \, p(z) \right] \right] \\
+    &amp; = \nabla \cdot \left[ - D(z) \nabla p(z) + \nabla \cdot \left[ D(z) \, p(z) \right] \right] \\
+    &amp; = \nabla \cdot \left[ - D(z) \nabla p(z) + D(z) \nabla p(z) + p(z) \nabla \cdot D(z) \right] \\
+    &amp; = \nabla \cdot \left[ p(z) \nabla \cdot D(z) \right] \\
+    &amp; = 0.
+\end{aligned}
+</span></p>
+<p>The third equality is due to the Identity 1.11.16 in <a href="https://pkel015.connect.amazon.auckland.ac.nz/SolidMechanicsBooks/Part_III/Chapter_1_Vectors_Tensors/Vectors_Tensors_14_Tensor_Calculus.pdf">Tensor calculus note</a>.</p>
+<p>The last equality holds due to the fact that <span class="math inline">\nabla \cdot D(z) = 0</span>. This can easily be proved by using the definition of <em>divergence</em> <span class="math inline">\nabla \cdot</span> and the structure of <span class="math inline">D(z)</span> (noise is added to <span class="math inline">\rho</span> although it depends on <span class="math inline">\theta</span>).</p>
+<p>In summary, injecting a noise corresponding to a friction force <span class="math inline">\textcolor{BrickRed}{- \sqrt{V(\theta)} M^{-1} \rho}</span> results in a stationary distribution <span class="math inline">p_{H}(\theta, \rho)</span>.</p>
+</div></section><section id="practical-stochastic-gradient-hamiltonian-monte-carlo-with-unknown-covariance-matrix" class="level4 appendix" data-number="7.2.2"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">7.2.2</span> Practical stochastic gradient Hamiltonian Monte Carlo with unknown covariance matrix</h2><div class="quarto-appendix-contents">
+
+<p>In practice, we might not know the covariance matrix <span class="math inline">V(\theta)</span>. In such a situation, one might introduce a friction matrix <span class="math inline">F</span> that satisfies: <span class="math inline">F \succeq \sqrt{V(\theta)}</span>. In other words, <span class="math inline">F - \sqrt{V(\theta)} \succeq 0</span> is positive definite. In this case, the system is over-damped and the total energy <span class="math inline">H(\theta, \rho)</span> will gradually decrease to 0.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In certain situations, one can prove that the stochastic gradient Hamiltonian Carlo results in a stationary distribution <span class="math inline">p_{H}(\theta, \rho)</span>, it does not mean that <span class="math inline">p_{H}(\theta, \rho)</span> is the true posterior of interest (the one without any noise).</p>
+</div>
+</div>
+</div></section><section id="references" class="level2 appendix unnumbered"><h2 class="anchored quarto-appendix-heading">References</h2><div class="quarto-appendix-contents">
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bardenet2014towards" class="csl-entry" role="listitem">
+Bardenet, Rémi, Arnaud Doucet, and Chris Holmes. 2014. <span>“Towards Scaling up <span>M</span>arkov Chain <span>M</span>onte <span>C</span>arlo: An Adaptive Subsampling Approach.”</span> In <em>International Conference on Machine Learning</em>, 405–13. PMLR.
+</div>
+<div id="ref-chaudhari2018stochastic" class="csl-entry" role="listitem">
+Chaudhari, Pratik, and Stefano Soatto. 2018. <span>“Stochastic Gradient Descent Performs Variational Inference, Converges to Limit Cycles for Deep Networks.”</span> In <em>International Conference on Learning Representations</em>.
+</div>
+<div id="ref-chen2014stochastic" class="csl-entry" role="listitem">
+Chen, Tianqi, Emily Fox, and Carlos Guestrin. 2014. <span>“Stochastic Gradient <span>H</span>amiltonian <span>M</span>onte <span>C</span>arlo.”</span> In <em>International Conference on Machine Learning</em>, 1683–91. PMLR.
+</div>
+<div id="ref-korattikara2014austerity" class="csl-entry" role="listitem">
+Korattikara, Anoop, Yutian Chen, and Max Welling. 2014. <span>“Austerity in <span>MCMC</span> Land: <span>C</span>utting the <span>M</span>etropolis - <span>H</span>astings Budget.”</span> In <em>International Conference on Machine Learning</em>, 181–89. PMLR.
+</div>
+<div id="ref-mackay2003information" class="csl-entry" role="listitem">
+MacKay, David JC. 2003. <em>Information Theory, Inference and Learning Algorithms</em>. Cambridge university press.
+</div>
+<div id="ref-welling2011bayesian" class="csl-entry" role="listitem">
+Welling, Max, and Yee W Teh. 2011. <span>“<span>B</span>ayesian Learning via Stochastic Gradient <span>L</span>angevin Dynamics.”</span> In <em>International Conference on Machine Learning</em>, 681–88.
+</div>
+</div>
+
+
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nguyen2023,
+  author = {Nguyen, Cuong},
+  title = {Stochastic Gradient and {Hamiltonian} {Monte} {Carlo}},
+  date = {2023-11-19},
+  url = {https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-nguyen2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+Nguyen, Cuong. 2023. <span>“Stochastic Gradient and Hamiltonian Monte
+Carlo.”</span> November 19, 2023. <a href="https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo">https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

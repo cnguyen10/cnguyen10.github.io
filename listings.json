@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/stochastic_grad_hamiltonian_monte_carlo/index.html",
       "/posts/mixture-models/index.html",
       "/posts/bias-variance-decomposition/index.html",
       "/posts/meta-learning/index.html",
