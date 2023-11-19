@@ -25,6 +25,7 @@ website:
           - publication.qmd
   back-to-top-navigation: true
   google-analytics: G-NLRVZL0JSR
+  site-url: https://cnguyen10.github.io
 
 format:
   html:

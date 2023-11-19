@@ -23,6 +23,7 @@ author:
         url: www.adelaide.edu.au
         isni: 0000 0004 1936 7304
 
+citation: true
 bibliography: references.bib
 
 toc: true
