@@ -1,0 +1,414 @@
+---
+title: "Stochastic gradient and Hamiltonian Monte Carlo"
+date: "2023-11-19"
+---
+
+This post is to introduce the formulation of stochastic gradient descent as a Monte Carlo sampling to approximate the posterior of the variables of interest.
+
+## Motivation of Monte Carlo sampling
+According to [@mackay2003information, Chapter 29], Monte Carlo based methods make use of random numbers (or in particular, random variables) to solve one or both of the following problems.
+
+::: {.callout-important}
+### Problem 1 - generate samples
+Generate samples $\{\theta^{(r)}\}_{r = 1}^{R}$ from a given probability distribution $P(\theta)$.
+:::
+
+::: {.callout-important}
+### Problem 2 - estimate an expected value
+Estimate the expectation of a given function $\ell(\theta)$ under a given distribution $P(\theta)$:
+$$
+    \overline{\ell} = \int \ell(\theta) \, P(\theta) \, \operatorname{d}^{N} \theta,
+$$
+where $\theta$ is assumed to be an $N$-dimensional vector with real components $\theta_{n}$.
+:::
+
+It is assumed that $P(\theta)$ is sufficiently complex that we cannot either *(i)* sample from it by some conventional techniques, and *(ii)* evaluate those expectations by exact methods. That motivates us to study Monte Carlo approximation methods.
+
+Majority of studies in Monte Carlo methods focus on the first problem (sampling) because if we have solved the first problem, then we can solve the second problem by using the Monte Carlo approximation to give an estimation about the expectation:
+$$
+    \hat{\ell} = \frac{1}{R} \sum_{r = 1}^{R} \ell(\theta^{(r)}),
+$$
+where: $\{\theta^{(r)}\}_{r = 1}^{R}$ are generated from $P(\theta)$.
+
+Under this approximation, $\hat{\ell}$ is an un-biased estimator of the exact expectation $\overline{\ell}$.
+
+::: {.callout-note}
+### Why is sampling from $P(\theta)$ hard?
+We will assume that the density from which we wish to draw samples, $P(\theta)$, can be evaluated, at least to within a multiplicative constant. In other words, we can evaluate a function $P^{*}(\theta)$ such that:
+$$
+    P(\theta) = \frac{P^{*}(\theta)}{Z},
+$$ {#eq-exact-distribution}
+where $Z$ is the normalising constant (that we do not know):
+$$
+    Z = \int P^{*}(\theta) \, \operatorname{d}^{N}\theta.
+$$ {#eq-normalising-constant}
+Thus, it is hard to draw samples from $P(\theta)$ since $Z$ is often assumed to be unknown. Even if we know $Z$, drawing samples from $P(\theta)$ is still challenging problem, especially in high-dimensional spaces because there is no obvious way to sample from $P(\theta)$ without enumerating all of the possible states.
+:::
+
+There are various sampling techniques to generate samples from a given distribution, such as *important sampling*, *rejection sampling* or *Metropolis - Hastings* method. Here, we focus on a specific method, known as *Hamiltonian Monte Carlo*, which belongs to the family of the *Metropolis - Hastings* method.
+
+## The Metropolis - Hastings method
+The Metropolis - Hastings algorithm uses a proposal density $Q(\theta | \theta^{(t)})$ which depends on the current state $\theta^{(t)}$. For example, $Q(\theta; \theta^{(t)})$ might be a simple Gaussian distribution centred on the current $\theta^{(t)}$. The proposal density $Q(\theta; \theta^{(t)})$ can be any fixed probability distribution from which we can easily sample.
+
+As before, it is assumed that the un-normalised probability $P^{*}(\theta)$ can be evaluated for any $\theta$. One can generate the next state $\theta^{\prime}$ from the proposal distribution $Q(\theta; \theta^{(t)})$. To decide whether to accept the new state, a quantity (also known as Metropolis - Hastings score) is calculated. Depending on the value of the score, the next state can be *(i)* accepted, or *(ii)* accepted with certain probability depending on the value of the score.
+
+- If the step is accepted, then $\theta^{(t + 1)} = \theta^{\prime}$.
+- Otherwise, the previous state is kept: $\theta^{(t + 1)} = \theta^{(t)}$.
+
+The details of the Metropolis - Hastings algorithm can be seen in [Algorithm Metropolis - Hastings](#metropolis-hastings).
+
+<pre id="metropolis-hastings" class="pseudocode">
+\begin{algorithm}
+    \caption{The Metropolis - Hastings sampling method}
+    \begin{algorithmic}
+        \REQUIRE un-normalised probability distribution $P^{*}(\theta)$
+        \REQUIRE proposal distribution $Q(\theta; \theta^{(t)})$
+        \STATE initialise $\theta^{(0)}$
+        \WHILE{$t = 0, 1, \dots, T, \dots, T_{\mathrm{end}}$}
+            \STATE $\theta^{\prime} \gets$ \Call{sample-from-proposal-distribution}{$Q(\theta; \theta^{(t)})$} \Comment{generate a new state}
+            \STATE $a \gets \displaystyle \frac{p^{*}(\theta^{\prime})}{p^{*}(\theta^{(t)})} \frac{q(\theta^{(t)}; \theta^{\prime})}{q(\theta^{\prime}; \theta^{(t)})}$ \Comment{calculate Metropolis - Hastings score}
+            \IF{$a \ge 1$}
+                \STATE $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state}
+            \ELSE
+                \STATE $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state}
+            \ENDIF
+        \ENDWHILE
+        \RETURN $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$
+    \end{algorithmic}
+\end{algorithm}
+</pre>
+
+::: {.callout-note}
+### Different from rejection sampling
+In rejection sampling, rejected points are discarded and have no influence on the list of samples $\{\theta^{(r)}\}$ that are collected to represent the distribution $P(\theta)$. In Metropolis - Hastings method, although rejected points are also discarded, the difference is that a rejection causes the current state $\theta^{(t)}$ to be written again onto the list.
+:::
+
+**Convergence of the Metropolis - Hastings method** &nbsp; It has been shown that for any positive proposal distribution, i.e., $Q(\theta; \theta^{(t)}) > 0, \forall \theta, \theta^{(t)}$, as $t\to+\infin$, the probability distribution of $\theta^{(t)}$ converges to its true distribution $P(\theta)$ defined in @eq-exact-distribution.
+
+::: {.callout-warning}
+### Dependency of samples generated from the Metropolis - Hastings method
+The Metropolis - Hastings method is an example of a *Markov chain Monte Carlo* method (abbreviated MCMC). In MCMC methods, a Markov process is employed to generate a sequence of states $\{\theta\}$, where each sample $\theta^{(t)}$ has a probability distribution depend on the previous state, $\theta^{(t - 1)}$. And because successive samples are dependent, the Markov chain may need to be run for a considerable amount of time to effectively generate independent samples from the hidden distribution $P(\theta)$.
+:::
+
+## The Hamiltonian Monte Carlo method
+The Hamiltonian Monte Carlo method is an instance of the Metropolis - Hastings method that is applicable to continuous domain. It makes use of gradient information to reduce random walk behaviour, potentially resulting in a more efficient MCMC method. In particular, it replaces the proposal distribution $Q(\theta; \theta^{(t)})$ by an implicit distribution in the form of a differential equation.
+
+Similar to [the Metropolis - Hastings method](#the-metropolis---hastings-method), we assume that the density $P(\theta)$ is known up to a normalised constant and written in the form of the *potential energy* $U(\theta)$ as follows:
+$$
+    P(\theta) = \frac{\exp(-U(\theta))}{Z}.
+$$
+
+The *potential energy*, $U(\theta)$, is defined as:
+$$
+\boxed{
+    U(\theta) = - \sum_{x \in \mathcal{D}} \ln p(x | \theta) - \ln p(\theta),
+}
+$$ {#eq-potential-energy}
+where $p(x | \theta)$ is a likelihood function, and $p(\theta)$ is the prior distribution of $\theta$.
+
+The Hamiltonian Monte Carlo method augments the variable of interest, $\theta$, by an $N_{\rho}$-dimensional *momentum variables* vector $\rho$. A common analogy is that $\theta$ is the position, while $\rho$ is the velocity of an object of interest. In that case, the *kinetic energy* $K(\rho)$ is defined as follows:
+$$
+\boxed{
+    K(\rho) = \frac{1}{2} \rho^{\top} M^{-1} \rho,
+}
+$$ {#eq-kinetic-energy}
+where $M \in \mathbb{R}^{N_{\rho} \times N_{\rho}}$ is symmetric positive definite matrix known as *mass matrix*.
+
+The Hamiltonian dynamics of the whole system can then be defined as:
+$$
+    H(\theta, \rho) = U(\theta) + K(\rho).
+$$
+
+One can then define the joint probability density as:
+$$
+    p_{H}(\theta, \rho) = \frac{\exp(-H(\theta, \rho))}{Z_{H}} = \frac{1}{Z_{H}} \exp(-U(\theta)) \, \exp(-K(\rho)).
+$$ {#eq-joint-distribution}
+
+Since the probability distribution $p_{H}$ is separable, the marginal distribution of $\theta$ is the desired distribution $p(\theta) = \frac{\exp(-U(\theta))}{Z}$. Thus, simply discarding the momentum variables $\rho$ would allow to obtain a sequence of samples $\{\theta^{(t)}\}$ that asymptotically come from $P(\theta)$.
+
+The characteristics of a Hamiltonian dynamics can be written as:
+$$
+\begin{dcases}
+    \frac{\operatorname{d}\theta}{\operatorname{d}t} & = \frac{\partial H(\theta, \rho)}{\partial \rho} = M^{-1} \rho \\
+    & \\
+    \frac{\operatorname{d}\rho}{\operatorname{d}t} & = - \frac{\partial H(\theta, \rho)}{\partial \theta} = -\nabla_{\theta} U(\theta).
+\end{dcases}
+$$ {#eq-hamiltonian-dynamics}
+
+::: {.callout-note}
+### 2D analogy of the Hamiltonian dynamics [@chen2014stochastic]
+To analogise the Hamiltonian dynamics, one can imagine a hockey puck sliding over a frictionless ice surface of varying height. The potential energy is proportional to the height of the surface at the current position, $\theta$, of the puck, while the kinectic energy is proportional to the momentum, $\rho$, and the mass, $M$, of the hockey puck.
+
+If the surface is flat: $\nabla_{\theta} U(\theta) = 0,$ then the hockey puck will move at a constant speed.
+
+If it is going uphill (positive slope: $\nabla_{\theta} U(\theta) > 0$), the kinetic energy decreases as the potential energy increases util the kinetic reaches 0 (equivalently, $\rho = 0$). The hockey puck stops in an instant and begins to slide back down the hill, resulting in increasing the kinectic energy and decreasing the potential energy.
+:::
+
+@eq-hamiltonian-dynamics defines the transformation of the two variables $(\theta, \rho)$ from time $t$ to time $t + \Delta t.$ This transformation is *reversible*. Moreover, the Hamiltonian is invariant (or the preservation of the Hamiltonian $H(\theta, \rho)$):
+$$
+    \frac{\operatorname{d} H}{\operatorname{d} t} = \sum_{i = 1}^{N} \frac{\operatorname{d} \theta_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \theta_{i}} + \frac{\operatorname{d} \rho_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \rho_{i}} = \sum_{d = 1}^{N} \frac{\partial H}{\partial \rho_{i}} \frac{\partial H}{\partial \theta_{i}} -\frac{\partial H}{\partial \theta_{i}} \frac{\partial H}{\partial \rho_{i}} = 0.
+$$
+
+This makes any proposal $(\theta, \rho)$ obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in $H(\theta, \rho)$, which is zero if the simulation is perfect. Please refer to [Algorithm Hamiltonian MC](#hamiltonian-mc) for further details of the Hamiltonian Monte Carlo method.
+
+<pre id="hamiltonian-mc" class="pseudocode">
+\begin{algorithm}
+    \caption{Hamiltonian Monte Carlo method}
+    \begin{algorithmic}
+        \REQUIRE potential energy $U(.)$
+        \REQUIRE mass matrix $M$
+        \REQUIRE step size used in the integration to solve PDE $\varepsilon$
+        \STATE initialise $\theta^{(1)}$
+        \WHILE{$t = 1, 2, \dots, T, \dots, T_{\mathrm{end}}$}
+            \STATE sample momentum: $\rho^{(t)} \sim \mathcal{N}(0, M^{-1})$
+            \STATE evaluate total energy: $H \gets U(\theta^{(t)}) + K(\rho^{(t)})$
+            \STATE $\theta^{(t, 1)} \gets \theta^{(t)}$
+            \STATE $\rho^{(t, 1)} \gets \rho^{(t)}$
+            \FOR{$i = 1, 2, \dots, \tau$} \Comment{Simulate for next state}
+                \STATE $\rho^{(t, i + \frac{1}{2})} \gets \rho^{(t, i)} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make a half-step in $\rho$}
+                \STATE $\theta^{(t, i + 1)} \gets \theta^{(t, i)} + \varepsilon M^{-1} \rho^{(t, i + \frac{1}{2})}$ \Comment{make a step in $\theta$}
+                \STATE $\rho^{(t, i + 1)} \gets \rho^{(t, i + \frac{1}{2})} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make another half-step in $\rho$}
+            \ENDFOR
+            \STATE $\theta^{\prime} \gets \theta^{(t, \tau)}$ \Comment{new state of $\theta$}
+            \STATE $\rho^{\prime} \gets \rho^{(t, \tau)}$ \Comment{new state of momentum}
+            \STATE evaluate total energy with the new state: $H_{\mathrm{new}} \gets U(\theta^{\prime}) + K(\rho^{\prime})$
+            \STATE calculate: $\operatorname{d}H \gets H_{\mathrm{new}} - H$
+            \STATE sample: $u \sim \mathrm{uniform}(0, 1)$
+            \IF{$u < \exp(-\operatorname{d}H)$} \Comment{Metropolis - Hastings step}
+                \STATE $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state}
+            \ELSE
+                \STATE $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state}
+            \ENDIF
+        \ENDWHILE
+        \RETURN $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$
+    \end{algorithmic}
+\end{algorithm}
+</pre>
+
+Despite its efficiency, the Hamiltonian Monte Carlo method still requires to run through the *entire* dataset to perform the integration for $\theta$ as well as the Metropolis - Hastings step to decide whether to accept or reject the new state generated from the Hamiltonian dynamics. Hence, in the lense of machine learning, it is, however, impractical, especially for large-scaled datasets. It, therefore, motivates further studies and development to make the method practical.
+
+## Stochastic gradient Hamiltonian Monte Carlo
+To reduce the cost calculating $\nabla_{\theta} U(\theta)$ on the entire dataset $\mathcal{D}$, stochastic versions of Hamiltonian Monte Carlo are proposed in [@welling2011bayesian; @chen2014stochastic]. In this case, the *whole-batch* gradient, $\nabla_{\theta} U(\theta)$, is estimated by a noisy estimator, $\nabla_{\theta} \tilde{U}(\theta)$, which is based on a single mini-batch, $\tilde{\mathcal{D}}$, of data. Such a noisy estimator can be written as follows:
+$$
+    \nabla_{\theta} \tilde{U}(\theta) = - \frac{|\mathcal{D}|}{|\tilde{\mathcal{D}|}} \sum_{x \in \tilde{\mathcal{D}}} \ln p(x | \theta) - \ln p(\theta).
+$$ {#eq-noisey-potential-energy}
+
+If there are many mini-batches, we can apply the <em>Central Limit Theorem</em> to approximate the noisy gradient of the potential energy as follows:
+$$
+    \nabla_{\theta} \tilde{U}(\theta) \approx \nabla_{\theta} U(\theta) + \sqrt{V(\theta)} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I),
+$$
+where $V(\theta)$ is the covariance matrix of the stochastic gradient noise [@welling2011bayesian, Eq. (6)]:
+$$
+    V(\theta) = \mathbb{E}_{\text{mini-batch of } x \in \tilde{\mathcal{D}}} \left[ \nabla_{\theta} \tilde{U}(\theta) \, \nabla_{\theta}^{\top} \tilde{U}(\theta) \right] - \nabla_{\theta} U(\theta) \, \nabla_{\theta}^{\top} U(\theta),
+$$
+and $\sqrt{V}(\theta)$ denotes the matrix such that $\sqrt{V(\theta)} \left( \sqrt{V(\theta)} \right)^{\top} = V(\theta)$ (e.g., Cholesky decomposition).
+
+### Naive stochastic gradient Hamiltonian Monte Carlo
+A naive way is to directly substitute the noisy estimator in @eq-noisey-potential-energy into the Hamiltonian dynamics in @eq-hamiltonian-dynamics:
+$$
+\boxed{
+    \begin{dcases}
+        \frac{\operatorname{d} \theta}{\operatorname{d} t} & =  M^{-1} \rho \\
+        & \\
+        \frac{\operatorname{d} \rho}{\operatorname{d} t} & = -\nabla_{\theta} \tilde{U}(\theta) = - \nabla_{\theta} U(\theta) + \sqrt{V(\theta)} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I).
+    \end{dcases}
+}
+$$ {#eq-noisy-hamiltonian-dynamics}
+
+In this case, the Hamiltonian is not guaranteed to be invariant:
+$$
+\begin{aligned}
+    \frac{\operatorname{d} H}{\operatorname{d} t} & = \sum_{i = 1}^{N} \frac{\operatorname{d}\theta_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \theta_{i}} + \frac{\operatorname{d} \rho_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \rho_{i}} \\
+    & = \sum_{i = 1}^{N} (M^{-1} \rho)_{i} \, \frac{\partial U(\theta)}{\partial \theta_{i}} - \left( \frac{\partial U(\theta)}{\partial \theta_{i}} + \left( \sqrt{V(\theta)} \epsilon \right)_{i} \right) \, (M^{-1} \rho)_{i}, \\
+    & = \left[ \sqrt{V(\theta)} \epsilon \right]^{\top} M^{-1} \rho.
+\end{aligned}
+$$
+
+When using a larger mini-batch size: $\tilde{\mathcal{D}} \to \mathcal{D}$, the variance $V(\theta)$ is smaller: $V(\theta) \to 0$, resulting in $\frac{\operatorname{d} H}{\operatorname{d} t} \to 0.$ At the limit, the total energy $H(\theta, \rho)$ is preserved, which is the *full-batch* Hamiltonian Monte Carlo mentioned [above](#the-hamiltonian-monte-carlo-method).
+
+When using a much smaller mini-batch size: $|\tilde{\mathcal{D}}| \ll |\mathcal{D}|$, the noise induced by the mini-batch, $V(\theta)$, is large (e.g., in terms of matrix norm), resulting in $\frac{\operatorname{d} H}{\operatorname{d} t} \neq 0.$ Consequently, the Hamiltonian is no longer invariant.
+
+To correct the error due to the effect of mini-batches, one needs to perform one Metropolis - Hastings step to either reject or accept the new state. Either running a short or long simulation (corresponding to a small or large $\tau$ in [Algorithm Hamiltonian Monte Carlo](#hamiltonian-mc)), the cost of a Metropolis - Hastings step is still extremely large and wasteful if the sample is rejected. One workaround solution is to run a Metropolis - Hastings step on a subset of data instead of the entire dataset [@korattikara2014austerity; @bardenet2014towards]. There are, of course, some tradeoffs using such approaches.
+
+::: {.callout-note}
+### Hockey puck on ice surface with random wind
+To continue with the same analogy of a hockey puck, the environment is now different with random wind blowing over the ice surface. That random wind may push the hockey puck further away in some random direction.
+:::
+
+Indeed, the joint distribution $p_{H}(\theta, \rho)$ can be determined to be stationary or not by analysing the corresponding Fokker - Planck equation as shown in [the Appendix about the stationary of stochastic gradient due to mini-batches](#stationary-distribution-of-parameters-obtained-from-sgd). In this case, $p_{H}(\theta, \rho)$ is proved to be non-stationary.
+
+In [@chaudhari2018stochastic], the joint distribution $p_{H}(\theta, \rho) \propto \exp(-H(\theta, \rho))$ in @eq-joint-distribution is assumed to be stationary under the stochastic dynamics in @eq-noisy-hamiltonian-dynamics. This is equivalent to proving that the left hand side term in the Fokker - Planck equation is zero: $\frac{\partial p_{H}(\theta, \rho)}{\partial t} = 0$. The authors then analyse and show that *the stationary distribution does not converge to the desired posterior distribution in general* [@chaudhari2018stochastic]. This is, however, only true if the stationary distribution exists. And in this case, we prove that it does not (the distribution is non-stationary as shown in [Section stationary of stochastic gradient due to mini-batches](#stochastic-gradient-with-mini-batches)).
+
+### Stochastic gradient Hamiltonian Monte Carlo with "friction"
+One way to overcome the stochastic estimation for the gradient of the potential energy, $\nabla_{\theta} \tilde{U}(\theta)$, is to introduce a "friction" term to the momentum update:
+$$
+\begin{dcases}
+    \frac{\operatorname{d} \theta}{\operatorname{d} t} & =  M^{-1} \rho \\
+    & \\
+    \frac{\operatorname{d} \rho}{\operatorname{d} t} & = - \nabla_{\theta} U(\theta) \textcolor{Crimson}{- F M^{-1} \rho} + \sqrt{V(\theta)} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I),
+\end{dcases}
+$$
+where: $F \in \mathbb{R}^{N_{\rho} \times N_{\rho}}$ denotes friction coefficient matrix. One requirement for $F$ is that: $F \succeq \sqrt{V}$ (see the section on [stationary SGD with injected noise](#stochastic-gradient-with-friction) for further details).
+
+::: {.callout-note}
+### Hockey puck on a friction surface with random wind
+To continue with the same analogy, the hockey puck is now sliding not on a frictionless ice surface, but a street surface which induces friction from the asphalt. There is still a random wind blowing. However, the friction of the surface prevents the hockey puck from moving too far away than the position it is expected.
+:::
+
+In this case, one can prove that the joint distribution $p_{H}(\theta, \rho)$ is stationary.
+
+To link this sampling to the stochastic gradient descent, one can sample $\rho(t) \sim \mathcal{N}(0, M)$ and apply one leapfrog step as follows:
+$$
+\begin{dcases}
+    \rho\left( t + \frac{1}{2} \right) & = \rho(t) + \frac{\alpha}{2} \left[ - \nabla_{\theta} U(\theta) \textcolor{Crimson}{- F M^{-1} \rho} + \sqrt{V(\theta)} \epsilon \right] \\
+    \theta (t + 1) & = \theta(t) + \alpha M^{-1} \rho\left( t + \frac{1}{2} \right).
+\end{dcases}
+$$
+
+It can be simplified by substituting $\rho(t + \frac{\alpha}{2})$ into the expression of $\theta$ to obtain:
+$$
+\boxed{
+    \theta(t + 1) = \theta(t) + \frac{\alpha^{2}}{2} M^{-1} \left[ - \nabla_{\theta} U(\theta) \textcolor{Crimson}{- F M^{-1} \rho} + \sqrt{V(\theta)} \epsilon \right] + \alpha M^{-1} \rho(t),
+}
+$$
+which has a similar form as the *Stochastic Gradient Langevin Dynamics* [@welling2011bayesian].
+
+## Conclusion
+This post reviews some seminar studies in *stochastic gradient* and *Monte Carlo sampling*. There have been many successive studies that explored and extended further. Of course, they have mostly developed on top of these studies and achieved better performance. However, it is important to understand the basic before moving to advance. Hopefully, this post would be found useful in one or another way.
+
+## Appendices {.appendix .unnumbered}
+
+## Fokker - Planck equation {.appendix}
+The Fokker - Planck equation is used to analyse the evolution of the distribution of the variables in stochastic differential equation:
+$$
+    \operatorname{d} x(t) = - \nabla f(x) \operatorname{d} t + \sqrt{2 \tau V(x)} \operatorname{d} W(t),
+$$ {#eq-sde}
+where $f(x)$ is some function (e.g., loss function), $V(x)$ is a diffusion matrix and $W(t)$ is the Brownian motion, and $\tau$ is a temperature.
+
+::: {.callout-tip}
+### Lemma
+The distribution $p(x) \propto \exp\left( -H(x) \right)$  of the variable $x$ in @eq-sde evolves following the Fokker - Planck equation:
+$$
+    \frac{\partial p(x)}{\partial t} = \nabla \cdot \left[ \nabla f(x) p(x) + \tau \nabla \cdot \left[ V(x) p(x) \right] \right],
+$$ {#eq-fokker-planck-equation}
+where: $\nabla \cdot$ denotes the divergence, and the divergence operator is applied column-wise to matrices.
+:::
+
+Thus, one can prove that the distribution of the solution in the stochastic equation @eq-sde is invariant by simply proving that $\partial p(x)/\partial t = 0$.
+
+## Stationary distribution of parameters obtained from SGD {.appendix}
+The main focus of this section is to investigate the stationary distribution $p(\theta, \rho)$ obtained through the stochastic gradient Hamiltonian Monte Carlo. Two types of noises are considered: *(i)* noise due to mini-batch effect and *(ii)* injected noise as in [@welling2011bayesian]. The main tool is the Fokker - Planck equation presented in [the section about the Fokker - Planck equation](#fokker---planck-equation). To use the Fokker - Planck equation, the two variables of interest are coupled into a single vector:
+$$
+    z = \begin{bmatrix}
+        \theta & \rho
+    \end{bmatrix}^{\top}.
+$$
+
+### Stochastic gradient with mini-batches {.appendix}
+The dynamics in @eq-noisy-hamiltonian-dynamics can be rewritten as:
+$$
+    \frac{\operatorname{d} z}{\operatorname{d} t} = \frac{\operatorname{d}}{\operatorname{d} t} \begin{bmatrix}
+        \theta \\
+        \rho
+    \end{bmatrix} = - \underbrace{\begin{bmatrix}
+        0 & -I \\
+        I & 0
+    \end{bmatrix}}_{G} \underbrace{\begin{bmatrix}
+        \nabla_{\theta} U(\theta) \\
+        M^{-1} \rho
+    \end{bmatrix}}_{\nabla H(z)} + \underbrace{\begin{bmatrix}
+        0 & 0 \\
+        0 & \sqrt{V(\theta)}
+    \end{bmatrix}}_{D(z)} \underbrace{\begin{bmatrix}
+        0 \\
+        \epsilon
+    \end{bmatrix}}_{\epsilon^{\prime}},
+$$ {#eq-stochastic-hamiltonian-mc-naive}
+where: $\epsilon \sim \mathcal{N}(0, I)$.
+
+The corresponding Fokker - Planck equation can be written as:
+$$
+    \frac{\partial p(z)}{\partial t} = \nabla \cdot \left[ G \, \nabla H(z) \, p(z) + \nabla \cdot \left[ D(z) p(z) \right] \right].
+$$
+
+Note that: $p(z) = \exp\left( -H(z) \right) / Z$ (assuming the temperature: $\tau = 1$), then $H(z) = - \ln p(z) - \ln Z$. Thus, we can rewrite the Fokker - Planck equation as follows:
+$$
+\begin{aligned}
+    \frac{\partial p(z)}{\partial t} & = \nabla \cdot \left[ G \, \nabla \left[ -\ln p(z) \right] \, p(z) + \nabla \cdot \left[ D(z) p(z) \right] \right] \\
+    & = \nabla \cdot \left[ - G \, \nabla p(z) + \nabla \cdot \left[ D(z) p(z) \right] \right] \\
+    & = \nabla \cdot \left[ - G \, \nabla p(z) \right] + \nabla \cdot \left[ \nabla \cdot \left[ D(z) p(z) \right] \right] \\
+    & = \nabla \cdot \left[ \nabla \cdot \left[ D(z) p(z) \right] \right].
+\end{aligned}
+$$ {#eq-fokker-sgd-minibatch}
+
+For the last equality, we use the fact that:
+$$
+    \nabla \cdot \left[ G \, \nabla p(z) \right] = -\frac{\partial^{2} p(\theta, \rho)}{\partial \theta \, \partial \rho} + \frac{\partial^{2} p(\theta, \rho)}{\partial \theta \, \partial \rho} = 0.
+$$
+
+The result in @eq-fokker-sgd-minibatch does not guarantee that $\partial p(\theta, \rho) / \partial t = 0.$ In other words, there is not enough evidence to prove that $p(\theta, \rho)$ is stationary.
+
+In practice, when we perform SGD, the covariance matrix $V(\theta)$ becomes smaller and smaller. In such case, we can assume that $V(\theta) \approx 0$, and hence, the distribution $p(\theta, \rho)$ is stationary.
+
+### Stochastic gradient with friction {.appendix}
+#### Known covariance matrix \texorpdfstring{$V(\theta)$}{V(theta)} {.appendix}
+According to [@chen2014stochastic], if the covariance matrix $V(\theta)$ induced by the mini-batch effect is known, then one can introduce a friction force to the system as follows:
+$$
+\begin{dcases}
+    \frac{\operatorname{d} \theta}{\operatorname{d} t} & =  M^{-1} \rho \\
+    \frac{\operatorname{d} \rho}{\operatorname{d} t} & = - \nabla_{\theta} U(\theta) \textcolor{Crimson}{- \sqrt{V(\theta)} M^{-1} \rho} + \sqrt{V(\theta)} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I).
+\end{dcases}
+$$
+
+This can be rewritten in the form of vectors and matrices as follows:
+$$
+    \frac{\operatorname{d}}{\operatorname{d} t} \begin{bmatrix}
+        \theta \\
+        \rho
+    \end{bmatrix} = - \begin{bmatrix}
+        0 & -I \\
+        I & \sqrt{V(\theta)}
+    \end{bmatrix} \begin{bmatrix}
+        \nabla_{\theta} U(\theta) \\
+        M^{-1} \rho
+    \end{bmatrix} + \begin{bmatrix}
+        0 & 0 \\
+        0 & \sqrt{V(\theta)}
+    \end{bmatrix} \begin{bmatrix}
+        0 \\
+        \epsilon
+    \end{bmatrix}.
+$$
+
+Following the notations defined in @eq-stochastic-hamiltonian-mc-naive, the system dynamics can be rewritten as:
+$$
+    \frac{\operatorname{d} z}{\operatorname{d} t} = - \left[ G + D(z) \right] \nabla H(z) + D(z) \epsilon^{\prime}.
+$$
+
+The corresponding Fokker - Planck equation is then written as:
+$$
+\begin{aligned}
+    \frac{\partial p(z, t)}{\partial t} & = \nabla \cdot \left[ \left[ G + D(z) \right] \nabla H(z) \, p(z) + \nabla \cdot \left[ D(z) \, p(z) \right] \right] \\
+    & = \nabla \cdot \left[ - D(z) \nabla p(z) + \nabla \cdot \left[ D(z) \, p(z) \right] \right] \\
+    & = \nabla \cdot \left[ - D(z) \nabla p(z) + D(z) \nabla p(z) + p(z) \nabla \cdot D(z) \right] \\
+    & = \nabla \cdot \left[ p(z) \nabla \cdot D(z) \right] \\
+    & = 0.
+\end{aligned}
+$$
+
+The third equality is due to the Identity 1.11.16 in [Tensor calculus note](https://pkel015.connect.amazon.auckland.ac.nz/SolidMechanicsBooks/Part_III/Chapter_1_Vectors_Tensors/Vectors_Tensors_14_Tensor_Calculus.pdf).
+
+The last equality holds due to the fact that $\nabla \cdot D(z) = 0$. This can easily be proved by using the definition of *divergence* $\nabla \cdot$ and the structure of $D(z)$ (noise is added to $\rho$ although it depends on $\theta$).
+
+In summary, injecting a noise corresponding to a friction force $\textcolor{BrickRed}{- \sqrt{V(\theta)} M^{-1} \rho}$ results in a stationary distribution $p_{H}(\theta, \rho)$.
+
+#### Practical stochastic gradient Hamiltonian Monte Carlo with unknown covariance matrix {.appendix}
+In practice, we might not know the covariance matrix $V(\theta)$. In such a situation, one might introduce a friction matrix $F$ that satisfies: $F \succeq \sqrt{V(\theta)}$. In other words, $F - \sqrt{V(\theta)} \succeq 0$ is positive definite. In this case, the system is over-damped and the total energy $H(\theta, \rho)$ will gradually decrease to 0.
+
+::: {.callout-note}
+ In certain situations, one can prove that the stochastic gradient Hamiltonian Carlo results in a stationary distribution $p_{H}(\theta, \rho)$, it does not mean that $p_{H}(\theta, \rho)$ is the true posterior of interest (the one without any noise).
+:::
+
+## References {.appendix .unnumbered}
+::: {#refs}
+:::
