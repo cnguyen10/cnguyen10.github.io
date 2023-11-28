@@ -1,5 +1,11 @@
 [
   {
+    "listing": "/presentation.html",
+    "items": [
+      "/presentations/pecman/index.html"
+    ]
+  },
+  {
     "listing": "/blog.html",
     "items": [
       "/posts/stochastic_grad_hamiltonian_monte_carlo/index.html",
