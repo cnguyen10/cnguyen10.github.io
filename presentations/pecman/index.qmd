@@ -52,6 +52,8 @@ digraph {
 
 Extend the deterministic meta-learning (MAML) to a Bayesian meta-learning (VAMPIRE)
 
+. . .
+
 :::: {.columns #fig-meta-learning-diagrams}
 
 ::: {.column width="45%"}
@@ -99,6 +101,8 @@ where: $\varepsilon \in (0, 1]$, $p(\mathbf{w}_{i}), \forall i \in \{1, \ldots, 
 
 Employ latent Dirichlet allocation in topic modelling to model tasks in meta-learning
 
+. . .
+
 ::: {.callout-tip}
 ### Analogy between topic modelling and probabilistic task modelling
 | Topic modelling | Probabilistic task modelling |
@@ -108,6 +112,8 @@ Employ latent Dirichlet allocation in topic modelling to model tasks in meta-lea
 | Word | Data point (image) |
 
 :::
+
+. . .
 
 $$
 \text{A task } T_{i} \gets \sum_{k = 1}^{K} \pi_{ik} \mathcal{N}(\mu_{k}, \Sigma_{k}).
@@ -234,10 +240,7 @@ where $\mathbf{A}$ is a matrix consisting of similarity coefficients between nea
 Additional noisy labels can be sampled from the obtained $p(\hat{y}_{i} | x_{i})$.
 :::
 
-The EM algorithm is then used to infer:
-
-- $\pi = p(y | x)$, and
-- $\rho = p(\hat{y} | x, y)$.
+The EM algorithm is then used to infer $\pi$ and $\rho$.
 
 # Future plan
 
