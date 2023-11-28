@@ -18,7 +18,7 @@
     "href": "presentations/pecman/index.html#variational-meta-learning",
     "title": "Learning with limited and uncertain data",
     "section": "Variational meta-learning",
-    "text": "Variational meta-learning\nExtend the deterministic meta-learning (MAML) to a Bayesian meta-learning (VAMPIRE)\n\n\n\n\n\n\n(a) MAML\n\n\n\n\n\n\n\n(b) VAMPIRE\n\n\n\nFigure 1: Deterministic and Bayesian meta-learning methods."
+    "text": "Variational meta-learning\nExtend the deterministic meta-learning (MAML) to a Bayesian meta-learning (VAMPIRE)\n\n\n\n\n\n\n\n(a) MAML\n\n\n\n\n\n\n\n(b) VAMPIRE\n\n\n\nFigure 1: Deterministic and Bayesian meta-learning methods."
   },
   {
     "objectID": "presentations/pecman/index.html#pac-bayesian-meta-learning",
@@ -39,7 +39,7 @@
     "href": "presentations/pecman/index.html#probabilistic-task-modelling-1",
     "title": "Learning with limited and uncertain data",
     "section": "Probabilistic task modelling",
-    "text": "Probabilistic task modelling\nEmploy latent Dirichlet allocation in topic modelling to model tasks in meta-learning\n\n\n\n\n\n\nAnalogy between topic modelling and probabilistic task modelling\n\n\n\n\n\nTopic modelling\nProbabilistic task modelling\n\n\n\n\nTopic\nTask-theme\n\n\nDocument\nTask (dataset)\n\n\nWord\nData point (image)\n\n\n\n\n\n\n\\[\n\\text{A task } T_{i} \\gets \\sum_{k = 1}^{K} \\pi_{ik} \\mathcal{N}(\\mu_{k}, \\Sigma_{k}).\n\\]"
+    "text": "Probabilistic task modelling\nEmploy latent Dirichlet allocation in topic modelling to model tasks in meta-learning\n\n\n\n\n\n\n\nAnalogy between topic modelling and probabilistic task modelling\n\n\n\n\n\nTopic modelling\nProbabilistic task modelling\n\n\n\n\nTopic\nTask-theme\n\n\nDocument\nTask (dataset)\n\n\nWord\nData point (image)\n\n\n\n\n\n\n\n\n\\[\n\\text{A task } T_{i} \\gets \\sum_{k = 1}^{K} \\pi_{ik} \\mathcal{N}(\\mu_{k}, \\Sigma_{k}).\n\\]"
   },
   {
     "objectID": "presentations/pecman/index.html#probabilistic-task-modelling-2",
@@ -81,7 +81,7 @@
     "href": "presentations/pecman/index.html#identifiability-in-noisy-label-learning-2",
     "title": "Learning with limited and uncertain data",
     "section": "Identifiability in noisy label learning",
-    "text": "Identifiability in noisy label learning\n\n\n\n\n\n\nGenerate additional noisy labels through K nearest neighbours\n\n\n\\[\np(\\hat{y}_{i} | x_{i}) \\gets \\mu p(\\hat{y}_{i} | x_{i}) + (1 - \\mu) \\sum_{k = 1}^{K} \\mathbf{A}_{ik} p(\\hat{y}_{k} | x_{k}),\n\\] where \\(\\mathbf{A}\\) is a matrix consisting of similarity coefficients between nearest neighbours.\nAdditional noisy labels can be sampled from the obtained \\(p(\\hat{y}_{i} | x_{i})\\).\n\n\n\nThe EM algorithm is then used to infer:\n\n\\(\\pi = p(y | x)\\), and\n\\(\\rho = p(\\hat{y} | x, y)\\)."
+    "text": "Identifiability in noisy label learning\n\n\n\n\n\n\nGenerate additional noisy labels through K nearest neighbours\n\n\n\\[\np(\\hat{y}_{i} | x_{i}) \\gets \\mu p(\\hat{y}_{i} | x_{i}) + (1 - \\mu) \\sum_{k = 1}^{K} \\mathbf{A}_{ik} p(\\hat{y}_{k} | x_{k}),\n\\] where \\(\\mathbf{A}\\) is a matrix consisting of similarity coefficients between nearest neighbours.\nAdditional noisy labels can be sampled from the obtained \\(p(\\hat{y}_{i} | x_{i})\\).\n\n\n\nThe EM algorithm is then used to infer \\(\\pi\\) and \\(\\rho\\)."
   },
   {
     "objectID": "posts/meta-learning/index.html",

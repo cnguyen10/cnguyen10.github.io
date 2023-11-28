@@ -425,6 +425,7 @@ meta:s-&gt;task3
 <section id="variational-meta-learning" class="slide level2">
 <h2>Variational meta-learning</h2>
 <p>Extend the deterministic meta-learning (MAML) to a Bayesian meta-learning (VAMPIRE)</p>
+<div class="fragment">
 <div id="fig-meta-learning-diagrams" class="quarto-figure quarto-figure-center">
 <figure>
 <div class="column" style="width:45%;">
@@ -445,6 +446,7 @@ meta:s-&gt;task3
 </div>
 <figcaption>Figure&nbsp;1: Deterministic and Bayesian meta-learning methods.</figcaption>
 </figure>
+</div>
 </div>
 </section>
 <section id="pac-bayesian-meta-learning" class="slide level2 smaller">
@@ -482,6 +484,7 @@ meta:s-&gt;task3
 <section id="probabilistic-task-modelling-1" class="slide level2">
 <h2>Probabilistic task modelling</h2>
 <p>Employ latent Dirichlet allocation in topic modelling to model tasks in meta-learning</p>
+<div class="fragment">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -516,9 +519,12 @@ meta:s-&gt;task3
 </div>
 </div>
 </div>
+</div>
+<div class="fragment">
 <p><span class="math display">\[
 \text{A task } T_{i} \gets \sum_{k = 1}^{K} \pi_{ik} \mathcal{N}(\mu_{k}, \Sigma_{k}).
 \]</span></p>
+</div>
 </section>
 <section id="probabilistic-task-modelling-2" class="slide level2">
 <h2>Probabilistic task modelling</h2>
@@ -719,11 +725,7 @@ p(\hat{y}_{i} | x_{i}) \gets \mu p(\hat{y}_{i} | x_{i}) + (1 - \mu) \sum_{k = 1}
 </div>
 </div>
 </div>
-<p>The EM algorithm is then used to infer:</p>
-<ul>
-<li><span class="math inline">\(\pi = p(y | x)\)</span>, and</li>
-<li><span class="math inline">\(\rho = p(\hat{y} | x, y)\)</span>.</li>
-</ul>
+<p>The EM algorithm is then used to infer <span class="math inline">\(\pi\)</span> and <span class="math inline">\(\rho\)</span>.</p>
 </section>
 <section id="future-plan" class="title-slide slide level1 center">
 <h1>Future plan</h1>
