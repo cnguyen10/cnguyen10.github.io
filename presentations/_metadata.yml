@@ -1,0 +1,37 @@
+# options specified here will apply to all posts in this folder
+
+# freeze computational output
+# (see https://quarto.org/docs/projects/code-execution.html#freeze)
+freeze: true
+
+# Disable banner style title blocks
+title-block-banner: false
+
+author:
+  - name:
+      given: Cuong
+      family: Nguyen
+    id: cn
+    orcid: 0000-0003-2672-6291
+    # affiliation:
+    #   - name: The University of Adelaide
+    #     department: School of Computer Science
+    #     city: Adelaide
+    #     state: SA
+    #     country: AU
+    #     postal-code: 5005
+    #     url: www.adelaide.edu.au
+    #     isni: 0000 0004 1936 7304
+
+format: revealjs
+
+citation: false
+bibliography: references.bib
+
+toc: false
+toc-expand: false
+
+comments:
+  hypothesis: true
+
+license: "CC BY"
