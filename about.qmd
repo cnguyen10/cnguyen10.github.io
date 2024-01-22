@@ -33,7 +33,9 @@ format:
 ## Biography
 
 ::: {.text-start}
-I am a *research associate* at the School of Computer Science, The University of Adelaide. I received my Ph.D. in Computer Science from The University of Adelaide in 2022, an M.Phil. in Electronic Engineering also from The University of Adelaide in 2018, and a B.S. in Mechanical Engineering from Portland State University in 2012.
+I am a *research fellow* at the Centre for Vision, Speech and Signal Processing, University of Surrey.
+
+Before that, I was a *research associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my Ph.D. in Computer Science from The University of Adelaide in March 2022, an M.Phil. in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
 :::
 
 ---
@@ -49,6 +51,19 @@ Machine learning
 ::: {.grid}
 
 ::: {.g-col-2 .g-col-md-1 .text-end}
+<img src="img/uos_logo.svg" width="50" style="margin-top: 10px;">
+
+:::
+
+::: {.g-col-10 .g-col-md-5 .text-start}
+**Research associate**\
+<span class="bi bi-briefcase"> University of Surrey</span>\
+<i class="bi bi-hourglass-top"> Mar. 2024 - present</i>\
+<span class="bi bi-geo-alt"> Guildford, UK</span>
+
+:::
+
+::: {.g-col-2 .g-col-md-1 .text-end}
 <img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">
 
 :::
@@ -56,7 +71,7 @@ Machine learning
 ::: {.g-col-10 .g-col-md-5 .text-start}
 **Research associate**\
 <span class="bi bi-briefcase"> The University of Adelaide</span>\
-<i class="bi bi-hourglass-split"> Apr. 2021 - present</i>\
+<i class="bi bi-hourglass-bottom"> Apr. 2021 - Jan. 2024</i>\
 <span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
@@ -69,7 +84,7 @@ Machine learning
 ::: {.g-col-10 .g-col-md-5 .text-start}
 **Process & equipment engineer**\
 <span class="bi bi-briefcase"> Intel Products Vietnam</span>\
-<i class="bi bi-hourglass-bottom"> July 2012 - July 2015</i>\
+<i class="bi bi-hourglass-bottom"> Jul. 2012 - Jul. 2015</i>\
 <span class="bi bi-geo-alt"> Ho Chi Minh, VN</span>
 
 :::
@@ -90,7 +105,7 @@ Machine learning
 ::: {.g-col-10 .g-col-md-5 .text-start}
 **Ph.D. in Computer Science**\
 <span class="bi bi-book"></span> The University of Adelaide\
-<i class="bi bi-hourglass"> Apr. 2018 - Mar. 2022</i>\
+<i class="bi bi-hourglass-bottom"> Apr. 2018 - Mar. 2022</i>\
 <span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
@@ -102,7 +117,7 @@ Machine learning
 ::: {.g-col-10 .g-col-md-5 .text-start}
 **M.Phil. in Electronic Engineering**\
 <span class="bi bi-book"></span> The University of Adelaide\
-<i class="bi bi-hourglass"> Aug. 2015 - Jan. 2018</i>\
+<i class="bi bi-hourglass-bottom"> Aug. 2015 - Jan. 2018</i>\
 <span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
@@ -114,8 +129,8 @@ Machine learning
 ::: {.g-col-10 .g-col-md-5 .text-start}
 **B.S. in Mechanical Engineering**\
 <span class="bi bi-book"></span> Portland State University\
-<i class="bi bi-hourglass"> Jul. 2010 - Jun. 2012</i>\
-<span class="bi bi-geo-alt"> Oregon, USA</span>
+<i class="bi bi-hourglass-bottom"> Jul. 2010 - Jun. 2012</i>\
+<span class="bi bi-geo-alt"> Oregon, US</span>
 
 :::
 

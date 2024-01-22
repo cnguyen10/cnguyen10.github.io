@@ -16,7 +16,7 @@ comments: false
 ::: {.g-col-12 .g-col-md-8}
 <br />
 
-Hello, my name is **C&#x1B0;&#x1EDD;ng Cao Nguy&#x1EC5;n** (pronounced similarly to: *Ker-uhng Kao Ner-win*). I am a *research associate* at the School of Computer Science, The University of Adelaide working with Professor [Gustavo Carneiro](https://www.surrey.ac.uk/people/gustavo-carneiro) and Dr [Toan Do](https://sites.google.com/view/thanhtoando/home).
+Hello, my name is **C&#x1B0;&#x1EDD;ng Cao Nguy&#x1EC5;n** (pronounced similarly to: *Ker-uhng Kao Ner-win*).
 
 My main research interest lies in the modelling, formulating and understanding machine learning algorithms and their applications in medical data analysis.
 :::
