@@ -56,7 +56,7 @@ Machine learning
 :::
 
 ::: {.g-col-10 .g-col-md-5 .text-start}
-**Research associate**\
+**Research fellow**\
 <span class="bi bi-briefcase"> University of Surrey</span>\
 <i class="bi bi-hourglass-top"> Mar. 2024 - present</i>\
 <span class="bi bi-geo-alt"> Guildford, UK</span>
@@ -71,7 +71,7 @@ Machine learning
 ::: {.g-col-10 .g-col-md-5 .text-start}
 **Research associate**\
 <span class="bi bi-briefcase"> The University of Adelaide</span>\
-<i class="bi bi-hourglass-bottom"> Apr. 2021 - Jan. 2024</i>\
+<i class="bi bi-hourglass-bottom"> Apr. 2022 - Jan. 2024</i>\
 <span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
