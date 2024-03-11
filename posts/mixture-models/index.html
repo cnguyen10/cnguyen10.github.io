@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Cuong Nguyen">
 <meta name="dcterms.date" content="2022-07-17">
 
 <title>Cuong Nguyen - Expectation - Maximisation algorithm and its applications for mixture models</title>
@@ -25,6 +26,7 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -66,7 +68,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -75,6 +83,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -90,6 +99,11 @@ gtag('js', new Date());
 gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </script>
 <script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
 <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
 <script>
@@ -123,6 +137,33 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="../../styles.css">
 <meta name="twitter:title" content="Cuong Nguyen - Expectation - Maximisation algorithm and its applications for mixture models">
 <meta name="twitter:description" content="">
@@ -134,9 +175,9 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Cuong Nguyen</span>
     </a>
@@ -148,34 +189,34 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../blog.html" rel="" target=""><i class="bi bi-pencil-square" role="img">
+    <a class="nav-link" href="../../blog.html"> <i class="bi bi-pencil-square" role="img">
 </i> 
- <span class="menu-text">Blog</span></a>
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target=""><i class="bi bi-person-circle" role="img">
+    <a class="nav-link" href="../../about.html"> <i class="bi bi-person-circle" role="img">
 </i> 
- <span class="menu-text">About</span></a>
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-more" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-more" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">More</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-more">    
         <li>
-    <a class="dropdown-item" href="../../teaching.html" rel="" target="">
+    <a class="dropdown-item" href="../../teaching.html">
  <span class="dropdown-text">Teaching</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../publication.html" rel="" target="">
+    <a class="dropdown-item" href="../../publication.html">
  <span class="dropdown-text">Publication</span></a>
   </li>  
     </ul>
   </li>
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -219,14 +260,14 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
     <div class="quarto-title-meta-contents">
     <p class="author">Cuong Nguyen <a href="https://orcid.org/0000-0003-2672-6291" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
   </div>
-    <div class="quarto-title-meta-contents">
+  <div class="quarto-title-meta-contents">
         <p class="affiliation">
             <a href="www.adelaide.edu.au">
             The University of Adelaide
             </a>
           </p>
       </div>
-    </div>
+  </div>
 
 <div class="quarto-title-meta">
 
@@ -242,7 +283,9 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
   </div>
   
 
+
 </header>
+
 
 <p>In machine learning or statistical inference, we often encounter problems relating to <em>missing data</em> or <em>hidden variables</em>. One typical example of such latent variable models is finite mixture models, e.g.&nbsp;Gaussian mixture or multinomial mixture models. Due to the nature of missing data or latent variables, calculating the likelihood of those models requires the marginalization over the distribution of the latent variables, and hence, complicates the maximum likelihood estimation (MLE). A general technique dealing with latent variable models is the <em>expectation - maximization</em> (EM)~<span class="citation" data-cites="dempster1977maximum">(<a href="#ref-dempster1977maximum" role="doc-biblioref">Dempster, Laird, and Rubin 1977</a>)</span>. The basic idea of EM algorithm is to alternate between estimating the posterior of the latent variables (or missing data) in the E-step (expectation step), then using the completed data to calculate the MLE in the M-step (maximization step). It has been proved that by iterating the process, the likelihood of interest is non-decreasing. In other words, EM algorithm guarantees to converge to a saddle point.</p>
 <p>In this post, we re-formulate a simpler form of the EM algorithm. We then demonstrate the application of the EM algorithm on two common MLE problems: Gaussian mixture models and multinomial mixture models. Readers could also refer to Chapter 9 in <span class="citation" data-cites="bishop2006pattern">(<a href="#ref-bishop2006pattern" role="doc-biblioref">Bishop and Nasrabadi 2006</a>)</span> (note that there are some typos which are corrected in <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/prml-errata-1st-20110921.pdf" alt="errata and additional comments">erratum</a>).</p>
@@ -281,7 +324,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
     \max_{\theta} \ln p(\mathbf{x} | \theta) = \max_{\theta} \ln \left[ \sum_{\mathbf{z}} p(\mathbf{x}, \mathbf{z} | \theta) \right].
 \tag{1}</span></span></p>
 <p>Due to the presence of the sum over the latent variable <span class="math inline">\mathbf{z}</span>, the logarithm cannot be evaluated directly on the joint distribution, resulting in complicated expressions for the maximum likelihood solution.</p>
-<p>To solve the MLE in <a href="#eq-mle">Equation&nbsp;1</a>, we shall now assume that the completed log-likelihood <span class="math inline">p(\mathbf{x}, \mathbf{z} | \theta)</span> can be evaluated and maximized easily. Such assumption allows EM to get around the MLE in <a href="#eq-mle">Equation&nbsp;1</a> as follows. Let <span class="math inline">q(\mathbf{z}) &gt; 0</span> be an arbitrary distribution of the latent variable <span class="math inline">\mathbf{z}</span>. The observed data log-likelihood in <a href="#eq-mle">Equation&nbsp;1</a> can be written as: <span class="math display">
+<p>To solve the MLE in <a href="#eq-mle" class="quarto-xref">Equation&nbsp;1</a>, we shall now assume that the completed log-likelihood <span class="math inline">p(\mathbf{x}, \mathbf{z} | \theta)</span> can be evaluated and maximized easily. Such assumption allows EM to get around the MLE in <a href="#eq-mle" class="quarto-xref">Equation&nbsp;1</a> as follows. Let <span class="math inline">q(\mathbf{z}) &gt; 0</span> be an arbitrary distribution of the latent variable <span class="math inline">\mathbf{z}</span>. The observed data log-likelihood in <a href="#eq-mle" class="quarto-xref">Equation&nbsp;1</a> can be written as: <span class="math display">
     \begin{aligned}
         \ln p(\mathbf{x} | \theta) &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) \right] \\
         &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln p(\mathbf{z} | \mathbf{x}, \theta) + \ln q(\mathbf{z}) - \ln q(\mathbf{z}) \right] \\
@@ -298,7 +341,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
     \end{aligned}
 \tag{2}</span></span></p>
 <p>Note that we denote the posterior of the latent variable as <span class="math inline">p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})</span> to introduce the Expectation Maximization algorithm in the following. The reason why such <span class="math inline">\theta^{\mathrm{old}}</span> is introduced is that we need <span class="math inline">\theta</span> to calculate the posterior of <span class="math inline">\mathbf{z}</span>, and we need the posterior to evaluate the lower-bound to optimize for <span class="math inline">\theta</span>. That leads to an iterative approach, known as EM, to maximize the log-likelihood of interest.</p>
-<p>Hence, instead of maximizing the incomplete log-likelihood in <a href="#eq-mle">Equation&nbsp;1</a>, we first tighten the lower-bound (E-step) and then maximize it (M-step). This allows an interative algorithm to perform the MLE on incomplete data, which is described as follows:</p>
+<p>Hence, instead of maximizing the incomplete log-likelihood in <a href="#eq-mle" class="quarto-xref">Equation&nbsp;1</a>, we first tighten the lower-bound (E-step) and then maximize it (M-step). This allows an interative algorithm to perform the MLE on incomplete data, which is described as follows:</p>
 <ul>
 <li>
 <strong>Initialization:</strong> initialize the parameter of interest: <span class="math inline">\theta^{\mathrm{old}} \gets \theta</span>
@@ -325,14 +368,14 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
     \end{algorithmic}
 \end{algorithm}
 </pre>
-<div class="remark proof">
+<div class="proof remark">
 <p><span class="proof-title"><em>Remark</em>. </span>One can also apply MAP instead of MLE by adding the log prior in the optimization objective. In this case, the difference is at the M-step, while the E-step is still the same.</p>
 </div>
 </section>
 <section id="convergence" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="convergence"><span class="header-section-number">2.2</span> Convergence</h3>
 <div id="thm-convergence" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1 </strong></span>After each EM iteration, the log-likelihood <span class="math inline">\ln p(\mathbf{x} | \theta)</span> is non-decreasing. Mathematically, it can be written as follows: <span class="math display">
+<p><span class="theorem-title"><strong>Theorem 1</strong></span> After each EM iteration, the log-likelihood <span class="math inline">\ln p(\mathbf{x} | \theta)</span> is non-decreasing. Mathematically, it can be written as follows: <span class="math display">
     p(\mathbf{x} | \theta^{(n + 1)}) \ge p(\mathbf{x} | \theta^{(n)}),
 </span> where the superscript denotes the result obtained after that iteration.</p>
 </div>
@@ -347,7 +390,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 <p>Since it holds for any <span class="math inline">\theta</span>, we can substitute <span class="math inline">\theta = \theta^{(n)})</span> to obtain the likelihood after iteration <span class="math inline">n</span>-th: <span id="eq-likelihood_after_iteration_nth"><span class="math display">
     \ln p(\mathbf{x} | \theta^{(n)}) = \mathsf{L}(\theta^{(n)}, \theta^{(n)}) - \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) \right].
 \tag{4}</span></span></p>
-<p>Substracting side by side of <a href="#eq-likelihood_theta">Equation&nbsp;3</a> and <a href="#eq-likelihood_after_iteration_nth">Equation&nbsp;4</a> gives the following: <span class="math display">
+<p>Substracting side by side of <a href="#eq-likelihood_theta" class="quarto-xref">Equation&nbsp;3</a> and <a href="#eq-likelihood_after_iteration_nth" class="quarto-xref">Equation&nbsp;4</a> gives the following: <span class="math display">
     \begin{aligned}
         \ln p(\mathbf{x} | \theta) - \ln p(\mathbf{x} | \theta^{(n)}) &amp; = \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}) + \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \\
         &amp; = \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}) + \mathrm{KL} \left[ p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) \| p(\mathbf{z} | \mathbf{x}, \theta) \right].
@@ -481,7 +524,7 @@ sample a data-point from the corresponding Gaussian component: <span class="math
 </section>
 <section id="references" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="references"><span class="header-section-number">4</span> References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-bishop2006pattern" class="csl-entry" role="listitem">
 Bishop, Christopher M, and Nasser M Nasrabadi. 2006. <em>Pattern Recognition and Machine Learning</em>. Vol. 4. 4. Springer.
 </div>
@@ -493,7 +536,7 @@ Dempster, Arthur P, Nan M Laird, and Donald B Rubin. 1977. <span>“Maximum Like
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nguyen2022,
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nguyen2022,
   author = {Nguyen, Cuong},
   title = {Expectation - {Maximisation} Algorithm and Its Applications
     for Mixture Models},
@@ -584,10 +627,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/cnguyen10\.github\.io");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -597,8 +657,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -610,7 +679,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -654,6 +846,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -679,6 +872,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -739,6 +958,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

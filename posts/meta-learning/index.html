@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Cuong Nguyen">
 <meta name="dcterms.date" content="2021-11-22">
 
 <title>Cuong Nguyen - From hyper-parameter optimisation to meta-learning</title>
@@ -25,6 +26,7 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -66,7 +68,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -75,6 +83,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -90,6 +99,11 @@ gtag('js', new Date());
 gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </script>
 <script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
 <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
 <script>
@@ -123,6 +137,33 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="../../styles.css">
 <meta name="twitter:title" content="Cuong Nguyen - From hyper-parameter optimisation to meta-learning">
 <meta name="twitter:description" content="">
@@ -134,9 +175,9 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Cuong Nguyen</span>
     </a>
@@ -148,34 +189,34 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../blog.html" rel="" target=""><i class="bi bi-pencil-square" role="img">
+    <a class="nav-link" href="../../blog.html"> <i class="bi bi-pencil-square" role="img">
 </i> 
- <span class="menu-text">Blog</span></a>
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target=""><i class="bi bi-person-circle" role="img">
+    <a class="nav-link" href="../../about.html"> <i class="bi bi-person-circle" role="img">
 </i> 
- <span class="menu-text">About</span></a>
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-more" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-more" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">More</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-more">    
         <li>
-    <a class="dropdown-item" href="../../teaching.html" rel="" target="">
+    <a class="dropdown-item" href="../../teaching.html">
  <span class="dropdown-text">Teaching</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../publication.html" rel="" target="">
+    <a class="dropdown-item" href="../../publication.html">
  <span class="dropdown-text">Publication</span></a>
   </li>  
     </ul>
   </li>
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -224,14 +265,14 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
     <div class="quarto-title-meta-contents">
     <p class="author">Cuong Nguyen <a href="https://orcid.org/0000-0003-2672-6291" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
   </div>
-    <div class="quarto-title-meta-contents">
+  <div class="quarto-title-meta-contents">
         <p class="affiliation">
             <a href="www.adelaide.edu.au">
             The University of Adelaide
             </a>
           </p>
       </div>
-    </div>
+  </div>
 
 <div class="quarto-title-meta">
 
@@ -247,7 +288,9 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
   </div>
   
 
+
 </header>
+
 
 <p>Meta-learning, also known as <em>learn-how-to-learning</em>, has been being studied from 1980s <span class="citation" data-cites="schmidhuber1987evolutionary naik1992meta">(<a href="#ref-schmidhuber1987evolutionary" role="doc-biblioref">Schmidhuber 1987</a>; <a href="#ref-naik1992meta" role="doc-biblioref">Naik and Mammone 1992</a>)</span>, and recently attracted much attention from the research community. Meta-learning is a technique in <em>transfer learning</em> — a learning paradigm that utilises knowledge gained from past experience to facilitate the learning in the future. Due to being defined <q>implicitly</q>, meta -learning is often confused with other transfer learning techniques, e.g.&nbsp;<em>fine-tuning</em>, <em>multi-task learning</em>, <em>domain adaptation</em> and <em>continual learning</em>. The purpose of this post is to formulate meta-learning explicitly via <em>empirical Bayes</em>, and in particular <em>hyper-parameter optimisation</em>, to differentiate meta-learning from those common transfer learning approaches.</p>
 <p>This post is structured as follows: First, we define some terminologies used in general transfer learning and review hyper-parameter optimisation in single-task setting. We then formulate meta-learning as an extension of hyper-parameter optimisation in multi-task setting. Finally, we show the differences between meta-learning and other transfer-learning approaches.</p>
@@ -267,12 +310,12 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 <section id="task-instance" class="level3" data-number="1.2">
 <h3 data-number="1.2" class="anchored" data-anchor-id="task-instance"><span class="header-section-number">1.2</span> Task instance</h3>
 <div id="def-task-instance" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1 </strong></span><span class="citation" data-cites="hospedales2021meta">(<a href="#ref-hospedales2021meta" role="doc-biblioref">Hospedales et al. 2021</a>)</span></p>
+<p><span class="theorem-title"><strong>Definition 1</strong></span> <span class="citation" data-cites="hospedales2021meta">(<a href="#ref-hospedales2021meta" role="doc-biblioref">Hospedales et al. 2021</a>)</span></p>
 <p>A <em>task</em> or a <em>task instance</em> <span class="math inline">\mathcal{T}_{i}</span> consists of an unknown associated data generation model <span class="math inline">(\mathcal{D}_{i}, f_{i})</span>, and a loss function <span class="math inline">\ell_{i}</span>, denoted as: <span class="math display">
 \mathcal{T}_{i} = \{(\mathcal{D}_{i}, f_{i}), \ell_{i}\}.
 </span></p>
 </div>
-<div class="remark proof">
+<div class="proof remark">
 <p><span class="proof-title"><em>Remark</em>. </span>The loss function <span class="math inline">\ell_{i}</span> is defined abstractly, and can be either:</p>
 <ul>
 <li><p>negative log-likelihood (NLL): <span class="math inline">- \ln p(y_{ij} | \mathbf{x}_{ij}, \mathbf{w}_{i})</span>, corresponding to maximum likelihood estimation. This type of loss is quite common in practice, for example:</p>
@@ -324,18 +367,18 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 &amp; \text{s.t.: } \mathbf{w}^{*}_{i}(\theta) = \arg\min_{\mathbf{w}_{i}} \mathbb{E}_{\left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[ \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \mathbf{w}_{i}(\theta) \right) \right].
 \end{aligned}
 \tag{2}</span></span></p>
-<p>The difference between meta-learning and hyper-parameter optimisation is that the meta-parameter (also known as hyper-parameter) <span class="math inline">\theta</span> is shared across all tasks sampled from the task environment <span class="math inline">p(\mathcal{D}, f)</span> as highlighted in <span style="color: red;">red</span> colour in <a href="#eq-meta_learning_bilevel_optimisation">Equation&nbsp;2</a>.</p>
+<p>The difference between meta-learning and hyper-parameter optimisation is that the meta-parameter (also known as hyper-parameter) <span class="math inline">\theta</span> is shared across all tasks sampled from the task environment <span class="math inline">p(\mathcal{D}, f)</span> as highlighted in <span style="color: red;">red</span> colour in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a>.</p>
 <p>In practice, the meta-parameter (or shared hyper-parameter) <span class="math inline">\theta</span> can be chosen as one of the followings:</p>
 <ul>
-<li><em>learning rate</em> of gradient-based optimisation used to minimise the lower level objective function in <a href="#eq-meta_learning_bilevel_optimisation">Equation&nbsp;2</a> to learn <span class="math inline">\mathbf{w}_{i}^{*} \left(\theta\right)</span> <span class="citation" data-cites="li2017meta">(<a href="#ref-li2017meta" role="doc-biblioref">Z. Li et al. 2017</a>)</span>,</li>
+<li><em>learning rate</em> of gradient-based optimisation used to minimise the lower level objective function in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a> to learn <span class="math inline">\mathbf{w}_{i}^{*} \left(\theta\right)</span> <span class="citation" data-cites="li2017meta">(<a href="#ref-li2017meta" role="doc-biblioref">Z. Li et al. 2017</a>)</span>,</li>
 <li><em>initialisation</em> of model parameter <span class="citation" data-cites="finn2017model">(<a href="#ref-finn2017model" role="doc-biblioref">Finn, Abbeel, and Levine 2017</a>)</span>,</li>
 <li><em>data representation</em> or <em>feature extractor</em> <span class="citation" data-cites="vinyals2016matching snell2017prototypical">(<a href="#ref-vinyals2016matching" role="doc-biblioref">Vinyals et al. 2016</a>; <a href="#ref-snell2017prototypical" role="doc-biblioref">Snell, Swersky, and Zemel 2017</a>)</span>,</li>
-<li><em>optimiser</em> used to optimise the lower-level in <a href="#eq-meta_learning_bilevel_optimisation">Equation&nbsp;2</a>.</li>
+<li><em>optimiser</em> used to optimise the lower-level in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a>.</li>
 </ul>
 <p>In this post, the meta-parameter <span class="math inline">\theta</span> is assumed to be the initialisation of model parameters. Formulation, derivation and analysis in the subsequent sections and chapters will, therefore, revolve around this assumption. Note that the analysis can be straight-forwardly extended to other types of meta-parameters with slight modifications.</p>
-<p>In general, the objective function of meta-learning in <a href="#eq-meta_learning_bilevel_optimisation">Equation&nbsp;2</a> can be solved by gradient-based optimisation, such as gradient descent. Due to the nature of the bi-level optimisation, the optimisation are often carried out in two steps. The first step is to adapt (or fine-tuned) the meta-parameter <span class="math inline">\theta</span> to the task-specific parameter <span class="math inline">\mathbf{w}_{i}(\theta)</span>. This corresponds to the optimisation in the lower-level, and can be written as: <span id="eq-task_adaptation_sgd"><span class="math display">
+<p>In general, the objective function of meta-learning in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a> can be solved by gradient-based optimisation, such as gradient descent. Due to the nature of the bi-level optimisation, the optimisation are often carried out in two steps. The first step is to adapt (or fine-tuned) the meta-parameter <span class="math inline">\theta</span> to the task-specific parameter <span class="math inline">\mathbf{w}_{i}(\theta)</span>. This corresponds to the optimisation in the lower-level, and can be written as: <span id="eq-task_adaptation_sgd"><span class="math display">
 \mathbf{w}_{i}^{*}(\theta) = \theta - \alpha \mathbb{E}_{\left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(t)}, \mathbf{y}_{ij}^{(t)}; \mathbf{w}_{i}(\theta) \right) \right],
-\tag{3}</span></span> where <span class="math inline">\alpha</span> is a hyper-parameter denoting the learning rate for task <span class="math inline">\mathcal{T}_{i}</span>. For simplicity, the adaptation step in <a href="#eq-task_adaptation_sgd">Equation&nbsp;3</a>} is carried out with only one gradient descent update.</p>
+\tag{3}</span></span> where <span class="math inline">\alpha</span> is a hyper-parameter denoting the learning rate for task <span class="math inline">\mathcal{T}_{i}</span>. For simplicity, the adaptation step in <a href="#eq-task_adaptation_sgd" class="quarto-xref">Equation&nbsp;3</a>} is carried out with only one gradient descent update.</p>
 <p>The second step is to minimise the validation loss induced by the locally-optimal task-specific parameter <span class="math inline">\mathbf{w}_{i}^{*}(\theta)</span> evaluated on the validation subset w.r.t. the meta-parameter <span class="math inline">\theta</span>. This corresponds to the upper-level optimisation, and can be expressed as: <span id="eq-meta_parameter_update_sgd"><span class="math display">
 \theta \gets \theta - \gamma \mathbb{E}_{\mathcal{T}_{i} \sim p(\mathcal{D}, f)} \mathbb{E}_{ \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(v)}, \mathbf{y}_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right],
 \tag{4}</span></span> where <span class="math inline">\gamma</span> is another hyper-parameter representing the learning rate to learn <span class="math inline">\theta</span>.</p>
@@ -363,14 +406,14 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 </section>
 <section id="second-order-meta-learning" class="level3" data-number="1.4">
 <h3 data-number="1.4" class="anchored" data-anchor-id="second-order-meta-learning"><span class="header-section-number">1.4</span> Second-order meta-learning</h3>
-<p>As shown in <a href="#eq-meta_parameter_update_sgd">Equation&nbsp;4</a>, the optimisation for the meta-parameter <span class="math inline">\theta</span> requires the gradient of the validation loss averaged across <span class="math inline">T</span> tasks. Given that each task-specific parameter <span class="math inline">\mathbf{w}_{i}^{*}</span> is a function of <span class="math inline">\theta</span> due to the lower-level optimisation in <a href="#eq-task_adaptation_sgd">Equation&nbsp;3</a>, the gradient of interest can be expanded as: <span class="math display">
+<p>As shown in <a href="#eq-meta_parameter_update_sgd" class="quarto-xref">Equation&nbsp;4</a>, the optimisation for the meta-parameter <span class="math inline">\theta</span> requires the gradient of the validation loss averaged across <span class="math inline">T</span> tasks. Given that each task-specific parameter <span class="math inline">\mathbf{w}_{i}^{*}</span> is a function of <span class="math inline">\theta</span> due to the lower-level optimisation in <a href="#eq-task_adaptation_sgd" class="quarto-xref">Equation&nbsp;3</a>, the gradient of interest can be expanded as: <span class="math display">
 \begin{aligned}
 &amp; \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
 &amp; = \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta}^{\top} \mathbf{w}_{i}^{*} \left( \theta \right) \times \nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
 &amp; = \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \left\{ \left[ \mathbf{I} - \alpha \mathbb{E}_{ \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[ \textcolor{red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)} \right] \right] \right.\\
 &amp; \quad \times \left. \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \textcolor{green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)} \right] \right\},
 \end{aligned}
-</span> where the first equality is due to chain rule, and the second equality is the result that differentiates the gradient update in <a href="#eq-task_adaptation_sgd">Equation&nbsp;3</a>. Note that in the second equality, we remove the transpose notation since the corresponding matrix is symmetric.</p>
+</span> where the first equality is due to chain rule, and the second equality is the result that differentiates the gradient update in <a href="#eq-task_adaptation_sgd" class="quarto-xref">Equation&nbsp;3</a>. Note that in the second equality, we remove the transpose notation since the corresponding matrix is symmetric.</p>
 <p>Thus, naively implementing such gradient would require to calculate the Hessian matrix <span class="math inline">\textcolor{Red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)}</span>, resulting in an intractable procedure for large models, such as deep neural networks. To obtain a more efficient implementation, one can utilise the Hessian-vector product <span class="citation" data-cites="pearlmutter94fastexact">(<a href="#ref-pearlmutter94fastexact" role="doc-biblioref">Pearlmutter 1994</a>)</span> between the gradient vector <span class="math inline">\textcolor{green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span> and the Hessian matrix <span class="math inline">\textcolor{red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)}</span> to efficiently calculate the gradient of the validation loss w.r.t. <span class="math inline">\theta</span>.</p>
 <p>Another way to calculate the gradient of the validation loss w.r.t. the meta-parameter <span class="math inline">\theta</span> is to use implicit differentiation <span class="citation" data-cites="domke2012generic rajeswaran2019meta lorraine2020optimizing">(<a href="#ref-domke2012generic" role="doc-biblioref">Domke 2012</a>; <a href="#ref-rajeswaran2019meta" role="doc-biblioref">Rajeswaran et al. 2019</a>; <a href="#ref-lorraine2020optimizing" role="doc-biblioref">Lorraine, Vicol, and Duvenaud 2020</a>)</span>. This approach is more advantaged since it does not need to stores the computational graph and takes gradient via chain rule. Such implicit differentiation technique reduces the memory usage and therefore, allows to work with large-scale models. However, the trade-off is the increasing computational time to apply the chain rule to calculate the gradient of interest.</p>
 <p>Nevertheless, the implementations that compute the exact gradient of the validation loss w.r.t. <span class="math inline">\theta</span> without approximation are often referred to as <q>second-order</q> meta-learning.</p>
@@ -400,7 +443,7 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 \end{aligned}
 \tag{5}</span></span></p>
 <p>where <span class="math inline">\mathbf{x}_{s}, \mathbf{y}_{s}</span> and <span class="math inline">\mathbf{x}_{t}, \mathbf{y}_{t}</span> are the data sampled from the source task <span class="math inline">\mathcal{T}_{s}</span> and target task <span class="math inline">\mathcal{T}_{t}</span>, respectively.</p>
-<p>Although the objective of fine-tuning shown in <a href="#eq-fine_tuning_formulation">Equation&nbsp;5</a> is still a bi-level optimisation, it is easier to solve than the one in meta-learning due to the following reasons:</p>
+<p>Although the objective of fine-tuning shown in <a href="#eq-fine_tuning_formulation" class="quarto-xref">Equation&nbsp;5</a> is still a bi-level optimisation, it is easier to solve than the one in meta-learning due to the following reasons:</p>
 <ul>
 <li>The objective in fine-tuning has only one constrain corresponding to one source task, while meta-learning has several constrains corresponding to multiple training tasks.</li>
 <li>In fine-tuning, <span class="math inline">\mathbf{w}_{t}</span> and <span class="math inline">\mathbf{w}_{0}</span> are inferred separately, while in meta-learning, the task-specific parameter is a function of the meta-parameter, resulting in a more complicated correlation.</li>
@@ -416,7 +459,7 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 \end{aligned}
 \tag{6}</span></span></p>
 <p>After obtaining the transformation <span class="math inline">g</span>, one can simply train a model using the transformed data of the source domain, and then use that model to make predictions on the target domain.</p>
-<p>Given the optimisation in~<a href="#eq-domain_adaptation">Equation&nbsp;6</a>, domain adaptation is different from meta-learning due to the following reasons:</p>
+<p>Given the optimisation in~<a href="#eq-domain_adaptation" class="quarto-xref">Equation&nbsp;6</a>, domain adaptation is different from meta-learning due to the following reasons:</p>
 <ul>
 <li>Domain adaptation assumes a shift in the task environments that generate source and target tasks, while meta-learning is based on the assumption of same task generation.</li>
 <li>Domain adaptation utilises information of data from target domain, while meta-learning does not have such access.</li>
@@ -428,7 +471,7 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 <p>Multi-task learning learns several related auxiliary tasks and a target task simultaneously to exploit the diversity of task representation to regularise and improve the performance on the target task~<span class="citation" data-cites="caruana1997multitask">(<a href="#ref-caruana1997multitask" role="doc-biblioref">Caruana 1997</a>)</span>. If the input <span class="math inline">\mathbf{x}</span> is assumed to be the same across <span class="math inline">T</span> extra tasks and the target task <span class="math inline">\mathcal{T}_{T + 1}</span>, then the objective of multi-task learning can be expressed as: <span id="eq-mtl_formulation"><span class="math display">
 \min_{\mathbf{w}_{0}, \{\mathbf{w}_{i}\}_{i = 1}^{T + 1}} \frac{1}{T + 1} \sum_{i = 1}^{T + 1} \ell_{i} \left( h_{i} \left( g\left( \mathbf{x}; \mathbf{w}_{0} \right); \mathbf{w}_{i} \right), \mathbf{y}_{i} \right),
 \tag{7}</span></span> where <span class="math inline">\mathbf{y}_{i}, \ell_{i}</span> and <span class="math inline">h_{i}</span> are the label, loss function and the classifier for task <span class="math inline">\mathcal{T}_{i}</span>, respectively, and <span class="math inline">g(., \mathbf{w}_{0})</span> is the shared feature extractor for <span class="math inline">T + 1</span> tasks.</p>
-<p>Multi-task learning is often confused with meta-learning due to their similar nature extracting information from many tasks. However, the objective function of multi-task learning in <a href="#eq-mtl_formulation">Equation&nbsp;7</a> is a single-level optimisation for the shared parameter <span class="math inline">\mathbf{w}_{0}</span> and multiple task-specific classifier <span class="math inline">\{\mathbf{w}_{i}\}_{i = 1}^{T + 1}</span>. It is, therefore, not as complicated as a bi-level optimisation seen in meta-learning as shown in <a href="#eq-meta_learning_bilevel_optimisation">Equation&nbsp;2</a>. Furthermore, multi-task learning aims to solve a number of specific tasks known during training (referred to as target tasks), while meta-learning targets the generalisation for unseen tasks in the future.</p>
+<p>Multi-task learning is often confused with meta-learning due to their similar nature extracting information from many tasks. However, the objective function of multi-task learning in <a href="#eq-mtl_formulation" class="quarto-xref">Equation&nbsp;7</a> is a single-level optimisation for the shared parameter <span class="math inline">\mathbf{w}_{0}</span> and multiple task-specific classifier <span class="math inline">\{\mathbf{w}_{i}\}_{i = 1}^{T + 1}</span>. It is, therefore, not as complicated as a bi-level optimisation seen in meta-learning as shown in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a>. Furthermore, multi-task learning aims to solve a number of specific tasks known during training (referred to as target tasks), while meta-learning targets the generalisation for unseen tasks in the future.</p>
 </section>
 <section id="continual-learning" class="level3" data-number="2.4">
 <h3 data-number="2.4" class="anchored" data-anchor-id="continual-learning"><span class="header-section-number">2.4</span> Continual learning</h3>
@@ -442,7 +485,7 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 </section>
 <section id="references" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="references"><span class="header-section-number">4</span> References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-al2018continuous" class="csl-entry" role="listitem">
 Al-Shedivat, Maruan, Trapit Bansal, Yuri Burda, Ilya Sutskever, Igor Mordatch, and Pieter Abbeel. 2018. <span>“Continuous Adaptation via Meta-Learning in Nonstationary and Competitive Environments.”</span> In <em>International Conference on Learning Representation</em>.
 </div>
@@ -532,7 +575,7 @@ Yosinski, Jason, Jeff Clune, Yoshua Bengio, and Hod Lipson. 2014. <span>“How T
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nguyen2021,
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nguyen2021,
   author = {Nguyen, Cuong},
   title = {From Hyper-Parameter Optimisation to Meta-Learning},
   date = {2021-11-22},
@@ -622,10 +665,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/cnguyen10\.github\.io");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -635,8 +695,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -648,7 +717,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -692,6 +884,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -717,6 +910,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -777,6 +996,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

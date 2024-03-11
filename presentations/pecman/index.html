@@ -9,8 +9,9 @@
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.450">
+  <meta name="generator" content="quarto-1.4.551">
 
+  <meta name="author" content="Cuong Nguyen">
   <title>Cuong Nguyen - Learning with limited and uncertain data</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -45,6 +46,11 @@
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <script async="" src="https://hypothes.is/embed.js"></script>
+  <script>
+    window.document.addEventListener("DOMContentLoaded", function (_event) {
+      document.body.classList.add('hypothesis-enabled');
+    });
+  </script>
   <style type="text/css">
 
   .callout {
@@ -166,7 +172,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -331,7 +338,8 @@
   </style>
 <meta name="twitter:title" content="Cuong Nguyen - Learning with limited and uncertain data">
 <meta name="twitter:description" content="Few-shot meta-learning &amp; noisy label learning">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cnguyen10.github.io/presentations/pecman/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -373,50 +381,70 @@ Cuong Nguyen <a href="https://orcid.org/0000-0003-2672-6291" class="quarto-title
 <h2>Meta-learning - Background</h2>
 <p>Meta-learning is to learn a hyper-parameter (e.g., learning rate or initialisation) shared across many tasks (or datasets).</p>
 <div class="fragment">
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class=""><p></p>
 <div>
 <svg width="960" height="480" viewbox="0.00 0.00 386.00 206.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 202)"> <polygon fill="white" stroke="transparent" points="-4,4 -4,-202 382,-202 382,4 -4,4"></polygon> <!-- origin --> <g id="node1" class="node">
-<title>
-origin
-</title>
-</g> <!-- meta --> <g id="node2" class="node">
-<title>
-meta
-</title>
-<ellipse fill="none" stroke="black" cx="243" cy="-108" rx="27" ry="18"></ellipse> <text text-anchor="middle" x="243" y="-103.8" font-family="Times,serif" font-size="14.00">θ</text> </g> <!-- origin&#45;&gt;meta --> <g id="edge1" class="edge">
-<title>
-origin-&gt;meta
-</title>
-<path fill="none" stroke="black" d="M54.07,-177.32C98.99,-172.29 117.2,-165.22 215.77,-120.4"></path> <polygon fill="black" stroke="black" points="216.69,-121.9 220.52,-118.24 215.24,-118.72 216.69,-121.9"></polygon> </g> <!-- task1 --> <g id="node3" class="node">
-<title>
-task1
-</title>
-<polygon fill="none" stroke="black" points="306,-198 252,-198 252,-162 306,-162 306,-198"></polygon> <text text-anchor="middle" x="279" y="-175.8" font-family="Times,serif" font-size="14.00">Task 1</text> </g> <!-- meta&#45;&gt;task1 --> <g id="edge2" class="edge">
-<title>
-meta:n-&gt;task1
-</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M243,-126C256.33,-142.34 263.4,-151.01 267.94,-157.59"></path> <polygon fill="black" stroke="black" points="266.54,-158.64 270.72,-161.89 269.47,-156.74 266.54,-158.64"></polygon> </g> <!-- task2 --> <g id="node4" class="node">
-<title>
-task2
-</title>
-<polygon fill="none" stroke="black" points="378,-117 324,-117 324,-81 378,-81 378,-117"></polygon> <text text-anchor="middle" x="351" y="-94.8" font-family="Times,serif" font-size="14.00">Task 2</text> </g> <!-- meta&#45;&gt;task2 --> <g id="edge3" class="edge">
-<title>
-meta:e-&gt;task2:w
-</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M270,-108C303.49,-104.43 307.42,-104.01 318.93,-100.55"></path> <polygon fill="black" stroke="black" points="319.73,-102.14 324,-99 318.71,-98.79 319.73,-102.14"></polygon> </g> <!-- task3 --> <g id="node5" class="node">
-<title>
-task3
-</title>
-<polygon fill="none" stroke="black" points="270,-36 216,-36 216,0 270,0 270,-36"></polygon> <text text-anchor="middle" x="243" y="-13.8" font-family="Times,serif" font-size="14.00">Task 3</text> </g> <!-- meta&#45;&gt;task3 --> <g id="edge4" class="edge">
-<title>
-meta:s-&gt;task3
-</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M243,-90C249.76,-62.37 252.39,-51.63 250.89,-41.34"></path> <polygon fill="black" stroke="black" points="252.56,-40.78 249.82,-36.25 249.14,-41.5 252.56,-40.78"></polygon> </g> </g>
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 202)">
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-202 382,-202 382,4 -4,4"></polygon>
+<!-- origin -->
+<g id="node1" class="node">
+<title>origin</title>
+</g>
+<!-- meta -->
+<g id="node2" class="node">
+<title>meta</title>
+<ellipse fill="none" stroke="black" cx="243" cy="-108" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="243" y="-103.8" font-family="Times,serif" font-size="14.00">θ</text>
+</g>
+<!-- origin&#45;&gt;meta -->
+<g id="edge1" class="edge">
+<title>origin-&gt;meta</title>
+<path fill="none" stroke="black" d="M54.07,-177.32C98.99,-172.29 117.2,-165.22 215.77,-120.4"></path>
+<polygon fill="black" stroke="black" points="216.69,-121.9 220.52,-118.24 215.24,-118.72 216.69,-121.9"></polygon>
+</g>
+<!-- task1 -->
+<g id="node3" class="node">
+<title>task1</title>
+<polygon fill="none" stroke="black" points="306,-198 252,-198 252,-162 306,-162 306,-198"></polygon>
+<text text-anchor="middle" x="279" y="-175.8" font-family="Times,serif" font-size="14.00">Task 1</text>
+</g>
+<!-- meta&#45;&gt;task1 -->
+<g id="edge2" class="edge">
+<title>meta:n-&gt;task1</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M243,-126C256.33,-142.34 263.4,-151.01 267.94,-157.59"></path>
+<polygon fill="black" stroke="black" points="266.54,-158.64 270.72,-161.89 269.47,-156.74 266.54,-158.64"></polygon>
+</g>
+<!-- task2 -->
+<g id="node4" class="node">
+<title>task2</title>
+<polygon fill="none" stroke="black" points="378,-117 324,-117 324,-81 378,-81 378,-117"></polygon>
+<text text-anchor="middle" x="351" y="-94.8" font-family="Times,serif" font-size="14.00">Task 2</text>
+</g>
+<!-- meta&#45;&gt;task2 -->
+<g id="edge3" class="edge">
+<title>meta:e-&gt;task2:w</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M270,-108C303.49,-104.43 307.42,-104.01 318.93,-100.55"></path>
+<polygon fill="black" stroke="black" points="319.73,-102.14 324,-99 318.71,-98.79 319.73,-102.14"></polygon>
+</g>
+<!-- task3 -->
+<g id="node5" class="node">
+<title>task3</title>
+<polygon fill="none" stroke="black" points="270,-36 216,-36 216,0 270,0 270,-36"></polygon>
+<text text-anchor="middle" x="243" y="-13.8" font-family="Times,serif" font-size="14.00">Task 3</text>
+</g>
+<!-- meta&#45;&gt;task3 -->
+<g id="edge4" class="edge">
+<title>meta:s-&gt;task3</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M243,-90C249.76,-62.37 252.39,-51.63 250.89,-41.34"></path>
+<polygon fill="black" stroke="black" points="252.56,-40.78 249.82,-36.25 249.14,-41.5 252.56,-40.78"></polygon>
+</g>
+</g>
 </svg>
 </div>
+<p></p></figure><p></p>
 </div>
 </div>
 </div>
@@ -426,26 +454,33 @@ meta:s-&gt;task3
 <h2>Variational meta-learning</h2>
 <p>Extend the deterministic meta-learning (MAML) to a Bayesian meta-learning (VAMPIRE)</p>
 <div class="fragment">
-<div id="fig-meta-learning-diagrams" class="quarto-figure quarto-figure-center">
-<figure>
+<div id="fig-meta-learning-diagrams" class="columns quarto-figure quarto-figure-center quarto-float">
+<figure class="quarto-float quarto-float-fig"><div aria-describedby="fig-meta-learning-diagrams-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="column" style="width:45%;">
-<div id="fig-maml-diagram" class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/maml_diagram.svg" style="width:100.0%" alt="MAML diagram" data-ref-parent="fig-meta-learning-diagrams"></p>
-<figcaption>(a) MAML</figcaption>
+<div id="fig-maml-diagram" class="quarto-figure quarto-figure-center quarto-float" alt="MAML diagram">
+<figure class="quarto-float quarto-subfloat-fig">
+<div aria-describedby="fig-maml-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="img/maml_diagram.svg" style="width:100.0%" data-ref-parent="fig-meta-learning-diagrams" alt="MAML diagram">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-maml-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) MAML
+</figcaption>
 </figure>
 </div>
 </div>
 <div class="column" style="width:45%;">
-<div id="fig-vampire-diagram" class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/vampire_diagram.svg" style="width:100.0%" alt="VAMPIRE diagram" data-ref-parent="fig-meta-learning-diagrams"></p>
-<figcaption>(b) VAMPIRE</figcaption>
+<div id="fig-vampire-diagram" class="quarto-figure quarto-figure-center quarto-float" alt="VAMPIRE diagram">
+<figure class="quarto-float quarto-subfloat-fig">
+<div aria-describedby="fig-vampire-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="img/vampire_diagram.svg" style="width:100.0%" data-ref-parent="fig-meta-learning-diagrams" alt="VAMPIRE diagram">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-vampire-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) VAMPIRE
+</figcaption>
 </figure>
 </div>
 </div>
-<figcaption>Figure&nbsp;1: Deterministic and Bayesian meta-learning methods.</figcaption>
-</figure>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meta-learning-diagrams-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;1: Deterministic and Bayesian meta-learning methods.</figcaption></figure>
 </div>
 </div>
 </section>
@@ -480,7 +515,9 @@ meta:s-&gt;task3
 <h2>Probabilistic task modelling</h2>
 <p><em>Motivation:</em> wide variation of task performance when evaluating the same meta-learning model.</p>
 
-<img data-src="img/histogram_accuracy.svg" class="centre-text r-stretch quarto-figure-left" style="width:100.0%" alt="Histogram of accuracy"><p class="caption">Figure&nbsp;2: The histogram accuracy of 15,504 5-way 1-shot classification tasks.</p></section>
+<img data-src="img/histogram_accuracy.svg" class="centre-text quarto-figure quarto-figure-left r-stretch" style="width:100.0%" alt="Histogram of accuracy"><p class="caption">
+Figure&nbsp;2: The histogram accuracy of 15,504 5-way 1-shot classification tasks.
+</p></section>
 <section id="probabilistic-task-modelling-1" class="slide level2">
 <h2>Probabilistic task modelling</h2>
 <p>Employ latent Dirichlet allocation in topic modelling to model tasks in meta-learning</p>
@@ -530,7 +567,9 @@ meta:s-&gt;task3
 <h2>Probabilistic task modelling</h2>
 <p>A task is represented as a point <span class="math inline">\((\pi_{1}, \pi_{2}, \dots, \pi_{K})\)</span> in the latent task-theme simplex.</p>
 
-<img data-src="img/task_theme_simplex.svg" style="width:100.0%" alt="Task theme simplex" class="r-stretch quarto-figure-left"><p class="caption">Figure&nbsp;3: A task is a point in the latent task-theme simplex</p></section>
+<img data-src="img/task_theme_simplex.svg" class="quarto-figure quarto-figure-left r-stretch" style="width:100.0%" alt="Task theme simplex"><p class="caption">
+Figure&nbsp;3: A task is a point in the latent task-theme simplex
+</p></section>
 <section id="task-weighting-for-meta-learning" class="slide level2">
 <h2>Task weighting for meta-learning</h2>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -742,8 +781,10 @@ p(\hat{y}_{i} | x_{i}) \gets \mu p(\hat{y}_{i} | x_{i}) + (1 - \mu) \sum_{k = 1}
 </ul>
 </div>
 
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
+</div>
 </div>
 </section>
     </div>
@@ -772,7 +813,6 @@ p(\hat{y}_{i} | x_{i}) \gets \mu p(\hat{y}_{i} | x_{i}) + (1 - \mu) \sum_{k = 1}
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1033,10 +1073,27 @@ p(\hat{y}_{i} | x_{i}) \gets \mu p(\hat{y}_{i} | x_{i}) + (1 - \mu) \sum_{k = 1}
         // clear code selection
         e.clearSelection();
       });
-      function tippyHover(el, contentFn) {
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp("https:\/\/cnguyen10\.github\.io");
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1046,8 +1103,17 @@ p(\hat{y}_{i} | x_{i}) \gets \mu p(\hat{y}_{i} | x_{i}) + (1 - \mu) \sum_{k = 1}
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1061,7 +1127,11 @@ p(\hat{y}_{i} | x_{i}) \gets \mu p(\hat{y}_{i} | x_{i}) + (1 - \mu) \sum_{k = 1}
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {
