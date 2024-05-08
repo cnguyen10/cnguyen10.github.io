@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cuong Nguyen">
 <meta name="dcterms.date" content="2022-07-17">
 
-<title>Cuong Nguyen - Expectation - Maximisation algorithm and its applications for mixture models</title>
+<title>Cuong Nguyen - Expectation - Maximisation algorithm and its applications in finite mixture models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -104,6 +104,9 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
     document.body.classList.add('hypothesis-enabled');
   });
 </script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
 <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
 <script>
@@ -165,7 +168,7 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="Cuong Nguyen - Expectation - Maximisation algorithm and its applications for mixture models">
+<meta name="twitter:title" content="Cuong Nguyen - Expectation - Maximisation algorithm and its applications in finite mixture models">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://cnguyen10.github.io/posts/mixture-models/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,10 +235,11 @@ window.Quarto = {
   <li><a href="#notations" id="toc-notations" class="nav-link active" data-scroll-target="#notations"><span class="header-section-number">1</span> Notations</a></li>
   <li><a href="#em-algorithm" id="toc-em-algorithm" class="nav-link" data-scroll-target="#em-algorithm"><span class="header-section-number">2</span> EM algorithm</a>
   <ul class="collapse">
-  <li><a href="#derivation" id="toc-derivation" class="nav-link" data-scroll-target="#derivation"><span class="header-section-number">2.1</span> Derivation</a></li>
-  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence"><span class="header-section-number">2.2</span> Convergence</a></li>
+  <li><a href="#sec-data-generation" id="toc-sec-data-generation" class="nav-link" data-scroll-target="#sec-data-generation"><span class="header-section-number">2.1</span> Data generation</a></li>
+  <li><a href="#sec-parameter-inference" id="toc-sec-parameter-inference" class="nav-link" data-scroll-target="#sec-parameter-inference"><span class="header-section-number">2.2</span> Parameter inference</a></li>
+  <li><a href="#convergence-of-the-em-algorithm" id="toc-convergence-of-the-em-algorithm" class="nav-link" data-scroll-target="#convergence-of-the-em-algorithm"><span class="header-section-number">2.3</span> Convergence of the EM algorithm</a></li>
   </ul></li>
-  <li><a href="#applications-of-em" id="toc-applications-of-em" class="nav-link" data-scroll-target="#applications-of-em"><span class="header-section-number">3</span> Applications of EM</a>
+  <li><a href="#applications-of-em-in-finite-mixture-models" id="toc-applications-of-em-in-finite-mixture-models" class="nav-link" data-scroll-target="#applications-of-em-in-finite-mixture-models"><span class="header-section-number">3</span> Applications of EM in finite mixture models</a>
   <ul class="collapse">
   <li><a href="#gaussian-mixture-models" id="toc-gaussian-mixture-models" class="nav-link" data-scroll-target="#gaussian-mixture-models"><span class="header-section-number">3.1</span> Gaussian mixture models</a></li>
   <li><a href="#multinomial-mixture-models" id="toc-multinomial-mixture-models" class="nav-link" data-scroll-target="#multinomial-mixture-models"><span class="header-section-number">3.2</span> Multinomial mixture models</a></li>
@@ -249,29 +253,20 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Expectation - Maximisation algorithm and its applications for mixture models</h1>
+<h1 class="title">Expectation - Maximisation algorithm and its applications in finite mixture models</h1>
 </div>
 
 
-<div class="quarto-title-meta-author">
-  <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliation</div>
-  
-    <div class="quarto-title-meta-contents">
-    <p class="author">Cuong Nguyen <a href="https://orcid.org/0000-0003-2672-6291" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
-  </div>
-  <div class="quarto-title-meta-contents">
-        <p class="affiliation">
-            <a href="www.adelaide.edu.au">
-            The University of Adelaide
-            </a>
-          </p>
-      </div>
-  </div>
 
 <div class="quarto-title-meta">
 
-      
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cuong Nguyen <a href="https://orcid.org/0000-0003-2672-6291" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+          </div>
+  </div>
+    
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
@@ -287,11 +282,12 @@ window.Quarto = {
 </header>
 
 
-<p>In machine learning or statistical inference, we often encounter problems relating to <em>missing data</em> or <em>hidden variables</em>. One typical example of such latent variable models is finite mixture models, e.g.&nbsp;Gaussian mixture or multinomial mixture models. Due to the nature of missing data or latent variables, calculating the likelihood of those models requires the marginalization over the distribution of the latent variables, and hence, complicates the maximum likelihood estimation (MLE). A general technique dealing with latent variable models is the <em>expectation - maximization</em> (EM)~<span class="citation" data-cites="dempster1977maximum">(<a href="#ref-dempster1977maximum" role="doc-biblioref">Dempster, Laird, and Rubin 1977</a>)</span>. The basic idea of EM algorithm is to alternate between estimating the posterior of the latent variables (or missing data) in the E-step (expectation step), then using the completed data to calculate the MLE in the M-step (maximization step). It has been proved that by iterating the process, the likelihood of interest is non-decreasing. In other words, EM algorithm guarantees to converge to a saddle point.</p>
-<p>In this post, we re-formulate a simpler form of the EM algorithm. We then demonstrate the application of the EM algorithm on two common MLE problems: Gaussian mixture models and multinomial mixture models. Readers could also refer to Chapter 9 in <span class="citation" data-cites="bishop2006pattern">(<a href="#ref-bishop2006pattern" role="doc-biblioref">Bishop and Nasrabadi 2006</a>)</span> (note that there are some typos which are corrected in <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/prml-errata-1st-20110921.pdf" alt="errata and additional comments">erratum</a>).</p>
+<p>Missing data and latent variables are frequently encountered in various machine learning and statistical inference applications. A common example is the finite mixture model, which includes Gaussian mixture and multinomial mixture models. Due to the inherent nature of missing data or latent variables, calculating the likelihood of these models requires marginalisation over the latent variable distribution. This, in turn, complicates the process of maximum likelihood estimation (MLE).</p>
+<p>The expectation-maximisation (EM) algorithm, introduced in <span class="citation" data-cites="dempster1977maximum">(<a href="#ref-dempster1977maximum" role="doc-biblioref">Dempster, Laird, and Rubin 1977</a>)</span>, offers a general technique for handling latent variable models. The fundamental concept behind the EM algorithm is to iterate between two steps: the E-step (expectation step) and the M-step (maximization step). In the E-step, the posterior distribution of the latent variables (or missing data) is estimated. This estimated information is then used in the M-step to compute the MLE as if the data were complete. It has been proven that this iterative process guarantees a non-decreasing likelihood function. In simpler terms, the EM algorithm converges to a saddle point.</p>
+<p>While the EM algorithm is a powerful tool, this explanation may not be as clear as desired. Consequently, this post aims to provide a more accessible explanation of the EM algorithm. Additionally, some readers may question the choice of EM over stochastic gradient descent (SGD), a prevalent optimisation method. This post will, therefore, explore the key differences between these two approaches. Finally, the applications of the EM algorithm in the context of finite mixture modeling, specifically focusing on the MLE problems in Gaussian mixture models and multinomial mixture models, are also demonstrated.</p>
 <section id="notations" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="notations"><span class="header-section-number">1</span> Notations</h2>
-<p>Before diving into the formulation and examples, we define the notations used in the following table.</p>
+<p>Before diving into the explanation and formulation, it is important to define the notations used in this post as follows:</p>
 <table class="table-striped table-hover table">
 <caption>Notations used in the formulation of the EM algorithm.</caption>
 <thead>
@@ -318,206 +314,367 @@ window.Quarto = {
 </section>
 <section id="em-algorithm" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="em-algorithm"><span class="header-section-number">2</span> EM algorithm</h2>
-<section id="derivation" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="derivation"><span class="header-section-number">2.1</span> Derivation</h3>
-<p>The aim of EM is to maximize the log-likelihood of the observed data: <span id="eq-mle"><span class="math display">
-    \max_{\theta} \ln p(\mathbf{x} | \theta) = \max_{\theta} \ln \left[ \sum_{\mathbf{z}} p(\mathbf{x}, \mathbf{z} | \theta) \right].
+<p>The formulation presented in this post follows a probabilistic approach. In probabilistic modelling, there are two processes: data generation (also known as a <em>forward</em> problem) and parameter inference (also known as an <em>inverse problem</em>).</p>
+<section id="sec-data-generation" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="sec-data-generation"><span class="header-section-number">2.1</span> Data generation</h3>
+<p>The data is generated as follows: - draw the parameter <span class="math inline">\pi</span> from its prior: <span class="math inline">\pi \sim \Pr(\pi)</span>, - draw the parameter <span class="math inline">\theta</span> from its prior: <span class="math inline">\theta \sim \Pr(\theta)</span>, - draw a <em>hidden</em> sample <span class="math inline">\mathbf{z}</span> from a prior distribution: <span class="math inline">\mathbf{z} \sim \Pr(\mathbf{z} | \pi)</span>, and - draw an <em>observable</em> sample <span class="math inline">\mathbf{x}</span> given <span class="math inline">\mathbf{z}</span> as follows: <span class="math inline">\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \theta)</span>,</p>
+<p>where <span class="math inline">\pi</span> and <span class="math inline">\theta</span> are the parameter of the model of interest.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Parameter $\pi$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Parameter <span class="math inline">\pi</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In many tutorials of EM, the parameter <span class="math inline">\pi</span> of the prior of the latent variable <span class="math inline">\mathbf{z}</span> is often defined implicitly. In this post, it is defined explicitly to make the explanation easier to follow.</p>
+</div>
+</div>
+<p>Such a data generation process is often visualised by the graphical model shown below</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    subgraph data
+        z((z))--&gt;x((x));
+    end
+    pi((π))--&gt;z;
+    theta((θ))--&gt;x;
+
+    style pi fill: none;
+    style theta fill: none;
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-parameter-inference" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="sec-parameter-inference"><span class="header-section-number">2.2</span> Parameter inference</h3>
+<p>Given a set of observed i.i.d data <span class="math inline">\mathcal{D} = \{\mathbf{x}_{i}\}_{i = 1}^{N}</span>, the general objective is to infer the posterior <span class="math inline">\Pr(\pi, \theta | \mathbf{x}).</span> of the parameters <span class="math inline">\pi</span> and <span class="math inline">\theta</span>. Instead of inferring the exact posterior <span class="math inline">\Pr(\pi, \theta | \mathbf{x})</span>, which may be difficult in many cases, one can perform <em>point estimation</em>, such as MLE or maximise a posterior (MAP), which can be written as follows:</p>
+<p><span id="eq-map"><span class="math display">
+\begin{aligned}
+    \max_{\pi, \theta} \ln \Pr(\pi, \theta | \{\mathbf{x}_{i}\}_{i = 1}^{N}) &amp; = \max_{\pi. \theta} \sum_{i = 1}^{N} \underbrace{\ln \Pr(\mathbf{x}_{i} | \pi, \theta)}_{\text{in-complete log-likelihood}} + \ln \Pr(\pi) + \ln \Pr(\theta) \\
+    &amp; = \max_{\pi, \theta} \sum_{i = 1}^{N} \ln \left[ \sum_{\mathbf{z}_{i}} \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
+\end{aligned}
 \tag{1}</span></span></p>
-<p>Due to the presence of the sum over the latent variable <span class="math inline">\mathbf{z}</span>, the logarithm cannot be evaluated directly on the joint distribution, resulting in complicated expressions for the maximum likelihood solution.</p>
-<p>To solve the MLE in <a href="#eq-mle" class="quarto-xref">Equation&nbsp;1</a>, we shall now assume that the completed log-likelihood <span class="math inline">p(\mathbf{x}, \mathbf{z} | \theta)</span> can be evaluated and maximized easily. Such assumption allows EM to get around the MLE in <a href="#eq-mle" class="quarto-xref">Equation&nbsp;1</a> as follows. Let <span class="math inline">q(\mathbf{z}) &gt; 0</span> be an arbitrary distribution of the latent variable <span class="math inline">\mathbf{z}</span>. The observed data log-likelihood in <a href="#eq-mle" class="quarto-xref">Equation&nbsp;1</a> can be written as: <span class="math display">
-    \begin{aligned}
-        \ln p(\mathbf{x} | \theta) &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) \right] \\
-        &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln p(\mathbf{z} | \mathbf{x}, \theta) + \ln q(\mathbf{z}) - \ln q(\mathbf{z}) \right] \\
-        &amp; = \mathbb{E}_{q(\mathbf{z})} \left\{ \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right] + \left[ \ln q(\mathbf{z}) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \right\} \\
-        &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right] + \mathrm{KL} \left[ q(\mathbf{z}) \| p(\mathbf{z} | \mathbf{x}, \theta) \right],
-    \end{aligned}
-</span> where: <span class="math inline">\mathrm{KL}[ q \| p ]</span> is the Kullback-Leibler divergence (KL divergence for short) between probability distributions <span class="math inline">q</span> and <span class="math inline">p</span>.</p>
-<p>Since <span class="math inline">\mathrm{KL}[ q \| p ] \ge 0</span> and <span class="math inline">\mathrm{KL}[ q \| p ] = 0</span> iff <span class="math inline">q = p</span>, the log-likelihood of interest can be lower-bounded as: <span class="math display">
-    \ln p(\mathbf{x} | \theta) \ge \mathbb{E}_{q(\mathbf{z})} \left[ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \ln q(\mathbf{z}) \right],
-</span> and the equality occurs iff <span class="math inline">q(\mathbf{z}) = p(\mathbf{z} | \mathbf{x}, \theta)</span>. The tightest bound can then be written as: <span id="eq-tightest_bound"><span class="math display">
-    \begin{aligned}
-        \mathsf{L}(\theta, \theta^{\mathrm{old}}) &amp; = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x} | \theta) + \ln p(\mathbf{z} | \mathbf{x}, \theta) - \underbrace{\ln p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})}_{\text{const. w.r.t. } \theta} ] \\
-        &amp; = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x}, \mathbf{z} | \theta) ] + \mathrm{const.}
-    \end{aligned}
-\tag{2}</span></span></p>
-<p>Note that we denote the posterior of the latent variable as <span class="math inline">p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})</span> to introduce the Expectation Maximization algorithm in the following. The reason why such <span class="math inline">\theta^{\mathrm{old}}</span> is introduced is that we need <span class="math inline">\theta</span> to calculate the posterior of <span class="math inline">\mathbf{z}</span>, and we need the posterior to evaluate the lower-bound to optimize for <span class="math inline">\theta</span>. That leads to an iterative approach, known as EM, to maximize the log-likelihood of interest.</p>
-<p>Hence, instead of maximizing the incomplete log-likelihood in <a href="#eq-mle" class="quarto-xref">Equation&nbsp;1</a>, we first tighten the lower-bound (E-step) and then maximize it (M-step). This allows an interative algorithm to perform the MLE on incomplete data, which is described as follows:</p>
+<p>Due to the presence of the sum over the latent variable <span class="math inline">\mathbf{z}</span>, the <em>in-complete</em> log-likelihood may not be evaluated directly on the joint distribution (especially when <span class="math inline">\mathbf{z}</span> is continuous), making the optimisation difficult.</p>
+<p>Fortunately, according to the data generation presented in <a href="#sec-data-generation" class="quarto-xref">Section&nbsp;2.1</a>, the completed log-likelihood <span class="math inline">\Pr(\mathbf{x}, \mathbf{z} | \pi, \theta)</span> can be evaluated easily:</p>
+<p><span class="math display">
+\ln \Pr(\mathbf{x}, \mathbf{z}| \pi, \theta) = \ln \Pr(\mathbf{x} | \mathbf{z}, \theta) + \ln \Pr(\mathbf{z} | \pi).
+</span></p>
+<p>Such an assumption allows EM to get around the difficulty when evaluating the expression in <a href="#eq-map" class="quarto-xref">Equation&nbsp;1</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Main idea behind EM">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Main idea behind EM
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>
-<strong>Initialization:</strong> initialize the parameter of interest: <span class="math inline">\theta^{\mathrm{old}} \gets \theta</span>
-</li>
-<li>
-<strong>E-step:</strong> calculate the posterior of the latent variable <span class="math inline">p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})</span>
-</li>
-<li>
-<strong>M-step:</strong> maximize the tightest lower-bound: <span class="math inline">\theta \gets \arg\max_{\theta} \mathsf{L}(\theta, \theta^{\mathrm{old}})</span>.
-</li>
+<li>find a lower bound of the objective function in <a href="#eq-map" class="quarto-xref">Equation&nbsp;1</a>,</li>
+<li>tighten the lower bound, and</li>
+<li>maximise the tightest lower bound.</li>
 </ul>
-<p>The whole algorithm can be referred to Algorithm 1.</p>
+</div>
+</div>
+<p>The first two sub-steps combined are often known as the <em>Expectation</em> step (or E-step for short), while the last step is known as the <em>Maximisation</em> step (or M-step for short). These steps are then presented in the following sub-sub-sections.</p>
+<section id="evidence-lower-bound-elbo" class="level4" data-number="2.2.1">
+<h4 data-number="2.2.1" class="anchored" data-anchor-id="evidence-lower-bound-elbo"><span class="header-section-number">2.2.1</span> Evidence lower bound (ELBO)</h4>
+<p>To find a lower bound of the objective function in <a href="#eq-map" class="quarto-xref">Equation&nbsp;1</a>, one can follow the <em>variational inference</em> approach to obtain the ELBO. In particular, let <span class="math inline">q(\mathbf{z}) &gt; 0</span> be an arbitrary distribution of the latent variable <span class="math inline">\mathbf{z}</span>. The in-complete log-likelihood in <a href="#eq-map" class="quarto-xref">Equation&nbsp;1</a> can be re-written as follows: <span class="math display">
+    \begin{aligned}
+        \ln \Pr(\mathbf{x} | \pi, \theta) &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\mathbf{x} | \pi, \theta) \right] \\
+        &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\mathbf{x} | \pi, \theta) + \ln \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) - \ln \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) + \ln q(\mathbf{z}) - \ln q(\mathbf{z}) \right] \\
+        &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\mathbf{x} | \pi, \theta) + \ln \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) - \ln q(\mathbf{z}) \right] + \mathbb{E}_{q(\mathbf{z})}\left[ \ln q(\mathbf{z}) - \ln \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right] \\
+        &amp; = \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \operatorname{KL} \left[ q(\mathbf{z}) \| \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right],
+    \end{aligned}
+</span> where: <span class="math inline">\operatorname{KL}[ q \| p ]</span> is the Kullback-Leibler divergence (KL divergence for short) between probability distributions <span class="math inline">q</span> and <span class="math inline">p</span>.</p>
+<p>Since <span class="math inline">\operatorname{KL}[ q \| p ] \ge 0</span> and <span class="math inline">\operatorname{KL}[ q \| p ] = 0</span> iff <span class="math inline">q = p</span>, the log-likelihood of interest can be lower-bounded as: <span class="math display">
+    \ln \Pr(\mathbf{x} | \pi, \theta) \ge \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln q(\mathbf{z}) \right],
+</span> and the equality occurs iff <span class="math inline">q(\mathbf{z}) = \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta)</span>, which is the posterior of the latent variable <span class="math inline">\mathbf{z}</span> after observing the data <span class="math inline">\mathbf{x}</span>.</p>
+</section>
+<section id="tightening-the-elbo" class="level4" data-number="2.2.2">
+<h4 data-number="2.2.2" class="anchored" data-anchor-id="tightening-the-elbo"><span class="header-section-number">2.2.2</span> Tightening the ELBO</h4>
+<p>To obtain the tightest lower bound, one must perform the following optimisation:</p>
+<p><span id="eq-e-step"><span class="math display">
+q^{*} = \operatorname*{argmax}_{q} \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln q(\mathbf{z}) \right].
+\tag{2}</span></span></p>
+<p>As mentioned above, the tightest bound is when <span class="math inline">q^{*}(\mathbf{z}) = \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta)</span>, or the “variational” posterior approaches the true posterior of the latent variable <span class="math inline">\mathbf{z}</span>. Such a true posterior can be obtained in certain simple cases, but is intractable when the modelling becomes more complex. In those cases, only a local optima “variational” posterior <span class="math inline">q(\mathbf{z})</span> is calculated <span class="citation" data-cites="bernardo2003variational">(<a href="#ref-bernardo2003variational" role="doc-biblioref">Bernardo et al. 2003</a>)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="True posterior in the E-step">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+True posterior in the E-step
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Such an observation explains why in the vanilla EM, it is often stated that the E-step is to calculate the true posterior of the latent variable <span class="math inline">\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})</span>. The superscript <span class="math inline">t</span> denotes the parameters at the <span class="math inline">t</span>-th iteration. This is to avoid taking them into account when maximising the completed-log-likelihood in the M-step. Instead of following that convention, <span class="math inline">q^{*}</span> is used to avoid the confusion.</p>
+</div>
+</div>
+</section>
+<section id="maximising-the-possibly-tightest-lower-bound" class="level4" data-number="2.2.3">
+<h4 data-number="2.2.3" class="anchored" data-anchor-id="maximising-the-possibly-tightest-lower-bound"><span class="header-section-number">2.2.3</span> Maximising the possibly-tightest lower bound</h4>
+<p>Finally, the possibly-tightest lower bound is then maximised with respect to the parameters <span class="math inline">\pi</span> and <span class="math inline">\theta</span> as follows:</p>
+<p><span id="eq-m-step"><span class="math display">
+\pi^{(t + 1)}, \theta^{(t + 1)} \gets \operatorname*{argmax}_{\pi, \theta} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \cancel{\ln q^{*}(\mathbf{z})} \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
+\tag{3}</span></span></p>
+<p>In summary, instead of maximising the difficult-to-calculate objective function in <a href="#eq-map" class="quarto-xref">Equation&nbsp;1</a>, the EM algorithm is to execute the alternative optimisation written as follows:</p>
+<p><span class="math display">
+\max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
+</span></p>
+<p>The whole EM algorithm can be referred to Algorithm 1.</p>
 <pre class="pseudocode">\begin{algorithm}
-    \caption{MLE via expectation - maximization algorithm}
+    \caption{The EM algorithm}
     \begin{algorithmic}
-        \PROCEDURE{Maximum-likelihood-estimation}{observed data $\mathbf{x}$}
-            \STATE initialise parameter $\theta^{\mathrm{old}}$
-            \WHILE{$\mathsf{L}(\theta, \theta^{\mathrm{old}})$ not converged} \Comment{$\mathsf{L}(\theta, \theta^{\mathrm{old}})$ is defined in Eq. (2)}
-                \STATE calculate the posterior $p(\mathbf{z} | \mathbf{x}, \theta^{\mathrm{old}})$ \Comment{E-step}
-                \STATE maximize the lower-bound: $\theta^{\mathrm{old}} \gets \arg\max_{\theta} \mathsf{L}(\theta, \theta^{\mathrm{old}})$ \COMMENT{M-step}
+        \PROCEDURE{EM algorithm}{observed data $\{\mathbf{x}\}_{i = 1}^{N}$}
+            \STATE initialise parameters $\pi^{(0)}$ and $\theta^{(0)}$
+            \WHILE{$(\pi, \theta))$ not converged}
+                \STATE calculate the "variational" posterior: $q^{*}(\mathbf{z} | \mathbf{x}, \pi, \theta^{(t)}) \gets \Call{E-step}{}$ \Comment{[@eq-e-step]}
+                \STATE maximise the lower-bound: \pi, \theta \gets \Call{M-step}{}\COMMENT{[@eq-m-step]}
             \ENDWHILE
-            \RETURN $\theta$
+            \RETURN $\pi^{(T)}, \theta^{(T)}$
         \ENDPROCEDURE
     \end{algorithmic}
 \end{algorithm}
 </pre>
-<div class="proof remark">
-<p><span class="proof-title"><em>Remark</em>. </span>One can also apply MAP instead of MLE by adding the log prior in the optimization objective. In this case, the difference is at the M-step, while the E-step is still the same.</p>
-</div>
 </section>
-<section id="convergence" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="convergence"><span class="header-section-number">2.2</span> Convergence</h3>
+</section>
+<section id="convergence-of-the-em-algorithm" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="convergence-of-the-em-algorithm"><span class="header-section-number">2.3</span> Convergence of the EM algorithm</h3>
+<p>The following theorem proves that the EM algorithm improves the lower-bound after every iteration. For simplicity, the priors <span class="math inline">\Pr(\pi)</span> and <span class="math inline">\Pr(\theta)</span> are ignored from the proof below, but extending to include these prior terms is trivial.</p>
 <div id="thm-convergence" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1</strong></span> After each EM iteration, the log-likelihood <span class="math inline">\ln p(\mathbf{x} | \theta)</span> is non-decreasing. Mathematically, it can be written as follows: <span class="math display">
-    p(\mathbf{x} | \theta^{(n + 1)}) \ge p(\mathbf{x} | \theta^{(n)}),
+<p><span class="theorem-title"><strong>Theorem 1</strong></span> Assume that <span class="math inline">q^{*}(\mathbf{z}) = \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta)</span>, then after each EM iteration, the log-likelihood <span class="math inline">\ln \Pr(\mathbf{x} | \pi, \theta)</span> is non-decreasing. Mathematically, it can be written as follows: <span class="math display">
+    \Pr(\mathbf{x} | \pi^{(t + 1)}, \theta^{(t + 1)}) \ge \Pr(\mathbf{x} | \pi^{(t)}, \theta^{(t)}),
 </span> where the superscript denotes the result obtained after that iteration.</p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Note that the EM algorithm improves the lower-bound <span class="math inline">\mathsf{L}(\theta, \theta^{(n)})</span> after every iteration. Thus, we need to connect the lower-bound to the likelihood of interest to prove the theorem. The log-likelihood of interest can be written as: <span id="eq-likelihood_theta"><span class="math display">
+<p><span class="proof-title"><em>Proof</em>. </span>The log-likelihood of interest can be written as: <span id="eq-likelihood_theta"><span class="math display">
     \begin{aligned}
-        \ln p(\mathbf{x} | \theta) &amp; = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{x} | \theta) \right] \\
-        &amp; = \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{x}, \mathbf{z} | \theta) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \\
-        &amp; = \mathsf{L}(\theta, \theta^{(n)}) - \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta) \right].
+        \ln \Pr(\mathbf{x} | \pi, \theta) &amp; = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x} | \pi, \theta) \right] \\
+        &amp; = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right].
     \end{aligned}
-\tag{3}</span></span></p>
-<p>Since it holds for any <span class="math inline">\theta</span>, we can substitute <span class="math inline">\theta = \theta^{(n)})</span> to obtain the likelihood after iteration <span class="math inline">n</span>-th: <span id="eq-likelihood_after_iteration_nth"><span class="math display">
-    \ln p(\mathbf{x} | \theta^{(n)}) = \mathsf{L}(\theta^{(n)}, \theta^{(n)}) - \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) \right].
 \tag{4}</span></span></p>
-<p>Substracting side by side of <a href="#eq-likelihood_theta" class="quarto-xref">Equation&nbsp;3</a> and <a href="#eq-likelihood_after_iteration_nth" class="quarto-xref">Equation&nbsp;4</a> gives the following: <span class="math display">
+<p>Since it holds for any <span class="math inline">(\pi, \theta)</span>, substituting <span class="math inline">\pi = \pi^{(t)}</span> and <span class="math inline">\theta = \theta^{(t)}</span> gives: <span id="eq-likelihood_after_iteration_nth"><span class="math display">
+    \ln \Pr(\mathbf{x} | \pi^{(t)}, \theta^{(t)}) = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) - \ln \Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)}) \right].
+\tag{5}</span></span></p>
+<p>Substracting side by side of <a href="#eq-likelihood_theta" class="quarto-xref">Equation&nbsp;4</a> and <a href="#eq-likelihood_after_iteration_nth" class="quarto-xref">Equation&nbsp;5</a> gives the following: <span class="math display">
     \begin{aligned}
-        \ln p(\mathbf{x} | \theta) - \ln p(\mathbf{x} | \theta^{(n)}) &amp; = \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}) + \mathbb{E}_{p(\mathbf{z} | \mathbf{x}, \theta^{(n)})} \left[ \ln p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) - \ln p(\mathbf{z} | \mathbf{x}, \theta) \right] \\
-        &amp; = \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}) + \mathrm{KL} \left[ p(\mathbf{z} | \mathbf{x}, \theta^{(n)}) \| p(\mathbf{z} | \mathbf{x}, \theta) \right].
+        &amp; \ln \Pr(\mathbf{x} | \pi, \theta) - \ln \Pr(\mathbf{x} | \pi^{(t)}, \theta^{(t)}) \\
+        &amp; = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) + \ln \Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)}) - \ln \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right] \\
+        &amp; = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) \right] + \operatorname{KL} \left[ \Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)}) \| \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right].
     \end{aligned}
 </span></p>
 <p>Since KL divergence is non-negative, one can imply that: <span id="eq-likelihood_difference"><span class="math display">
-    \ln p(\mathbf{x} | \theta) - \ln p(\mathbf{x} | \theta^{(n)}) \ge \mathsf{L}(\theta, \theta^{(n)}) - \mathsf{L}(\theta^{(n)}, \theta^{(n)}).
-\tag{5}</span></span></p>
-<p>In the M-step, we obtain <span class="math inline">\theta^{(n + 1)}</span> by maximizing <span class="math inline">\mathsf{L}(\theta, \theta^{(n)})</span> w.r.t. <span class="math inline">\theta</span>. Thus, according to the definition of the maximization: <span class="math display">
-    \mathsf{L}(\theta^{(n + 1)}, \theta^{(n)}) \ge \mathsf{L}(\theta^{(n)}, \theta^{(n)}).
+    \ln \Pr(\mathbf{x} | \pi, \theta) - \ln \Pr(\mathbf{x} | \pi^{(t)}, \theta^{(t)}) \ge \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) \right].
+\tag{6}</span></span></p>
+<p>In the M-step, the parameters <span class="math inline">(\pi^{(t + 1)}, \theta^{(t + 1)})</span> are obtained by maximising the first term in the right hand side: <span class="math inline">\mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) \right]</span> w.r.t. <span class="math inline">(\pi, \theta)</span>. Thus, according to the definition of the maximisation: <span class="math display">
+    \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t + 1)}, \theta^{(t + 1)}) \right] \ge \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) \right].
 </span></p>
 <p>Hence, one can conclude that: <span class="math display">
-    \ln p(\mathbf{x} | \theta^{(n + 1)}) \ge \ln p(\mathbf{x} | \theta^{(n)}).
+    \ln \Pr(\mathbf{x} | \pi^{(t + 1)}, \theta^{(t + 1)}) \ge \ln \Pr(\mathbf{x} | \pi^{(t)}, \theta^{(t)}).
 </span></p>
 </div>
 </section>
 </section>
-<section id="applications-of-em" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="applications-of-em"><span class="header-section-number">3</span> Applications of EM</h2>
+<section id="applications-of-em-in-finite-mixture-models" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="applications-of-em-in-finite-mixture-models"><span class="header-section-number">3</span> Applications of EM in finite mixture models</h2>
 <p>One of the typical applications of EM algorithm is to perform maximum likelihood for finite mixture models. This section is, therefore, dedicated to discuss the application of EM on Gaussian and multinomial mixture models.</p>
 <section id="gaussian-mixture-models" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="gaussian-mixture-models"><span class="header-section-number">3.1</span> Gaussian mixture models</h3>
 <p>The Gaussian mixture distribution can be written as a <em>convex</em> combination of <span class="math inline">K</span> Gaussian components: <span class="math display">
-    p(\mathbf{x}) = \sum_{k = 1}^{K} \pi_{k} \, \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}),
+    \Pr(\mathbf{x} | \pi, \mu, \Sigma) = \sum_{k = 1}^{K} \pi_{k} \, \mathcal{N}(\mathbf{x}; \mu_{k}, \Sigma_{k}),
 </span> where: <span class="math inline">\pi_{k} \in [0, 1]</span> and <span class="math inline">\pmb{\pi}^{\top} \pmb{1} = 1</span>.</p>
-<p>A data-point of the above Gaussian mixture distribution can be generated as follows:</p>
-<ul>
-<li>
-sample a <span class="math inline">K</span>-dimensional categorical (one-hot) vector from the distribution of mixture coefficient: <span class="math inline">\mathbf{z} \sim \mathrm{Categorical}(\mathbf{z}; \pmb{\pi})</span>
-</li>
-<li>
-sample a data-point from the corresponding Gaussian component: <span class="math inline">\mathbf{x} \sim \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k})</span>, where <span class="math inline">z_{k} = 1</span>.
-</li>
-</ul>
-<p>In other words, the Gaussian mixture distribution can be written in the form of latent variable models as:</p>
+<section id="data-generation" class="level4" data-number="3.1.1">
+<h4 data-number="3.1.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">3.1.1</span> Data generation</h4>
+<p>A data-point of the above Gaussian mixture distribution can be generated as follows: - sample a probability <span class="math inline">\pi</span> from a Dirichlet prior: <span class="math inline">\pi \sim \Pr(\pi | \alpha) = \operatorname{Dir}(\pi | \alpha)</span>, - sample <span class="math inline">K</span> sets of parameters <span class="math inline">(\mu_{k}, \Sigma_{k})</span> from an normal-inverse-Wishart prior: <span class="math inline">(\mu_{k}, \Sigma_{k}) \sim \Pr(\mu, \Sigma | ) = \operatorname{NIW}(\mu, \Sigma | m, \lambda, \Psi, \nu)</span>, - sample the index of a Gaussian component: <span class="math inline">\mathbf{z} \sim \Pr(\mathbf{z} | \pi) = \operatorname{Categorical}(\mathbf{z} | \pmb{\pi})</span>, then - sample a data-point from the corresponding Gaussian component: <span class="math inline">\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \mu, \Sigma) = \mathcal{N}(\mathbf{x}| \mu_{k}, \Sigma_{k})</span>, where <span class="math inline">z_{k} = 1</span>.</p>
+<p>The data generation process can also be visualised in the graphical model shown below.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    subgraph data
+        direction LR
+        z((z)):::rv --&gt; x((x)):::rv
+    end
+    alpha((α)):::notfilled --&gt; pi((π)):::params --&gt; z
+    sigma((Σ)):::params --&gt; mu
+    psi((Ψ)):::notfilled --&gt; sigma
+    nu((ν)):::notfilled --&gt; sigma
+    sigma --&gt; x
+    mu0((m)):::notfilled --&gt; mu((μ)):::params --&gt; x
+    lambda((λ)):::notfilled --&gt; mu
+
+    style z fill: none
+    classDef params stroke: #000, fill: none
+    classDef rv stroke: #000
+    classDef notfilled fill: none
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="objective" class="level4" data-number="3.1.2">
+<h4 data-number="3.1.2" class="anchored" data-anchor-id="objective"><span class="header-section-number">3.1.2</span> Objective</h4>
+<p>Given set of data-points <span class="math inline">\{\mathbf{x}_{i}\}_{i = 1}^{N}</span> sampled from the Gaussian mixture distribution, the aim is to infer the point estimation, and in particular MAP, of <span class="math inline">(\pi, \mu, \Sigma)</span>. Such an objective can be written as follows:</p>
 <p><span class="math display">
-    p(\mathbf{x}) = \sum_{\mathbf{z}} p(\mathbf{z}) \, p(\mathbf{x} | \mathbf{z}) = \sum_{k = 1}^{K} \pi_{k} \, \mathcal{N}(\mathbf{x}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}),
+\begin{aligned}
+    &amp; \max_{\pi, \mu, \Sigma} \ln \Pr(\pi, \mu, \Sigma | \{\mathbf{x}_{i}\}_{i = 1}^{N}, \alpha, m, \lambda, \Psi, \nu) \\
+    &amp;= \max_{\pi, \mu, \Sigma} \frac{1}{N} \sum_{i = 1}^{N} \ln \Pr(\mathbf{x}_{i} | \pi, \mu, \Sigma) + \ln \operatorname{Dir}(\pi | \alpha) + \ln \operatorname{NIW}(\mu, \Sigma | m, \lambda, \Psi, \nu).
+\end{aligned}
 </span></p>
-<p>where: <span class="math inline">\mathbf{z}</span> is the latent random variable.</p>
-<p>If the objective is to use MLE to find the Gaussian components from a given set of data-points <span class="math inline">\mathbf{X} = \{\mathbf{x}_{n}\}_{n = 1}^{N}</span> sampled from the Gaussian mixture distribution, the parameter of interest will be: <span class="math inline">\theta = \{(\pmb{\mu}_{k}, \pmb{\Sigma}_{k})\}_{k = 1}^{K}</span>. In this case, one can simply follow the EM algorithm presented in Section 2. Note that the likelihood on <span class="math inline">N</span> iid data-points can be written as:</p>
+</section>
+<section id="parameter-inference" class="level4" data-number="3.1.3">
+<h4 data-number="3.1.3" class="anchored" data-anchor-id="parameter-inference"><span class="header-section-number">3.1.3</span> Parameter inference</h4>
+<p>In this case, one can simply follow the EM algorithm presented in Section <a href="#sec-parameter-inference" class="quarto-xref">Section&nbsp;2.2</a>. Note that the likelihood on <span class="math inline">N</span> iid data-points can be written as:</p>
 <p><span class="math display">
-    p(\mathbf{X} | \theta) = \prod_{n = 1}^{N} p(\mathbf{x}_{n} | \theta) = \prod_{n = 1}^{N} \sum_{k = 1}^{K} p(\mathbf{x}_{n} | z_{nk} = 1, \theta) \, p(z_{nk} = 1).
+    \prod_{i = 1}^{N} \Pr(\mathbf{x}_{i} | \pi, \theta) = \prod_{i = 1}^{N} \sum_{k = 1}^{K} \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \theta) \, \Pr(z_{ik} = 1 | \pi).
 </span></p>
-<p><strong>E-step:</strong> calculate the posterior of the latent variable <span class="math inline">\mathbf{z}_{n}</span> given the observed data <span class="math inline">\mathbf{x}_{n}</span> and the model parameter <span class="math inline">\{(\pmb{\mu}_{k}^{\mathrm{old}}, \pmb{\Sigma}_{k}^{\mathrm{old}})\}_{k = 1}^{K}</span></p>
+<p><strong>E-step:</strong> optimises the lower bound with respect to the “variational” posterior. As shown in <a href="#sec-parameter-inference" class="quarto-xref">Section&nbsp;2.2</a>, <span class="math inline">q^{*} = \Pr(\mathbf{z} | \mathbf{x}, \pi, \mu, \Sigma)</span> results in the tightest bound. Fortunately, in this case of Gaussian mixture models, the true posterior <span class="math inline">\Pr(\mathbf{z} | \mathbf{x}, \pi, \mu, \Sigma)</span> can be calculated in closed-form as follows:</p>
 <p><span id="eq-gmm_e_step"><span class="math display">
+    \boxed{
+        \begin{aligned}
+            q^{*}(\mathbf{z}_{ik} = 1) &amp; = \Pr(\mathbf{z}_{ik} = 1 | \mathbf{x}_{i}, \pi^{(t)}, \mu^{(t)}, \Sigma^{(t)}) \\
+            &amp; = \frac{\Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \mu^{(t)}, \Sigma^{(t)}) \, \Pr(\mathbf{z}_{ik} = 1 | \pi^{(t)})}{\sum_{j = 1}^{K} \Pr(\mathbf{x}_{i} | \mathbf{z}_{ij} = 1, \mu^{(t)}, \Sigma^{(t)}) \, \Pr(\mathbf{z}_{ij} = 1 | \pi^{(t)})} \\
+            &amp; \quad (\text{Bayes' rule}) \\
+            &amp; = \frac{\pi_{k} \, \mathcal{N}(\mathbf{x}_{i}; \mu_{k}^{(t)}, \Sigma_{k}^{(t)})}{\sum_{j = 1}^{K} \pi_{j} \, \mathcal{N}(\mathbf{x}_{i}; \mu_{j}^{(t)}, \Sigma_{j}^{(t)})}.
+        \end{aligned}
+    }
+\tag{7}</span></span></p>
+<p><strong>M-step:</strong> maximises the “tighest” lower-bound w.r.t. model parameter <span class="math inline">(\pi, \mu, \Sigma)</span>: <span class="math display">
     \begin{aligned}
-        \gamma(z_{nk}) = p\left(z_{nk} = 1 | \mathbf{x}_{n}, \theta^{\mathrm{old}} \right) &amp; = \frac{p(\mathbf{x}_{n} | z_{nk} = 1, \theta^{\mathrm{old}}) \, p(z_{nk} = 1)}{\sum_{j = 1}^{K} p(\mathbf{x}_{n} | z_{nj} = 1, \theta^{\mathrm{old}}) \, p(z_{nj} = 1)} \\
-        &amp; = \frac{\pi_{k} \, \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{k}^{\mathrm{old}}, \pmb{\Sigma}_{k}^{\mathrm{old}})}{\sum_{j = 1}^{K} \pi_{j} \, \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{j}^{\mathrm{old}}, \pmb{\Sigma}_{j}^{\mathrm{old}})}.
-    \end{aligned}
-\tag{6}</span></span></p>
-<p><strong>M-step:</strong> maximize the lower-bound w.r.t. model parameter <span class="math inline">\theta</span> where the lower-bound can be expressed as: <span class="math display">
-    \begin{aligned}
-        \mathsf{L}\left(\theta, \theta^{\mathrm{old}} \right) &amp; = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \theta^{\mathrm{old}})} [ \ln p(\mathbf{x}_{n} | \mathbf{z}_{n}, \theta) + \ln p(\mathbf{z}_{n}) ] \\
-        &amp; = \sum_{n = 1}^{N} \sum_{k = 1}^{K} p(z_{nk} = 1 | \mathbf{x}_{n}, \theta) \ln p(\mathbf{x}_{n} | z_{nk} = 1, \theta) + \mathrm{const.} \\
-        &amp; = \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma(z_{nk}) \ln \mathcal{N}(\mathbf{x}_{n}; \pmb{\mu}_{k}, \pmb{\Sigma}_{k}) + \mathrm{const.} \\
-        &amp; = -\frac{1}{2} \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma(z_{nk}) \left[ \ln \left| \pmb{\Sigma}_{k} \right| + (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top} \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) \right] + \mathrm{const.}
+        \pi^{(t + 1)}, \mu^{(t + 1)}, \Sigma^{(t + 1)} &amp; \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} [ \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{i} | \pi) ] \\
+        &amp; \quad + \ln \Pr(\pi | \alpha) + \ln \Pr(\mu, \Sigma | m, \lambda, \Psi, \nu) \\
+        &amp; \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[\ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \pi, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{ik} = 1| \pi) \right] \\
+        &amp; \quad + \ln \operatorname{Dir}(\pi | \alpha) + \ln \operatorname{NIW}(\mu_{k}, \Sigma_{k} | m, \lambda, \Psi, \nu)\\
+        &amp; \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \mathcal{N}(\mathbf{x}_{i}; \mu_{k}, \Sigma_{k}) + \ln \pi_{k} \right] \\
+        &amp; \quad + (\alpha_{k} - 1) \ln \pi_{k} + \ln \mathcal{N} \left( \mu_{k} \left| m, \frac{1}{\lambda} \Sigma_{k} \right. \right) + \ln \mathcal{W}^{-1} \left( \Sigma_{k} | \Psi, \nu \right)\\
+        &amp; \in \operatorname*{argmax}_{\mu, \Sigma} -\frac{1}{2} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \left| \Sigma_{k} \right| + (\mathbf{x}_{i} - \mu_{k})^{\top} \Sigma_{k}^{-1} (\mathbf{x}_{i} - \mu_{k}) + \ln \pi_{k} \right] \\
+        &amp; \quad + (\alpha_{k} - 1) \ln \pi_{k} - \frac{\nu + D + 2}{2} \ln |\Sigma_{k}| - \frac{1}{2} \operatorname{Tr} \left( \Psi \Sigma_{k}^{-1} \right) - \frac{\lambda}{2} (\mu_{k} - m)^{\top} \Sigma_{k}^{-1} (\mu_{k} - m).
     \end{aligned}
 </span></p>
-<p>Taking derivative w.r.t. <span class="math inline">\pmb{\mu}_{k}</span> and setting it to zero give:</p>
+<p>Taking derivative with respect to <span class="math inline">\mu_{k}</span> and setting it to zero give:</p>
 <p><span class="math display">
     \begin{aligned}
-        &amp; \Delta_{\pmb{\mu}_{k}} \mathsf{L} = \sum_{n = 1}^{N} \gamma(z_{nk}) \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) = 0 \\
-        &amp; \Rightarrow \left[ \sum_{n = 1}^{N} \gamma(z_{nk}) \right] \pmb{\mu}_{k} = \sum_{n = 1}^{N} \gamma(z_{nk}) \mathbf{x}_{n}.
+        &amp; \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \Sigma_{k}^{-1} (\mathbf{x}_{i} - \mu_{k}) - \lambda \Sigma_{k}^{-1} (\mu_{k} - m) = 0 \\
+        &amp; \Leftrightarrow \left[ \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) + \lambda \right] \mu_{k} = \sum_{i = 1}^{N} \gamma(\mathbf{z}_{ik}) \mathbf{x}_{i} + \lambda m.
     \end{aligned}
 </span></p>
 <p>Or:</p>
-<p><span class="math display">
+<p><span id="eq-mu-k"><span class="math display">
     \boxed{
-        \pmb{\mu}_{k} = \frac{\sum_{n = 1}^{N} \gamma(z_{nk}) \mathbf{x}_{n}}{\sum_{n = 1}^{N} \gamma(z_{nk})}.
+        \mu_{k} = \frac{\sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \mathbf{x}_{i} + \lambda m}{\sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) + \lambda}.
     }
-</span></p>
-<p>Similarly for <span class="math inline">\pmb{\Sigma}_{k}</span>:</p>
+\tag{8}</span></span></p>
+<p>Similarly for <span class="math inline">\Sigma_{k}</span>:</p>
 <p><span class="math display">
     \begin{aligned}
-        \Delta_{\pmb{\Sigma}_{k}} &amp; = -\frac{1}{2} \sum_{n = 1}^{N} \gamma(z_{nk}) \left[ \pmb{\Sigma}_{k}^{-1} - \pmb{\Sigma}_{k}^{-1} (\mathbf{x}_{n} - \pmb{\mu}_{k}) (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top} \pmb{\Sigma}_{k}^{-1} \right] = 0 \\
-        \Rightarrow &amp; \boxed{
-            \pmb{\Sigma}_{k} = \frac{1}{\sum_{n = 1}^{N} \gamma(z_{nk})} \sum_{n = 1}^{N} \gamma(z_{nk}) (\mathbf{x}_{n} - \pmb{\mu}_{k}) (\mathbf{x}_{n} - \pmb{\mu}_{k})^{\top}.
-        }
+        &amp; -\frac{1}{2} \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \left[ \Sigma_{k}^{-1} - \Sigma_{k}^{-1} (\mathbf{x}_{i} - \mu_{k}) (\mathbf{x}_{i} - \mu_{k})^{\top} \Sigma_{k}^{-1} \right] \\
+        &amp; \quad + \frac{1}{2} \Sigma_{k}^{-1} \Psi \Sigma_{k}^{-1} - \frac{\nu + D + 2}{2} \Sigma_{k}^{-1} + \frac{\lambda}{2} \Sigma_{k}^{-1} (\mu_{k} - m)^{\top} (\mu_{k} - m) \Sigma_{k}^{-1} = 0.
     \end{aligned}
 </span></p>
+<p>To solve for <span class="math inline">\Sigma_{k}</span>, the covariance matrix itself is used to left- and right-multiply to obtain:</p>
+<p><span class="math display">
+    \begin{aligned}
+        &amp; -\frac{1}{2} \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \left[ \Sigma_{k} - (\mathbf{x}_{i} - \mu_{k}) (\mathbf{x}_{i} - \mu_{k})^{\top} \right] \\
+        &amp; \quad + \frac{1}{2} \Psi - \frac{\nu + D + 2}{2} \Sigma_{k} + \frac{\lambda}{2} (\mu_{k} - m)^{\top} (\mu_{k} - m) = 0 \\
+        &amp; \Leftrightarrow \left[ \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) + \nu + D + 2 \right] \Sigma_{k} \\
+        &amp; \quad = \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) (\mathbf{x}_{i} - \mu_{k}) (\mathbf{x}_{i} - \mu_{k})^{\top} + \Psi + \lambda (\mu_{k} - m)^{\top} (\mu_{k} - m).
+    \end{aligned}
+</span></p>
+<p>Or:</p>
+<p><span id="eq-sigma-k"><span class="math display">
+\boxed{
+    \Sigma_{k} = \frac{\sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) (\mathbf{x}_{i} - \mu_{k}) (\mathbf{x}_{i} - \mu_{k})^{\top} + \Psi + \lambda (\mu_{k} - m)^{\top} (\mu_{k} - m)}{\sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) + \nu + D + 2}.
+}
+\tag{9}</span></span></p>
+<p>One can further substitute <span class="math inline">\mu_{k}</span> in <a href="#eq-mu-k" class="quarto-xref">Equation&nbsp;8</a> into <a href="#eq-sigma-k" class="quarto-xref">Equation&nbsp;9</a> to obtain an expression for <span class="math inline">\Sigma_{k}</span> that only depends on observed data <span class="math inline">\mathbf{x}</span> and prior parameters.</p>
+<p>Finally, one can obtain the optimal value for the mixture coefficient <span class="math inline">\pi_{k}</span> in a similar way, except it is now a constrained optimisation. Such an optimisation can be written as follows:</p>
+<p><span class="math display">
+\begin{aligned}
+    &amp; \max_{\pi} \sum_{k = 1}^{K} \left[\sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) + \alpha_{k} - 1 \right] \ln \pi_{k} \\
+    &amp; \text{subject to: } \sum_{k = 1}^{K} \pi_{k} = 1.
+\end{aligned}
+</span></p>
+<p>The constrained optimisation above can simly be solved by Lagrange multiplier. The result for <span class="math inline">\pi_{k}</span> can then be expressed as:</p>
+<p><span class="math display">
+\boxed{
+    \pi_{k} = \frac{\sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) + \alpha_{k} - 1}{N - K + \sum_{k = 1}^{K} \alpha_{k}}.
+}
+</span></p>
+</section>
 </section>
 <section id="multinomial-mixture-models" class="level3" data-number="3.2">
 <h3 data-number="3.2" class="anchored" data-anchor-id="multinomial-mixture-models"><span class="header-section-number">3.2</span> Multinomial mixture models</h3>
 <p>Similar to the Gaussian mixture models, a multinomial mixture model can also be written as:</p>
 <p><span class="math display">
-    p(\mathbf{x}) = \sum_{\mathbf{z}} p(\mathbf{z}) p(\mathbf{x} | \mathbf{z}) = \sum_{k = 1}^{K} \pi_{k} \mathrm{Mult}(\mathbf{x}; m, \rho_{k}).
+    \Pr(\mathbf{x} | \pi, m, \rho) = \sum_{\mathbf{z}} \Pr(\mathbf{z} | \pi) \Pr(\mathbf{x} | \mathbf{z}, m, \rho) = \sum_{k = 1}^{K} \pi_{k} \mathrm{Mult}(\mathbf{x}; m, \rho_{k}).
 </span></p>
-<p>Note that we only consider the case where all the multinomial components have the same parameter <span class="math inline">m</span> (the number of trials).</p>
-<p><strong>E-step</strong> This step is to calculate the posterior of the latent variable <span class="math inline">\mathbf{z}_{n}</span> given the data <span class="math inline">\mathbf{x}_{n}</span>: <span id="eq-mmm_e_step"><span class="math display">
+<div class="callout callout-style-default callout-note callout-titled" title="$m$ is given">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="math inline">m</span> is given
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Only the case where all the multinomial components have the same parameter <span class="math inline">m</span> (the number of trials) are considered. The reason is that optimising for an integer number <span class="math inline">m</span> is beyond the scope of this post.</p>
+</div>
+</div>
+<p><strong>E-step</strong> This step is to calculate the posterior of the latent variable <span class="math inline">\mathbf{z}_{i}</span> given the data <span class="math inline">\mathbf{x}_{i}</span>: <span id="eq-mmm_e_step"><span class="math display">
     \begin{aligned}
-        \gamma_{nk} &amp; = p(\mathbf{z}_{nk} = 1 | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)}) \\
-        &amp; = \frac{p(\mathbf{x}_{n} | \mathbf{z}_{nk} = 1, \rho^{(t)}) \, p(\mathbf{z}_{nk} = 1 | \pi^{(t)})}{\sum_{k = 1}^{K} p(\mathbf{x}_{n} | \mathbf{z}_{nk} = 1, \rho^{(t)}) \, p(\mathbf{z}_{nk} = 1 | \pi^{(t)})} \\
-        &amp; = \frac{\pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{n}; m, \rho_{k}^{(t)})}{\sum_{k = 1}^{K} \pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{n}; m, \rho_{k}^{(t)})}.
+        q^{*}(\mathbf{z}_{ik}) &amp; = \Pr(\mathbf{z}_{ik} = 1 | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)}) \\
+        &amp; = \frac{\Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \rho^{(t)}) \, \Pr(\mathbf{z}_{ik} = 1 | \pi^{(t)})}{\sum_{k = 1}^{K} \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \rho^{(t)}) \, \Pr(\mathbf{z}_{ik} = 1 | \pi^{(t)})} \\
+        &amp; = \frac{\pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{i}; m, \rho_{k}^{(t)})}{\sum_{k = 1}^{K} \pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{i}; m, \rho_{k}^{(t)})}.
     \end{aligned}
-\tag{7}</span></span></p>
+\tag{10}</span></span></p>
 <p><strong>M-step</strong> In the M-step, we maximise the following expected completed log-likelihood w.r.t. <span class="math inline">\pi</span> and <span class="math inline">\rho</span>:</p>
 <p><span class="math display">
     \begin{aligned}
-        \mathsf{L} = &amp; \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \ln p(\mathbf{x}_{n}, \mathbf{z}_{n} | \pi, \rho) \right] \\
-        &amp; = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \ln p(\mathbf{z}_{n} | \pi) + \ln p(\mathbf{x}_{n} | \mathbf{z}_{n}, \rho) \right] \\
-        &amp; = \sum_{n = 1}^{N} \mathbb{E}_{p(\mathbf{z}_{n} | \mathbf{x}_{n}, \pi^{(t)}, \rho^{(t)})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{nk} \ln \pi_{k} + \mathbf{z}_{nk} \ln \mathrm{Mult} (\mathbf{x}_{n}; m, \rho_{k}) \right] \\
-        &amp; = \sum_{n = 1}^{N} \sum_{k = 1}^{K} \gamma_{nk} \left[ \ln \pi_{k} + \sum_{d = 1}^{D} \mathbf{x}_{nd} \ln \rho_{kd} + \mathrm{const.} \right]
+        \mathsf{L} = &amp; \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \rho) \right] \\
+        &amp; = \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \ln \Pr(\mathbf{z}_{i} | \pi) + \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, \rho) \right] \\
+        &amp; = \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{ik} \ln \pi_{k} + \mathbf{z}_{ik} \ln \mathrm{Mult} (\mathbf{x}_{i}; m, \rho_{k}) \right] \\
+        &amp; = \sum_{i = 1}^{N} \sum_{k = 1}^{K} \gamma_{ik} \left[ \ln \pi_{k} + \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} + \mathrm{const.} \right]
     \end{aligned}
 </span></p>
 <p>The Lagrangian for <span class="math inline">\pi</span> can be written as: <span class="math display">
     \mathsf{L}_{\pi} = \mathsf{L} - \lambda \left( \sum_{k = 1}^{K} \pi_{k} - 1 \right),
 </span> where <span class="math inline">\lambda</span> is the Lagrange multiplier.</p>
 <p>Taking derivative of the Lagrangian w.r.t. <span class="math inline">\pi_{k}</span> gives: <span class="math display">
-    \frac{\partial \mathsf{L}_{\pi}}{\partial \pi_{k}} = \frac{1}{\pi_{k}} \sum_{n = 1}^{N} \gamma_{nk} - \lambda.
+    \frac{\partial \mathsf{L}_{\pi}}{\partial \pi_{k}} = \frac{1}{\pi_{k}} \sum_{i = 1}^{N} \gamma_{ik} - \lambda.
 </span></p>
 <p>Setting the derivative to zero and solving for <span class="math inline">\pi_{k}</span> gives: <span class="math display">
-    \pi_{k} = \frac{1}{\lambda} \sum_{n = 1}^{N} \gamma_{nk}.
+    \pi_{k} = \frac{1}{\lambda} \sum_{i = 1}^{N} \gamma_{ik}.
 </span></p>
 <p>And since <span class="math inline">\sum_{k = 1}^{K} \pi_{k} = 1</span>, one can substitute and find that <span class="math inline">\lambda = N</span>. Thus: <span class="math display">
     \boxed{
-        \pi_{k}^{(t + 1)} = \frac{1}{N} \sum_{n = 1}^{N} \gamma_{nk}.
+        \pi_{k}^{(t + 1)} = \frac{1}{N} \sum_{i = 1}^{N} \gamma_{ik}.
     }
 </span></p>
 <p>Similarly, the Lagrangian of <span class="math inline">\rho</span> can be expressed as: <span class="math display">
     \mathsf{L}_{\rho} = \mathsf{L} - \sum_{k = 1}^{K} \eta_{k} \left( \sum_{d = 1}^{D} \rho_{kd} - 1 \right),
 </span> where <span class="math inline">\eta_{k}</span> is the Lagrange multiplier. Taking derivative w.r.t. <span class="math inline">\rho_{kd}</span> gives: <span class="math display">
-    \frac{\partial \mathsf{L}_{\rho}}{\partial \rho_{kd}} = \frac{1}{\rho_{kd}} \sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd} - \eta_{k}.
+    \frac{\partial \mathsf{L}_{\rho}}{\partial \rho_{kd}} = \frac{1}{\rho_{kd}} \sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id} - \eta_{k}.
 </span> Setting the derivative to zero and solving for <span class="math inline">\rho_{kd}</span> gives: <span class="math display">
-    \rho_{kd} = \frac{1}{\eta_{k}} \sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd}.
-</span> The constraint on <span class="math inline">\rho_{k}</span> as a probability vector leads to <span class="math inline">\eta_{k} = m \sum_{n = 1}^{N} \gamma_{nk}</span>. Thus: <span class="math display">
+    \rho_{kd} = \frac{1}{\eta_{k}} \sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id}.
+</span> The constraint on <span class="math inline">\rho_{k}</span> as a probability vector leads to <span class="math inline">\eta_{k} = m \sum_{i = 1}^{N} \gamma_{ik}</span>. Thus: <span class="math display">
     \boxed{
-        \rho_{kd}^{(t + 1)} = \frac{\sum_{n = 1}^{N} \gamma_{nk} \mathbf{x}_{nd}}{m \sum_{n = 1}^{N} \gamma_{nk}}.
+        \rho_{kd}^{(t + 1)} = \frac{\sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id}}{m \sum_{i = 1}^{N} \gamma_{ik}}.
     }
 </span></p>
 </section>
@@ -525,8 +682,8 @@ sample a data-point from the corresponding Gaussian component: <span class="math
 <section id="references" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="references"><span class="header-section-number">4</span> References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-bishop2006pattern" class="csl-entry" role="listitem">
-Bishop, Christopher M, and Nasser M Nasrabadi. 2006. <em>Pattern Recognition and Machine Learning</em>. Vol. 4. 4. Springer.
+<div id="ref-bernardo2003variational" class="csl-entry" role="listitem">
+Bernardo, JM, MJ Bayarri, JO Berger, AP Dawid, D Heckerman, AFM Smith, M West, et al. 2003. <span>“The Variational Bayesian EM Algorithm for Incomplete Data: With Application to Scoring Graphical Model Structures.”</span> <em>Bayesian Statistics</em> 7 (453-464): 210.
 </div>
 <div id="ref-dempster1977maximum" class="csl-entry" role="listitem">
 Dempster, Arthur P, Nan M Laird, and Donald B Rubin. 1977. <span>“Maximum Likelihood from Incomplete Data via the EM Algorithm.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 39 (1): 1–22.
@@ -539,14 +696,14 @@ Dempster, Arthur P, Nan M Laird, and Donald B Rubin. 1977. <span>“Maximum Like
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nguyen2022,
   author = {Nguyen, Cuong},
   title = {Expectation - {Maximisation} Algorithm and Its Applications
-    for Mixture Models},
+    in Finite Mixture Models},
   date = {2022-07-17},
   url = {https://cnguyen10.github.io/posts/mixture-models},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-nguyen2022" class="csl-entry quarto-appendix-citeas" role="listitem">
 Nguyen, Cuong. 2022. <span>“Expectation - Maximisation Algorithm and Its
-Applications for Mixture Models.”</span> July 17, 2022. <a href="https://cnguyen10.github.io/posts/mixture-models">https://cnguyen10.github.io/posts/mixture-models</a>.
+Applications in Finite Mixture Models.”</span> July 17, 2022. <a href="https://cnguyen10.github.io/posts/mixture-models">https://cnguyen10.github.io/posts/mixture-models</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
