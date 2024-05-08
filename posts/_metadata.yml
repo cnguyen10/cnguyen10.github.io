@@ -11,17 +11,8 @@ author:
   - name:
       given: Cuong
       family: Nguyen
-    id: cn
+    id: cuong
     orcid: 0000-0003-2672-6291
-    affiliation:
-      - name: The University of Adelaide
-        department: School of Computer Science
-        city: Adelaide
-        state: SA
-        country: AU
-        postal-code: 5005
-        url: www.adelaide.edu.au
-        isni: 0000 0004 1936 7304
 
 citation: true
 bibliography: references.bib
