@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -107,21 +141,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 <script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
-<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
-<script>
-  window.onload = async function() {
-    var options = {
-      indentSize: '1.2em',
-      commentDelimiter: '\u00A0\u00A0\u00A0\u00A0\u00A0 \u25B9 \u0020',
-      lineNumber: true,
-      lineNumberPunc: ':',
-      noEnd: false,
-      captionCount: undefined
-    };
-    pseudocode.renderClass("pseudocode", options);
-  }
-</script>
+
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -317,7 +337,13 @@ window.Quarto = {
 <p>The formulation presented in this post follows a probabilistic approach. In probabilistic modelling, there are two processes: data generation (also known as a <em>forward</em> problem) and parameter inference (also known as an <em>inverse problem</em>).</p>
 <section id="sec-data-generation" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="sec-data-generation"><span class="header-section-number">2.1</span> Data generation</h3>
-<p>The data is generated as follows: - draw the parameter <span class="math inline">\pi</span> from its prior: <span class="math inline">\pi \sim \Pr(\pi)</span>, - draw the parameter <span class="math inline">\theta</span> from its prior: <span class="math inline">\theta \sim \Pr(\theta)</span>, - draw a <em>hidden</em> sample <span class="math inline">\mathbf{z}</span> from a prior distribution: <span class="math inline">\mathbf{z} \sim \Pr(\mathbf{z} | \pi)</span>, and - draw an <em>observable</em> sample <span class="math inline">\mathbf{x}</span> given <span class="math inline">\mathbf{z}</span> as follows: <span class="math inline">\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \theta)</span>,</p>
+<p>The data is generated as follows:</p>
+<ul>
+<li>draw the parameter <span class="math inline">\pi</span> from its prior: <span class="math inline">\pi \sim \Pr(\pi)</span>,</li>
+<li>draw the parameter <span class="math inline">\theta</span> from its prior: <span class="math inline">\theta \sim \Pr(\theta)</span>,</li>
+<li>draw a <em>hidden</em> sample <span class="math inline">\mathbf{z}</span> from a prior distribution: <span class="math inline">\mathbf{z} \sim \Pr(\mathbf{z} | \pi)</span>, and</li>
+<li>draw an <em>observable</em> sample <span class="math inline">\mathbf{x}</span> given <span class="math inline">\mathbf{z}</span> as follows: <span class="math inline">\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \theta)</span>,</li>
+</ul>
 <p>where <span class="math inline">\pi</span> and <span class="math inline">\theta</span> are the parameter of the model of interest.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Parameter $\pi$">
 <div class="callout-header d-flex align-content-center">
@@ -338,15 +364,24 @@ Parameter <span class="math inline">\pi</span>
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">flowchart LR
-    subgraph data
-        z((z))--&gt;x((x));
+<pre class="mermaid mermaid-js">%%{
+    init: {
+        'theme': 'base',
+        'themeVariables': {
+            'primaryColor': '#ffffff'
+        }
+    }
+}%%
+flowchart LR
+    subgraph data["training data"]
+        z((z)):::nonfilled--&gt;x((x)):::filled;
     end
-    pi((π))--&gt;z;
-    theta((θ))--&gt;x;
+    pi((π)):::nonfilled--&gt;z;
+    theta((θ)):::nonfilled--&gt;x;
 
-    style pi fill: none;
-    style theta fill: none;
+    linkStyle default stroke: black;
+    classDef nonfilled fill: none;
+    style data fill: none;
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -356,7 +391,7 @@ Parameter <span class="math inline">\pi</span>
 </section>
 <section id="sec-parameter-inference" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="sec-parameter-inference"><span class="header-section-number">2.2</span> Parameter inference</h3>
-<p>Given a set of observed i.i.d data <span class="math inline">\mathcal{D} = \{\mathbf{x}_{i}\}_{i = 1}^{N}</span>, the general objective is to infer the posterior <span class="math inline">\Pr(\pi, \theta | \mathbf{x}).</span> of the parameters <span class="math inline">\pi</span> and <span class="math inline">\theta</span>. Instead of inferring the exact posterior <span class="math inline">\Pr(\pi, \theta | \mathbf{x})</span>, which may be difficult in many cases, one can perform <em>point estimation</em>, such as MLE or maximise a posterior (MAP), which can be written as follows:</p>
+<p>Given a set of observed i.i.d data <span class="math inline">\mathcal{D} = \{\mathbf{x}_{i}\}_{i = 1}^{N}</span>, the general objective is to infer the posterior <span class="math inline">\Pr(\pi, \theta | \mathbf{x}).</span> of the parameters <span class="math inline">\pi</span> and <span class="math inline">\theta</span>. Instead of inferring the exact posterior <span class="math inline">\Pr(\pi, \theta | \mathbf{x})</span>, which may be difficult in many cases, one can perform <em>point estimate</em>, such as MLE or maximise a posterior (MAP), which can be written as follows:</p>
 <p><span id="eq-map"><span class="math display">
 \begin{aligned}
     \max_{\pi, \theta} \ln \Pr(\pi, \theta | \{\mathbf{x}_{i}\}_{i = 1}^{N}) &amp; = \max_{\pi. \theta} \sum_{i = 1}^{N} \underbrace{\ln \Pr(\mathbf{x}_{i} | \pi, \theta)}_{\text{in-complete log-likelihood}} + \ln \Pr(\pi) + \ln \Pr(\theta) \\
@@ -433,20 +468,26 @@ True posterior in the E-step
 \max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
 </span></p>
 <p>The whole EM algorithm can be referred to Algorithm 1.</p>
-<pre class="pseudocode">\begin{algorithm}
-    \caption{The EM algorithm}
-    \begin{algorithmic}
-        \PROCEDURE{EM algorithm}{observed data $\{\mathbf{x}\}_{i = 1}^{N}$}
-            \STATE initialise parameters $\pi^{(0)}$ and $\theta^{(0)}$
-            \WHILE{$(\pi, \theta))$ not converged}
-                \STATE calculate the "variational" posterior: $q^{*}(\mathbf{z} | \mathbf{x}, \pi, \theta^{(t)}) \gets \Call{E-step}{}$ \Comment{[@eq-e-step]}
-                \STATE maximise the lower-bound: \pi, \theta \gets \Call{M-step}{}\COMMENT{[@eq-m-step]}
-            \ENDWHILE
-            \RETURN $\pi^{(T)}, \theta^{(T)}$
-        \ENDPROCEDURE
-    \end{algorithmic}
-\end{algorithm}
-</pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">def</span> EM_algorithm(x: Array, threshold: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[Array, Array]:</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="co"># initialise parameters</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>    pi <span class="op">=</span> random vector</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    theta <span class="op">=</span> random initialisation</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>    elbo <span class="op">=</span> ELBO(x, pi, theta)  <span class="co"># calculate the ELBO</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a>    delta <span class="op">=</span> threshold <span class="op">+</span> <span class="fl">1.</span>  <span class="co"># flag to check the convergence</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a>    <span class="cf">while</span>(delta <span class="op">&gt;</span> threshold):</span>
+<span id="cb1-11"><a href="#cb1-11"></a>        q <span class="op">=</span> E_step(x, pi, theta)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>        pi, theta <span class="op">=</span> M_step(x, q, pi, theta)</span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a>        elbo_new <span class="op">=</span> ELBO(x, pi, theta)</span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a>        delta <span class="op">=</span> <span class="bu">abs</span>(elbo <span class="op">-</span> elbo_new)</span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a>        elbo <span class="op">=</span> elbo_new</span>
+<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-20"><a href="#cb1-20"></a>    <span class="cf">return</span> pi, theta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="convergence-of-the-em-algorithm" class="level3" data-number="2.3">
@@ -496,15 +537,29 @@ True posterior in the E-step
 </span> where: <span class="math inline">\pi_{k} \in [0, 1]</span> and <span class="math inline">\pmb{\pi}^{\top} \pmb{1} = 1</span>.</p>
 <section id="data-generation" class="level4" data-number="3.1.1">
 <h4 data-number="3.1.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">3.1.1</span> Data generation</h4>
-<p>A data-point of the above Gaussian mixture distribution can be generated as follows: - sample a probability <span class="math inline">\pi</span> from a Dirichlet prior: <span class="math inline">\pi \sim \Pr(\pi | \alpha) = \operatorname{Dir}(\pi | \alpha)</span>, - sample <span class="math inline">K</span> sets of parameters <span class="math inline">(\mu_{k}, \Sigma_{k})</span> from an normal-inverse-Wishart prior: <span class="math inline">(\mu_{k}, \Sigma_{k}) \sim \Pr(\mu, \Sigma | ) = \operatorname{NIW}(\mu, \Sigma | m, \lambda, \Psi, \nu)</span>, - sample the index of a Gaussian component: <span class="math inline">\mathbf{z} \sim \Pr(\mathbf{z} | \pi) = \operatorname{Categorical}(\mathbf{z} | \pmb{\pi})</span>, then - sample a data-point from the corresponding Gaussian component: <span class="math inline">\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \mu, \Sigma) = \mathcal{N}(\mathbf{x}| \mu_{k}, \Sigma_{k})</span>, where <span class="math inline">z_{k} = 1</span>.</p>
+<p>A data-point of the above Gaussian mixture distribution can be generated as follows:</p>
+<ul>
+<li>sample a probability <span class="math inline">\pi</span> from a Dirichlet prior: <span class="math inline">\pi \sim \Pr(\pi | \alpha) = \operatorname{Dir}(\pi | \alpha)</span>,</li>
+<li>sample <span class="math inline">K</span> sets of parameters <span class="math inline">(\mu_{k}, \Sigma_{k})</span> from an normal-inverse-Wishart prior: <span class="math inline">(\mu_{k}, \Sigma_{k}) \sim \Pr(\mu, \Sigma | m, \lambda, \Psi, \nu) = \operatorname{NIW}(\mu, \Sigma | m, \lambda, \Psi, \nu)</span>,</li>
+<li>sample the index of a Gaussian component: <span class="math inline">\mathbf{z} \sim \Pr(\mathbf{z} | \pi) = \operatorname{Categorical}(\mathbf{z} | \pmb{\pi})</span>, then</li>
+<li>sample a data-point from the corresponding Gaussian component: <span class="math inline">\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \mu, \Sigma) = \mathcal{N}(\mathbf{x}| \mu_{k}, \Sigma_{k})</span>, where <span class="math inline">z_{k} = 1</span>.</li>
+</ul>
 <p>The data generation process can also be visualised in the graphical model shown below.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">flowchart LR
-    subgraph data
+<pre class="mermaid mermaid-js">%%{
+    init: {
+        'theme': 'base',
+        'themeVariables': {
+            'primaryColor': '#ffffff'
+        }
+    }
+}%%
+flowchart LR
+    subgraph data["training data"]
         direction LR
         z((z)):::rv --&gt; x((x)):::rv
     end
@@ -520,6 +575,8 @@ True posterior in the E-step
     classDef params stroke: #000, fill: none
     classDef rv stroke: #000
     classDef notfilled fill: none
+    linkStyle default stroke: #000
+    style data fill: none
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -529,7 +586,7 @@ True posterior in the E-step
 </section>
 <section id="objective" class="level4" data-number="3.1.2">
 <h4 data-number="3.1.2" class="anchored" data-anchor-id="objective"><span class="header-section-number">3.1.2</span> Objective</h4>
-<p>Given set of data-points <span class="math inline">\{\mathbf{x}_{i}\}_{i = 1}^{N}</span> sampled from the Gaussian mixture distribution, the aim is to infer the point estimation, and in particular MAP, of <span class="math inline">(\pi, \mu, \Sigma)</span>. Such an objective can be written as follows:</p>
+<p>Given set of data-points <span class="math inline">\{\mathbf{x}_{i}\}_{i = 1}^{N}</span> sampled from the Gaussian mixture distribution, the aim is to infer the point estimate, and in particular MAP, of <span class="math inline">(\pi, \mu, \Sigma)</span>. Such an objective can be written as follows:</p>
 <p><span class="math display">
 \begin{aligned}
     &amp; \max_{\pi, \mu, \Sigma} \ln \Pr(\pi, \mu, \Sigma | \{\mathbf{x}_{i}\}_{i = 1}^{N}, \alpha, m, \lambda, \Psi, \nu) \\
@@ -556,13 +613,12 @@ True posterior in the E-step
 \tag{7}</span></span></p>
 <p><strong>M-step:</strong> maximises the “tighest” lower-bound w.r.t. model parameter <span class="math inline">(\pi, \mu, \Sigma)</span>: <span class="math display">
     \begin{aligned}
-        \pi^{(t + 1)}, \mu^{(t + 1)}, \Sigma^{(t + 1)} &amp; \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} [ \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{i} | \pi) ] \\
-        &amp; \quad + \ln \Pr(\pi | \alpha) + \ln \Pr(\mu, \Sigma | m, \lambda, \Psi, \nu) \\
-        &amp; \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[\ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \pi, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{ik} = 1| \pi) \right] \\
+        &amp; \operatorname*{argmax}_{\pi, \mu, \Sigma} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} [ \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{i} | \pi) ] + \ln \Pr(\pi | \alpha) + \ln \Pr(\mu, \Sigma | m, \lambda, \Psi, \nu) \\
+        &amp; = \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[\ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \pi, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{ik} = 1| \pi) \right] \\
         &amp; \quad + \ln \operatorname{Dir}(\pi | \alpha) + \ln \operatorname{NIW}(\mu_{k}, \Sigma_{k} | m, \lambda, \Psi, \nu)\\
-        &amp; \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \mathcal{N}(\mathbf{x}_{i}; \mu_{k}, \Sigma_{k}) + \ln \pi_{k} \right] \\
+        &amp; = \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \mathcal{N}(\mathbf{x}_{i}; \mu_{k}, \Sigma_{k}) + \ln \pi_{k} \right] \\
         &amp; \quad + (\alpha_{k} - 1) \ln \pi_{k} + \ln \mathcal{N} \left( \mu_{k} \left| m, \frac{1}{\lambda} \Sigma_{k} \right. \right) + \ln \mathcal{W}^{-1} \left( \Sigma_{k} | \Psi, \nu \right)\\
-        &amp; \in \operatorname*{argmax}_{\mu, \Sigma} -\frac{1}{2} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \left| \Sigma_{k} \right| + (\mathbf{x}_{i} - \mu_{k})^{\top} \Sigma_{k}^{-1} (\mathbf{x}_{i} - \mu_{k}) + \ln \pi_{k} \right] \\
+        &amp; = \operatorname*{argmax}_{\mu, \Sigma} -\frac{1}{2} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \left| \Sigma_{k} \right| + (\mathbf{x}_{i} - \mu_{k})^{\top} \Sigma_{k}^{-1} (\mathbf{x}_{i} - \mu_{k}) + \ln \pi_{k} \right] \\
         &amp; \quad + (\alpha_{k} - 1) \ln \pi_{k} - \frac{\nu + D + 2}{2} \ln |\Sigma_{k}| - \frac{1}{2} \operatorname{Tr} \left( \Psi \Sigma_{k}^{-1} \right) - \frac{\lambda}{2} (\mu_{k} - m)^{\top} \Sigma_{k}^{-1} (\mu_{k} - m).
     \end{aligned}
 </span></p>
@@ -615,6 +671,7 @@ True posterior in the E-step
     \pi_{k} = \frac{\sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) + \alpha_{k} - 1}{N - K + \sum_{k = 1}^{K} \alpha_{k}}.
 }
 </span></p>
+<p>One can also refer to Chapter 10.2 in <span class="citation" data-cites="bishop2006pattern">(<a href="#ref-bishop2006pattern" role="doc-biblioref">Bishop 2006</a>)</span> for a similar derivation and result.</p>
 </section>
 </section>
 <section id="multinomial-mixture-models" class="level3" data-number="3.2">
@@ -636,9 +693,63 @@ True posterior in the E-step
 <p>Only the case where all the multinomial components have the same parameter <span class="math inline">m</span> (the number of trials) are considered. The reason is that optimising for an integer number <span class="math inline">m</span> is beyond the scope of this post.</p>
 </div>
 </div>
-<p><strong>E-step</strong> This step is to calculate the posterior of the latent variable <span class="math inline">\mathbf{z}_{i}</span> given the data <span class="math inline">\mathbf{x}_{i}</span>: <span id="eq-mmm_e_step"><span class="math display">
+<section id="data-generation-1" class="level4" data-number="3.2.1">
+<h4 data-number="3.2.1" class="anchored" data-anchor-id="data-generation-1"><span class="header-section-number">3.2.1</span> Data generation</h4>
+<p>A data-point of the multinomial mixture model can be generated as follows:</p>
+<ul>
+<li>sample a probability <span class="math inline">\pi</span> from a Dirichlet prior: <span class="math inline">\pi \sim \Pr(\pi | \alpha) = \operatorname{Dir}(\pi | \alpha)</span>,</li>
+<li>sample <span class="math inline">K</span> probability vectors, <span class="math inline">\{ \rho_{k} \}_{k = 1}^{K})</span>, from a Dirichlet prior: <span class="math inline">\rho_{k} \sim \Pr(\rho | \beta ) = \operatorname{Dir}(\rho | \beta)</span>,</li>
+<li>sample the index of a multinomial component: <span class="math inline">\mathbf{z} \sim \Pr(\mathbf{z} | \pi) = \operatorname{Categorical}(\mathbf{z} | \pmb{\pi})</span>, then</li>
+<li>sample a data-point from the corresponding multinomial component: <span class="math inline">\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \rho) = \operatorname{Multinomial}(\mathbf{x}| \rho_{k})</span>, where <span class="math inline">z_{k} = 1</span>.</li>
+</ul>
+<p>The data generation process can also be visualised in the graphical model shown below.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{
+    init: {
+        'theme': 'base',
+        'themeVariables': {
+            'primaryColor': '#ffffff'
+        }
+    }
+}%%
+flowchart LR
+    subgraph data["training data"]
+        direction LR
+        z((z)):::rv --&gt; x((x)):::rv
+    end
+    alpha((α)):::notfilled --&gt; pi((π)):::params --&gt; z;
+    beta((β)):::params --&gt; rho((ρ)):::params;
+    rho --&gt; x;
+
+    style z fill: none
+    classDef params stroke: #000, fill: none
+    classDef rv stroke: #000
+    classDef notfilled fill: none
+    linkStyle default stroke: #000
+    style data fill: none
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="objective-1" class="level4" data-number="3.2.2">
+<h4 data-number="3.2.2" class="anchored" data-anchor-id="objective-1"><span class="header-section-number">3.2.2</span> Objective</h4>
+<p>Given set of data-points <span class="math inline">\{\mathbf{x}_{i}\}_{i = 1}^{N}</span> sampled from a multinomial mixture distribution, the aim is to infer the point estimate, and in particular MAP, of <span class="math inline">(\pi, \rho)</span> as follows:</p>
+<p><span class="math display">
+    \max_{\pi, \rho} \ln \Pr(\pi, \rho | \{\mathbf{x}_{i}\}_{i = 1}^{N}, \alpha, m, \beta) = \max_{\pi, \rho} \frac{1}{N} \sum_{i = 1}^{N} \ln \Pr(\mathbf{x}_{i} | \pi, m, \rho) + \ln \operatorname{Dir}(\pi | \alpha) + \ln \operatorname{Dir}(\rho | \beta).
+</span></p>
+</section>
+<section id="parameter-inference-with-em" class="level4" data-number="3.2.3">
+<h4 data-number="3.2.3" class="anchored" data-anchor-id="parameter-inference-with-em"><span class="header-section-number">3.2.3</span> Parameter inference with EM</h4>
+<p><strong>E-step</strong> calculates the posterior of the latent variable <span class="math inline">\mathbf{z}_{i}</span> given the data <span class="math inline">\mathbf{x}_{i}</span>: <span id="eq-mmm_e_step"><span class="math display">
     \begin{aligned}
-        q^{*}(\mathbf{z}_{ik}) &amp; = \Pr(\mathbf{z}_{ik} = 1 | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)}) \\
+        q^{*}(\mathbf{z}_{ik} = 1) &amp; = \Pr(\mathbf{z}_{ik} = 1 | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)}) \\
         &amp; = \frac{\Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \rho^{(t)}) \, \Pr(\mathbf{z}_{ik} = 1 | \pi^{(t)})}{\sum_{k = 1}^{K} \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \rho^{(t)}) \, \Pr(\mathbf{z}_{ik} = 1 | \pi^{(t)})} \\
         &amp; = \frac{\pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{i}; m, \rho_{k}^{(t)})}{\sum_{k = 1}^{K} \pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{i}; m, \rho_{k}^{(t)})}.
     \end{aligned}
@@ -646,37 +757,53 @@ True posterior in the E-step
 <p><strong>M-step</strong> In the M-step, we maximise the following expected completed log-likelihood w.r.t. <span class="math inline">\pi</span> and <span class="math inline">\rho</span>:</p>
 <p><span class="math display">
     \begin{aligned}
-        \mathsf{L} = &amp; \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \rho) \right] \\
-        &amp; = \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \ln \Pr(\mathbf{z}_{i} | \pi) + \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, \rho) \right] \\
-        &amp; = \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{ik} \ln \pi_{k} + \mathbf{z}_{ik} \ln \mathrm{Mult} (\mathbf{x}_{i}; m, \rho_{k}) \right] \\
-        &amp; = \sum_{i = 1}^{N} \sum_{k = 1}^{K} \gamma_{ik} \left[ \ln \pi_{k} + \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} + \mathrm{const.} \right]
+        &amp; \operatorname*{argmax}_{\pi, \rho} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} [ \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, m, \rho) + \ln \Pr(\mathbf{z}_{i} | \pi) ] + \ln \Pr(\pi | \alpha) + \ln \Pr(\rho | \beta) \\
+        &amp; = \operatorname*{\argmax}_{\pi, \rho} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{ik} \ln \operatorname{Mult}(\mathbf{x}_{i} | m, \rho_{k}) + \ln \operatorname{Categorical}(\mathbf{z}_{i} | \pi) \right] \\
+        &amp; \quad + \ln \operatorname{Dir}(\pi | \alpha) + \ln \operatorname{Dir}(\rho | \beta) \\&amp; = \operatorname*{\argmax}_{\pi, \rho} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{ik} \left( \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} \right) + \mathbf{z}_{ik} \ln \pi_{k} \right] \\
+        &amp; \quad + \sum_{k = 1}^{K} (\alpha - 1) \ln \pi_{k} + (\beta - 1) \ln \rho_{k} \\
+        &amp; = \operatorname*{\argmax}_{\pi, \rho} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \pi_{k} + \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} \right] + (\alpha - 1) \ln \pi_{k} + (\beta - 1) \sum_{d = 1}^{D} \ln \rho_{kd}.
     \end{aligned}
 </span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Probability constrains on $\pi$ and $\rho$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Probability constrains on <span class="math inline">\pi</span> and <span class="math inline">\rho</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Due to the nature of a multinomial mixture model, both the parameters <span class="math inline">\pi</span> and <span class="math inline">\rho</span> are probability vectors.</p>
+</div>
+</div>
 <p>The Lagrangian for <span class="math inline">\pi</span> can be written as: <span class="math display">
-    \mathsf{L}_{\pi} = \mathsf{L} - \lambda \left( \sum_{k = 1}^{K} \pi_{k} - 1 \right),
+    \mathsf{L}_{\pi} = \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \ln \pi_{k} + (\alpha - 1) \ln \pi_{k} - \lambda \left( \sum_{k = 1}^{K} \pi_{k} - 1 \right),
 </span> where <span class="math inline">\lambda</span> is the Lagrange multiplier.</p>
 <p>Taking derivative of the Lagrangian w.r.t. <span class="math inline">\pi_{k}</span> gives: <span class="math display">
-    \frac{\partial \mathsf{L}_{\pi}}{\partial \pi_{k}} = \frac{1}{\pi_{k}} \sum_{i = 1}^{N} \gamma_{ik} - \lambda.
+    \frac{\partial \mathsf{L}_{\pi}}{\partial \pi_{k}} = \frac{1}{\pi_{k}} \left[ \alpha - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \right] - \lambda.
 </span></p>
 <p>Setting the derivative to zero and solving for <span class="math inline">\pi_{k}</span> gives: <span class="math display">
-    \pi_{k} = \frac{1}{\lambda} \sum_{i = 1}^{N} \gamma_{ik}.
+    \pi_{k} = \frac{1}{\lambda} \left[ \alpha - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \right].
 </span></p>
-<p>And since <span class="math inline">\sum_{k = 1}^{K} \pi_{k} = 1</span>, one can substitute and find that <span class="math inline">\lambda = N</span>. Thus: <span class="math display">
+<p>And since <span class="math inline">\sum_{k = 1}^{K} \pi_{k} = 1</span>, one can substitute and find that <span class="math inline">\lambda = N + K (\alpha - 1)</span>. Thus: <span class="math display">
     \boxed{
-        \pi_{k}^{(t + 1)} = \frac{1}{N} \sum_{i = 1}^{N} \gamma_{ik}.
+        \pi_{k}^{(t + 1)} = \frac{\alpha - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1)}{N + K (\alpha - 1)}.
     }
 </span></p>
 <p>Similarly, the Lagrangian of <span class="math inline">\rho</span> can be expressed as: <span class="math display">
-    \mathsf{L}_{\rho} = \mathsf{L} - \sum_{k = 1}^{K} \eta_{k} \left( \sum_{d = 1}^{D} \rho_{kd} - 1 \right),
+    \mathsf{L}_{\rho} = \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} + (\beta - 1) \ln \rho_{kd} - \sum_{k = 1}^{K} \eta_{k} \left( \sum_{d = 1}^{D} \rho_{kd} - 1 \right),
 </span> where <span class="math inline">\eta_{k}</span> is the Lagrange multiplier. Taking derivative w.r.t. <span class="math inline">\rho_{kd}</span> gives: <span class="math display">
-    \frac{\partial \mathsf{L}_{\rho}}{\partial \rho_{kd}} = \frac{1}{\rho_{kd}} \sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id} - \eta_{k}.
+    \frac{\partial \mathsf{L}_{\rho}}{\partial \rho_{kd}} = \frac{1}{\rho_{kd}} \left[ \beta - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \mathbf{x}_{id} \right] - \eta_{k}.
 </span> Setting the derivative to zero and solving for <span class="math inline">\rho_{kd}</span> gives: <span class="math display">
-    \rho_{kd} = \frac{1}{\eta_{k}} \sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id}.
-</span> The constraint on <span class="math inline">\rho_{k}</span> as a probability vector leads to <span class="math inline">\eta_{k} = m \sum_{i = 1}^{N} \gamma_{ik}</span>. Thus: <span class="math display">
+    \rho_{kd} = \frac{1}{\eta_{k}} \left[ \beta - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \mathbf{x}_{id} \right].
+</span> The constraint on <span class="math inline">\rho_{k}</span> as a probability vector leads to <span class="math inline">\eta_{k} = K (\beta - 1) + m \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1)</span>. Thus: <span class="math display">
     \boxed{
-        \rho_{kd}^{(t + 1)} = \frac{\sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id}}{m \sum_{i = 1}^{N} \gamma_{ik}}.
+        \rho_{kd}^{(t + 1)} = \frac{\beta - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \mathbf{x}_{id}}{K (\beta - 1) + m \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1)}.
     }
 </span></p>
+<p>One can also refer to <span class="citation" data-cites="elmore2003identifiability">(<a href="#ref-elmore2003identifiability" role="doc-biblioref">Elmore and Wang 2003</a>)</span> for a similar derivation and result.</p>
+</section>
 </section>
 </section>
 <section id="references" class="level2" data-number="4">
@@ -685,8 +812,14 @@ True posterior in the E-step
 <div id="ref-bernardo2003variational" class="csl-entry" role="listitem">
 Bernardo, JM, MJ Bayarri, JO Berger, AP Dawid, D Heckerman, AFM Smith, M West, et al. 2003. <span>“The Variational Bayesian EM Algorithm for Incomplete Data: With Application to Scoring Graphical Model Structures.”</span> <em>Bayesian Statistics</em> 7 (453-464): 210.
 </div>
+<div id="ref-bishop2006pattern" class="csl-entry" role="listitem">
+Bishop, Christopher M. 2006. <em>Pattern Recognition and Machine Learning</em>. Vol. 4. 4. Springer.
+</div>
 <div id="ref-dempster1977maximum" class="csl-entry" role="listitem">
 Dempster, Arthur P, Nan M Laird, and Donald B Rubin. 1977. <span>“Maximum Likelihood from Incomplete Data via the EM Algorithm.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 39 (1): 1–22.
+</div>
+<div id="ref-elmore2003identifiability" class="csl-entry" role="listitem">
+Elmore, Ryan T, and Shaoli Wang. 2003. <span>“Identifiability and Estimation in Finite Mixture Models with Multinomial Components.”</span> Technical Report 03-04, Pennsylvania State University.
 </div>
 </div>
 
