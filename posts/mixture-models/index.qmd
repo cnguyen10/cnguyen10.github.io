@@ -26,6 +26,7 @@ The formulation presented in this post follows a probabilistic approach. In prob
 ### Data generation {#sec-data-generation}
 
 The data is generated as follows:
+
 - draw the parameter $\pi$ from its prior: $\pi \sim \Pr(\pi)$,
 - draw the parameter $\theta$ from its prior: $\theta \sim \Pr(\theta)$,
 - draw a *hidden* sample $\mathbf{z}$ from a prior distribution: $\mathbf{z} \sim \Pr(\mathbf{z} | \pi)$, and
@@ -39,21 +40,30 @@ In many tutorials of EM, the parameter $\pi$ of the prior of the latent variable
 
 Such a data generation process is often visualised by the graphical model shown below
 
-```{mermaid}
+```{mermaid caption="Organizational Structure" width="50%"}
+%%{
+    init: {
+        'theme': 'base',
+        'themeVariables': {
+            'primaryColor': '#ffffff'
+        }
+    }
+}%%
 flowchart LR
-    subgraph data
-        z((z))-->x((x));
+    subgraph data["training data"]
+        z((z)):::nonfilled-->x((x)):::filled;
     end
-    pi((π))-->z;
-    theta((θ))-->x;
+    pi((π)):::nonfilled-->z;
+    theta((θ)):::nonfilled-->x;
 
-    style pi fill: none;
-    style theta fill: none;
+    linkStyle default stroke: black;
+    classDef nonfilled fill: none;
+    style data fill: none;
 ```
 
 ### Parameter inference {#sec-parameter-inference}
 
-Given a set of observed i.i.d data $\mathcal{D} = \{\mathbf{x}_{i}\}_{i = 1}^{N}$, the general objective is to infer the posterior $\Pr(\pi, \theta | \mathbf{x}).$ of the parameters $\pi$ and $\theta$. Instead of inferring the exact posterior $\Pr(\pi, \theta | \mathbf{x})$, which may be difficult in many cases, one can perform *point estimation*, such as MLE or maximise a posterior (MAP), which can be written as follows:
+Given a set of observed i.i.d data $\mathcal{D} = \{\mathbf{x}_{i}\}_{i = 1}^{N}$, the general objective is to infer the posterior $\Pr(\pi, \theta | \mathbf{x}).$ of the parameters $\pi$ and $\theta$. Instead of inferring the exact posterior $\Pr(\pi, \theta | \mathbf{x})$, which may be difficult in many cases, one can perform *point estimate*, such as MLE or maximise a posterior (MAP), which can be written as follows:
 
 $$
 \begin{aligned}
@@ -131,21 +141,28 @@ $$
 
 The whole EM algorithm can be referred to Algorithm 1.
 
-<pre class="pseudocode">
-\begin{algorithm}
-    \caption{The EM algorithm}
-    \begin{algorithmic}
-        \PROCEDURE{EM algorithm}{observed data $\{\mathbf{x}\}_{i = 1}^{N}$}
-            \STATE initialise parameters $\pi^{(0)}$ and $\theta^{(0)}$
-            \WHILE{$(\pi, \theta))$ not converged}
-                \STATE calculate the "variational" posterior: $q^{*}(\mathbf{z} | \mathbf{x}, \pi, \theta^{(t)}) \gets \Call{E-step}{}$ \Comment{[@eq-e-step]}
-                \STATE maximise the lower-bound: \pi, \theta \gets \Call{M-step}{}\COMMENT{[@eq-m-step]}
-            \ENDWHILE
-            \RETURN $\pi^{(T)}, \theta^{(T)}$
-        \ENDPROCEDURE
-    \end{algorithmic}
-\end{algorithm}
-</pre>
+```{.python code-line-numbers="true"}
+def EM_algorithm(x: Array, threshold: float) -> tuple[Array, Array]:
+    # initialise parameters
+    pi = random vector
+    theta = random initialisation
+
+    elbo = ELBO(x, pi, theta)  # calculate the ELBO
+
+    delta = threshold + 1.  # flag to check the convergence
+
+    while(delta > threshold):
+        q = E_step(x, pi, theta)
+        pi, theta = M_step(x, q, pi, theta)
+
+        elbo_new = ELBO(x, pi, theta)
+
+        delta = abs(elbo - elbo_new)
+
+        elbo = elbo_new
+
+    return pi, theta
+```
 
 ### Convergence of the EM algorithm
 
@@ -210,16 +227,25 @@ where: $\pi_{k} \in [0, 1]$ and $\pmb{\pi}^{\top} \pmb{1} = 1$.
 
 #### Data generation
 A data-point of the above Gaussian mixture distribution can be generated as follows:
+
 - sample a probability $\pi$ from a Dirichlet prior: $\pi \sim \Pr(\pi | \alpha) = \operatorname{Dir}(\pi | \alpha)$,
-- sample $K$ sets of parameters $(\mu_{k}, \Sigma_{k})$ from an normal-inverse-Wishart prior: $(\mu_{k}, \Sigma_{k}) \sim \Pr(\mu, \Sigma | ) = \operatorname{NIW}(\mu, \Sigma | m, \lambda, \Psi, \nu)$,
+- sample $K$ sets of parameters $(\mu_{k}, \Sigma_{k})$ from an normal-inverse-Wishart prior: $(\mu_{k}, \Sigma_{k}) \sim \Pr(\mu, \Sigma | m, \lambda, \Psi, \nu) = \operatorname{NIW}(\mu, \Sigma | m, \lambda, \Psi, \nu)$,
 - sample the index of a Gaussian component: $\mathbf{z} \sim \Pr(\mathbf{z} | \pi) = \operatorname{Categorical}(\mathbf{z} | \pmb{\pi})$, then
 - sample a data-point from the corresponding Gaussian component: $\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \mu, \Sigma) = \mathcal{N}(\mathbf{x}| \mu_{k}, \Sigma_{k})$, where $z_{k} = 1$.
 
 The data generation process can also be visualised in the graphical model shown below.
 
 ```{mermaid}
+%%{
+    init: {
+        'theme': 'base',
+        'themeVariables': {
+            'primaryColor': '#ffffff'
+        }
+    }
+}%%
 flowchart LR
-    subgraph data
+    subgraph data["training data"]
         direction LR
         z((z)):::rv --> x((x)):::rv
     end
@@ -235,11 +261,13 @@ flowchart LR
     classDef params stroke: #000, fill: none
     classDef rv stroke: #000
     classDef notfilled fill: none
+    linkStyle default stroke: #000
+    style data fill: none
 ```
 
 #### Objective
 
-Given set of data-points $\{\mathbf{x}_{i}\}_{i = 1}^{N}$ sampled from the Gaussian mixture distribution, the aim is to infer the point estimation, and in particular MAP, of $(\pi, \mu, \Sigma)$. Such an objective can be written as follows:
+Given set of data-points $\{\mathbf{x}_{i}\}_{i = 1}^{N}$ sampled from the Gaussian mixture distribution, the aim is to infer the point estimate, and in particular MAP, of $(\pi, \mu, \Sigma)$. Such an objective can be written as follows:
 
 $$
 \begin{aligned}
@@ -273,13 +301,12 @@ $$ {#eq-gmm_e_step}
 **M-step:** maximises the "tighest" lower-bound w.r.t. model parameter $(\pi, \mu, \Sigma)$:
 $$
     \begin{aligned}
-        \pi^{(t + 1)}, \mu^{(t + 1)}, \Sigma^{(t + 1)} & \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} [ \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{i} | \pi) ] \\
-        & \quad + \ln \Pr(\pi | \alpha) + \ln \Pr(\mu, \Sigma | m, \lambda, \Psi, \nu) \\
-        & \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[\ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \pi, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{ik} = 1| \pi) \right] \\
+        & \operatorname*{argmax}_{\pi, \mu, \Sigma} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} [ \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{i} | \pi) ] + \ln \Pr(\pi | \alpha) + \ln \Pr(\mu, \Sigma | m, \lambda, \Psi, \nu) \\
+        & = \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[\ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \pi, \mu, \Sigma) + \ln \Pr(\mathbf{z}_{ik} = 1| \pi) \right] \\
         & \quad + \ln \operatorname{Dir}(\pi | \alpha) + \ln \operatorname{NIW}(\mu_{k}, \Sigma_{k} | m, \lambda, \Psi, \nu)\\
-        & \in \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \mathcal{N}(\mathbf{x}_{i}; \mu_{k}, \Sigma_{k}) + \ln \pi_{k} \right] \\
+        & = \operatorname*{argmax}_{\mu, \Sigma} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \mathcal{N}(\mathbf{x}_{i}; \mu_{k}, \Sigma_{k}) + \ln \pi_{k} \right] \\
         & \quad + (\alpha_{k} - 1) \ln \pi_{k} + \ln \mathcal{N} \left( \mu_{k} \left| m, \frac{1}{\lambda} \Sigma_{k} \right. \right) + \ln \mathcal{W}^{-1} \left( \Sigma_{k} | \Psi, \nu \right)\\
-        & \in \operatorname*{argmax}_{\mu, \Sigma} -\frac{1}{2} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \left| \Sigma_{k} \right| + (\mathbf{x}_{i} - \mu_{k})^{\top} \Sigma_{k}^{-1} (\mathbf{x}_{i} - \mu_{k}) + \ln \pi_{k} \right] \\
+        & = \operatorname*{argmax}_{\mu, \Sigma} -\frac{1}{2} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \left| \Sigma_{k} \right| + (\mathbf{x}_{i} - \mu_{k})^{\top} \Sigma_{k}^{-1} (\mathbf{x}_{i} - \mu_{k}) + \ln \pi_{k} \right] \\
         & \quad + (\alpha_{k} - 1) \ln \pi_{k} - \frac{\nu + D + 2}{2} \ln |\Sigma_{k}| - \frac{1}{2} \operatorname{Tr} \left( \Psi \Sigma_{k}^{-1} \right) - \frac{\lambda}{2} (\mu_{k} - m)^{\top} \Sigma_{k}^{-1} (\mu_{k} - m).
     \end{aligned}
 $$
@@ -350,6 +377,8 @@ $$
 }
 $$
 
+One can also refer to Chapter 10.2 in [@bishop2006pattern] for a similar derivation and result.
+
 ### Multinomial mixture models
 
 
@@ -364,11 +393,57 @@ $$
 Only the case where all the multinomial components have the same parameter $m$ (the number of trials) are considered. The reason is that optimising for an integer number $m$ is beyond the scope of this post.
 :::
 
+#### Data generation
 
-**E-step** This step is to calculate the posterior of the latent variable $\mathbf{z}_{i}$ given the data $\mathbf{x}_{i}$:
+A data-point of the multinomial mixture model can be generated as follows:
+
+- sample a probability $\pi$ from a Dirichlet prior: $\pi \sim \Pr(\pi | \alpha) = \operatorname{Dir}(\pi | \alpha)$,
+- sample $K$ probability vectors, $\{ \rho_{k} \}_{k = 1}^{K})$, from a Dirichlet prior: $\rho_{k} \sim \Pr(\rho | \beta ) = \operatorname{Dir}(\rho | \beta)$,
+- sample the index of a multinomial component: $\mathbf{z} \sim \Pr(\mathbf{z} | \pi) = \operatorname{Categorical}(\mathbf{z} | \pmb{\pi})$, then
+- sample a data-point from the corresponding multinomial component: $\mathbf{x} \sim \Pr(\mathbf{x} | \mathbf{z}, \rho) = \operatorname{Multinomial}(\mathbf{x}| \rho_{k})$, where $z_{k} = 1$.
+
+The data generation process can also be visualised in the graphical model shown below.
+
+```{mermaid}
+%%{
+    init: {
+        'theme': 'base',
+        'themeVariables': {
+            'primaryColor': '#ffffff'
+        }
+    }
+}%%
+flowchart LR
+    subgraph data["training data"]
+        direction LR
+        z((z)):::rv --> x((x)):::rv
+    end
+    alpha((α)):::notfilled --> pi((π)):::params --> z;
+    beta((β)):::params --> rho((ρ)):::params;
+    rho --> x;
+
+    style z fill: none
+    classDef params stroke: #000, fill: none
+    classDef rv stroke: #000
+    classDef notfilled fill: none
+    linkStyle default stroke: #000
+    style data fill: none
+```
+
+#### Objective
+
+Given set of data-points $\{\mathbf{x}_{i}\}_{i = 1}^{N}$ sampled from a multinomial mixture distribution, the aim is to infer the point estimate, and in particular MAP, of $(\pi, \rho)$ as follows:
+
+$$
+    \max_{\pi, \rho} \ln \Pr(\pi, \rho | \{\mathbf{x}_{i}\}_{i = 1}^{N}, \alpha, m, \beta) = \max_{\pi, \rho} \frac{1}{N} \sum_{i = 1}^{N} \ln \Pr(\mathbf{x}_{i} | \pi, m, \rho) + \ln \operatorname{Dir}(\pi | \alpha) + \ln \operatorname{Dir}(\rho | \beta).
+$$
+
+#### Parameter inference with EM
+
+**E-step** calculates the posterior of the latent variable $\mathbf{z}_{i}$ given the data $\mathbf{x}_{i}$:
 $$
     \begin{aligned}
-        q^{*}(\mathbf{z}_{ik}) & = \Pr(\mathbf{z}_{ik} = 1 | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)}) \\
+        q^{*}(\mathbf{z}_{ik} = 1) & = \Pr(\mathbf{z}_{ik} = 1 | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)}) \\
         & = \frac{\Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \rho^{(t)}) \, \Pr(\mathbf{z}_{ik} = 1 | \pi^{(t)})}{\sum_{k = 1}^{K} \Pr(\mathbf{x}_{i} | \mathbf{z}_{ik} = 1, \rho^{(t)}) \, \Pr(\mathbf{z}_{ik} = 1 | \pi^{(t)})} \\
         & = \frac{\pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{i}; m, \rho_{k}^{(t)})}{\sum_{k = 1}^{K} \pi_{k}^{(t)} \, \mathrm{Mult}(\mathbf{x}_{i}; m, \rho_{k}^{(t)})}.
     \end{aligned}
@@ -380,59 +455,66 @@ $$ {#eq-mmm_e_step}
 
 $$
     \begin{aligned}
-        \mathsf{L} = & \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \rho) \right] \\
-        & = \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \ln \Pr(\mathbf{z}_{i} | \pi) + \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, \rho) \right] \\
-        & = \sum_{i = 1}^{N} \mathbb{E}_{\Pr(\mathbf{z}_{i} | \mathbf{x}_{i}, \pi^{(t)}, \rho^{(t)})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{ik} \ln \pi_{k} + \mathbf{z}_{ik} \ln \mathrm{Mult} (\mathbf{x}_{i}; m, \rho_{k}) \right] \\
-        & = \sum_{i = 1}^{N} \sum_{k = 1}^{K} \gamma_{ik} \left[ \ln \pi_{k} + \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} + \mathrm{const.} \right]
+        & \operatorname*{argmax}_{\pi, \rho} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} [ \ln \Pr(\mathbf{x}_{i} | \mathbf{z}_{i}, m, \rho) + \ln \Pr(\mathbf{z}_{i} | \pi) ] + \ln \Pr(\pi | \alpha) + \ln \Pr(\rho | \beta) \\
+        & = \operatorname*{\argmax}_{\pi, \rho} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{ik} \ln \operatorname{Mult}(\mathbf{x}_{i} | m, \rho_{k}) + \ln \operatorname{Categorical}(\mathbf{z}_{i} | \pi) \right] \\
+        & \quad + \ln \operatorname{Dir}(\pi | \alpha) + \ln \operatorname{Dir}(\rho | \beta) \\& = \operatorname*{\argmax}_{\pi, \rho} \sum_{i = 1}^{N} \mathbb{E}_{q^{*}(\mathbf{z}_{i})} \left[ \sum_{k = 1}^{K} \mathbf{z}_{ik} \left( \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} \right) + \mathbf{z}_{ik} \ln \pi_{k} \right] \\
+        & \quad + \sum_{k = 1}^{K} (\alpha - 1) \ln \pi_{k} + (\beta - 1) \ln \rho_{k} \\
+        & = \operatorname*{\argmax}_{\pi, \rho} \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \left[ \ln \pi_{k} + \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} \right] + (\alpha - 1) \ln \pi_{k} + (\beta - 1) \sum_{d = 1}^{D} \ln \rho_{kd}.
     \end{aligned}
 $$
+
+::: {.callout-note title="Probability constrains on $\pi$ and $\rho$"}
+Due to the nature of a multinomial mixture model, both the parameters $\pi$ and $\rho$ are probability vectors.
+:::
 
 
 The Lagrangian for $\pi$ can be written as:
 $$
-    \mathsf{L}_{\pi} = \mathsf{L} - \lambda \left( \sum_{k = 1}^{K} \pi_{k} - 1 \right),
+    \mathsf{L}_{\pi} = \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \ln \pi_{k} + (\alpha - 1) \ln \pi_{k} - \lambda \left( \sum_{k = 1}^{K} \pi_{k} - 1 \right),
 $$
 where $\lambda$ is the Lagrange multiplier.
 
 
 Taking derivative of the Lagrangian w.r.t. $\pi_{k}$ gives:
 $$
-    \frac{\partial \mathsf{L}_{\pi}}{\partial \pi_{k}} = \frac{1}{\pi_{k}} \sum_{i = 1}^{N} \gamma_{ik} - \lambda.
+    \frac{\partial \mathsf{L}_{\pi}}{\partial \pi_{k}} = \frac{1}{\pi_{k}} \left[ \alpha - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \right] - \lambda.
 $$
 
 
 Setting the derivative to zero and solving for $\pi_{k}$ gives:
 $$
-    \pi_{k} = \frac{1}{\lambda} \sum_{i = 1}^{N} \gamma_{ik}.
+    \pi_{k} = \frac{1}{\lambda} \left[ \alpha - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \right].
 $$
 
 
-And since $\sum_{k = 1}^{K} \pi_{k} = 1$, one can substitute and find that $\lambda = N$. Thus:
+And since $\sum_{k = 1}^{K} \pi_{k} = 1$, one can substitute and find that $\lambda = N + K (\alpha - 1)$. Thus:
 $$
     \boxed{
-        \pi_{k}^{(t + 1)} = \frac{1}{N} \sum_{i = 1}^{N} \gamma_{ik}.
+        \pi_{k}^{(t + 1)} = \frac{\alpha - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1)}{N + K (\alpha - 1)}.
     }
 $$
 
 
 Similarly, the Lagrangian of $\rho$ can be expressed as:
 $$
-    \mathsf{L}_{\rho} = \mathsf{L} - \sum_{k = 1}^{K} \eta_{k} \left( \sum_{d = 1}^{D} \rho_{kd} - 1 \right),
+    \mathsf{L}_{\rho} = \sum_{i = 1}^{N} \sum_{k = 1}^{K} q^{*}(\mathbf{z}_{ik} = 1) \sum_{d = 1}^{D} \mathbf{x}_{id} \ln \rho_{kd} + (\beta - 1) \ln \rho_{kd} - \sum_{k = 1}^{K} \eta_{k} \left( \sum_{d = 1}^{D} \rho_{kd} - 1 \right),
 $$
 where $\eta_{k}$ is the Lagrange multiplier. Taking derivative w.r.t. $\rho_{kd}$ gives:
 $$
-    \frac{\partial \mathsf{L}_{\rho}}{\partial \rho_{kd}} = \frac{1}{\rho_{kd}} \sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id} - \eta_{k}.
+    \frac{\partial \mathsf{L}_{\rho}}{\partial \rho_{kd}} = \frac{1}{\rho_{kd}} \left[ \beta - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \mathbf{x}_{id} \right] - \eta_{k}.
 $$
 Setting the derivative to zero and solving for $\rho_{kd}$ gives:
 $$
-    \rho_{kd} = \frac{1}{\eta_{k}} \sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id}.
+    \rho_{kd} = \frac{1}{\eta_{k}} \left[ \beta - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \mathbf{x}_{id} \right].
 $$
-The constraint on $\rho_{k}$ as a probability vector leads to $\eta_{k} = m \sum_{i = 1}^{N} \gamma_{ik}$. Thus:
+The constraint on $\rho_{k}$ as a probability vector leads to $\eta_{k} = K (\beta - 1) + m \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1)$. Thus:
 $$
     \boxed{
-        \rho_{kd}^{(t + 1)} = \frac{\sum_{i = 1}^{N} \gamma_{ik} \mathbf{x}_{id}}{m \sum_{i = 1}^{N} \gamma_{ik}}.
+        \rho_{kd}^{(t + 1)} = \frac{\beta - 1 + \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1) \mathbf{x}_{id}}{K (\beta - 1) + m \sum_{i = 1}^{N} q^{*}(\mathbf{z}_{ik} = 1)}.
     }
 $$
+
+One can also refer to [@elmore2003identifiability] for a similar derivation and result.
 
 ## References
 ::: {#refs}

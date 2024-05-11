@@ -37,22 +37,7 @@ format:
     anchor-sections: true
     css: styles.css
     include-in-header:
-      text: |
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
-        <script>
-          window.onload = async function() {
-            var options = {
-              indentSize: '1.2em',
-              commentDelimiter: '\u00A0\u00A0\u00A0\u00A0\u00A0 \u25B9 \u0020',
-              lineNumber: true,
-              lineNumberPunc: ':',
-              noEnd: false,
-              captionCount: undefined
-            };
-            pseudocode.renderClass("pseudocode", options);
-          }
-        </script>
+      text: ''
     citations-hover: true
     footnotes-hover: true
 
