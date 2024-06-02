@@ -55,28 +55,36 @@ As before, it is assumed that the un-normalised probability $P^{*}(\theta)$ can 
 - If the step is accepted, then $\theta^{(t + 1)} = \theta^{\prime}$.
 - Otherwise, the previous state is kept: $\theta^{(t + 1)} = \theta^{(t)}$.
 
-The details of the Metropolis - Hastings algorithm can be seen in [Algorithm Metropolis - Hastings](#metropolis-hastings).
+The details of the Metropolis - Hastings algorithm can be seen in @alg-metropolis-hastings.
 
-<pre id="metropolis-hastings" class="pseudocode">
+
+```pseudocode
+#| label: alg-metropolis-hastings
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+
 \begin{algorithm}
     \caption{The Metropolis - Hastings sampling method}
     \begin{algorithmic}
-        \REQUIRE un-normalised probability distribution $P^{*}(\theta)$
-        \REQUIRE proposal distribution $Q(\theta; \theta^{(t)})$
-        \STATE initialise $\theta^{(0)}$
-        \WHILE{$t = 0, 1, \dots, T, \dots, T_{\mathrm{end}}$}
-            \STATE $\theta^{\prime} \gets$ \Call{sample-from-proposal-distribution}{$Q(\theta; \theta^{(t)})$} \Comment{generate a new state}
-            \STATE $a \gets \displaystyle \frac{p^{*}(\theta^{\prime})}{p^{*}(\theta^{(t)})} \frac{q(\theta^{(t)}; \theta^{\prime})}{q(\theta^{\prime}; \theta^{(t)})}$ \Comment{calculate Metropolis - Hastings score}
-            \IF{$a \ge 1$}
-                \STATE $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state}
-            \ELSE
-                \STATE $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state}
-            \ENDIF
-        \ENDWHILE
-        \RETURN $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$
+        \Procedure{Metropolis-Hastings}{$P^{*}(\theta), Q(\theta; \theta^{(t)})$}
+            \State initialise $\theta^{(0)}$
+            \While{$t = 0, 1, \dots, T, \dots, T_{\mathrm{end}}$}
+                \State $\theta^{\prime} \gets$ \Call{sample-from-proposal-distribution}{$Q(\theta; \theta^{(t)})$} \Comment{generate a new state}
+                \State $a \gets \displaystyle \frac{p^{*}(\theta^{\prime})}{p^{*}(\theta^{(t)})} \frac{q(\theta^{(t)}; \theta^{\prime})}{q(\theta^{\prime}; \theta^{(t)})}$ \Comment{calculate Metropolis - Hastings score}
+                \If{$a \ge 1$}
+                    \State $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state}
+                \Else
+                    \State $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state}
+                \EndIf
+            \EndWhile
+            \State return $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$
+        \EndProcedure
     \end{algorithmic}
 \end{algorithm}
-</pre>
+```
 
 ::: {.callout-note}
 ### Different from rejection sampling
@@ -149,41 +157,47 @@ $$
     \frac{\operatorname{d} H}{\operatorname{d} t} = \sum_{i = 1}^{N} \frac{\operatorname{d} \theta_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \theta_{i}} + \frac{\operatorname{d} \rho_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \rho_{i}} = \sum_{d = 1}^{N} \frac{\partial H}{\partial \rho_{i}} \frac{\partial H}{\partial \theta_{i}} -\frac{\partial H}{\partial \theta_{i}} \frac{\partial H}{\partial \rho_{i}} = 0.
 $$
 
-This makes any proposal $(\theta, \rho)$ obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in $H(\theta, \rho)$, which is zero if the simulation is perfect. Please refer to [Algorithm Hamiltonian MC](#hamiltonian-mc) for further details of the Hamiltonian Monte Carlo method.
+This makes any proposal $(\theta, \rho)$ obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in $H(\theta, \rho)$, which is zero if the simulation is perfect. Please refer to @alg-hamiltonian-mc for further details of the Hamiltonian Monte Carlo method.
 
-<pre id="hamiltonian-mc" class="pseudocode">
+```pseudocode
+#| label: alg-hamiltonian-mc
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+
 \begin{algorithm}
     \caption{Hamiltonian Monte Carlo method}
     \begin{algorithmic}
-        \REQUIRE potential energy $U(.)$
-        \REQUIRE mass matrix $M$
-        \REQUIRE step size used in the integration to solve PDE $\varepsilon$
-        \STATE initialise $\theta^{(1)}$
-        \WHILE{$t = 1, 2, \dots, T, \dots, T_{\mathrm{end}}$}
-            \STATE sample momentum: $\rho^{(t)} \sim \mathcal{N}(0, M^{-1})$
-            \STATE evaluate total energy: $H \gets U(\theta^{(t)}) + K(\rho^{(t)})$
-            \STATE $\theta^{(t, 1)} \gets \theta^{(t)}$
-            \STATE $\rho^{(t, 1)} \gets \rho^{(t)}$
-            \FOR{$i = 1, 2, \dots, \tau$} \Comment{Simulate for next state}
-                \STATE $\rho^{(t, i + \frac{1}{2})} \gets \rho^{(t, i)} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make a half-step in $\rho$}
-                \STATE $\theta^{(t, i + 1)} \gets \theta^{(t, i)} + \varepsilon M^{-1} \rho^{(t, i + \frac{1}{2})}$ \Comment{make a step in $\theta$}
-                \STATE $\rho^{(t, i + 1)} \gets \rho^{(t, i + \frac{1}{2})} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make another half-step in $\rho$}
-            \ENDFOR
-            \STATE $\theta^{\prime} \gets \theta^{(t, \tau)}$ \Comment{new state of $\theta$}
-            \STATE $\rho^{\prime} \gets \rho^{(t, \tau)}$ \Comment{new state of momentum}
-            \STATE evaluate total energy with the new state: $H_{\mathrm{new}} \gets U(\theta^{\prime}) + K(\rho^{\prime})$
-            \STATE calculate: $\operatorname{d}H \gets H_{\mathrm{new}} - H$
-            \STATE sample: $u \sim \mathrm{uniform}(0, 1)$
-            \IF{$u < \exp(-\operatorname{d}H)$} \Comment{Metropolis - Hastings step}
-                \STATE $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state}
-            \ELSE
-                \STATE $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state}
-            \ENDIF
-        \ENDWHILE
-        \RETURN $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$
+        \Procedure{Hamiltonian-MC}{$U(.), M, \varepsilon$}
+            \State initialise $\theta^{(1)}$
+            \While{$t = 1, 2, \dots, T, \dots, T_{\mathrm{end}}$}
+                \State sample momentum: $\rho^{(t)} \sim \mathcal{N}(0, M^{-1})$
+                \State evaluate total energy: $H \gets U(\theta^{(t)}) + K(\rho^{(t)})$
+                \State $\theta^{(t, 1)} \gets \theta^{(t)}$
+                \State $\rho^{(t, 1)} \gets \rho^{(t)}$
+                \For{$i = 1, 2, \dots, \tau$} \Comment{Simulate for next state}
+                    \State $\rho^{(t, i + \frac{1}{2})} \gets \rho^{(t, i)} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make a half-step in $\rho$}
+                    \State $\theta^{(t, i + 1)} \gets \theta^{(t, i)} + \varepsilon M^{-1} \rho^{(t, i + \frac{1}{2})}$ \Comment{make a step in $\theta$}
+                    \State $\rho^{(t, i + 1)} \gets \rho^{(t, i + \frac{1}{2})} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make another half-step in $\rho$}
+                \EndFor
+                \State $\theta^{\prime} \gets \theta^{(t, \tau)}$ \Comment{new state of $\theta$}
+                \State $\rho^{\prime} \gets \rho^{(t, \tau)}$ \Comment{new state of momentum}
+                \State evaluate total energy with the new state: $H_{\mathrm{new}} \gets U(\theta^{\prime}) + K(\rho^{\prime})$
+                \State calculate: $\operatorname{d}H \gets H_{\mathrm{new}} - H$
+                \State sample: $u \sim \mathrm{uniform}(0, 1)$
+                \If{$u < \exp(-\operatorname{d}H)$} \Comment{Metropolis - Hastings step}
+                    \State $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state}
+                \Else
+                    \State $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state}
+                \EndIf
+            \EndWhile
+            \State return $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$
+        \EndProcedure
     \end{algorithmic}
 \end{algorithm}
-</pre>
+```
 
 Despite its efficiency, the Hamiltonian Monte Carlo method still requires to run through the *entire* dataset to perform the integration for $\theta$ as well as the Metropolis - Hastings step to decide whether to accept or reject the new state generated from the Hamiltonian dynamics. Hence, in the lense of machine learning, it is, however, impractical, especially for large-scaled datasets. It, therefore, motivates further studies and development to make the method practical.
 
@@ -285,8 +299,7 @@ $$
 $$ {#eq-sde}
 where $f(x)$ is some function (e.g., loss function), $V(x)$ is a diffusion matrix and $W(t)$ is the Brownian motion, and $\tau$ is a temperature.
 
-::: {.callout-tip}
-### Lemma
+::: {#lem-time-variant-distribution}
 The distribution $p(x) \propto \exp\left( -H(x) \right)$  of the variable $x$ in @eq-sde evolves following the Fokker - Planck equation:
 $$
     \frac{\partial p(x)}{\partial t} = \nabla \cdot \left[ \nabla f(x) p(x) + \tau \nabla \cdot \left[ V(x) p(x) \right] \right],

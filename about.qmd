@@ -33,16 +33,16 @@ format:
 ## Biography
 
 ::: {.text-start}
-I am a *research fellow* at the Centre for Vision, Speech and Signal Processing, University of Surrey.
+My name is Cuong Nguyen (**C&#x1B0;&#x1EDD;ng Cao Nguy&#x1EC5;n** - pronounced similarly to: *Ker-uhng Kao Ner-win*). I am a *Research Fellow* at the Centre for Vision, Speech and Signal Processing, University of Surrey.
 
-Before that, I was a *research associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my Ph.D. in Computer Science from The University of Adelaide in March 2022, an M.Phil. in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
+Before that, I was a *Research Associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
 :::
 
 ---
 
 ## Areas of specialism
 
-Machine learning
+Machine learning, probabilistic programming
 
 ---
 
@@ -56,10 +56,10 @@ Machine learning
 :::
 
 ::: {.g-col-10 .g-col-md-5 .text-start}
-**Research fellow**\
+**Research Fellow**\
 <span class="bi bi-briefcase"> University of Surrey</span>\
-<i class="bi bi-hourglass-top"> Mar. 2024 - present</i>\
-<span class="bi bi-geo-alt"> Guildford, UK</span>
+<span class="bi bi-hourglass-top"> March 2024 - present</span>\
+<span class="bi bi-geo-alt"> Surrey, UK</span>
 
 :::
 
@@ -69,9 +69,9 @@ Machine learning
 :::
 
 ::: {.g-col-10 .g-col-md-5 .text-start}
-**Research associate**\
+**Research Associate**\
 <span class="bi bi-briefcase"> The University of Adelaide</span>\
-<i class="bi bi-hourglass-bottom"> Apr. 2022 - Jan. 2024</i>\
+<span class="bi bi-hourglass-bottom"> April 2022 - January 2024</span>\
 <span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
@@ -82,9 +82,9 @@ Machine learning
 :::
 
 ::: {.g-col-10 .g-col-md-5 .text-start}
-**Process & equipment engineer**\
+**Process & Equipment Engineer**\
 <span class="bi bi-briefcase"> Intel Products Vietnam</span>\
-<i class="bi bi-hourglass-bottom"> Jul. 2012 - Jul. 2015</i>\
+<span class="bi bi-hourglass-bottom"> July 2012 - July 2015</span>\
 <span class="bi bi-geo-alt"> Ho Chi Minh, VN</span>
 
 :::
@@ -103,9 +103,9 @@ Machine learning
 :::
 
 ::: {.g-col-10 .g-col-md-5 .text-start}
-**Ph.D. in Computer Science**\
+**PhD in Computer Science**\
 <span class="bi bi-book"></span> The University of Adelaide\
-<i class="bi bi-hourglass-bottom"> Apr. 2018 - Mar. 2022</i>\
+<span class="bi bi-hourglass-bottom"> April 2018 - March 2022</span>\
 <span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
@@ -115,9 +115,9 @@ Machine learning
 :::
 
 ::: {.g-col-10 .g-col-md-5 .text-start}
-**M.Phil. in Electronic Engineering**\
+**MPhil in Electronic Engineering**\
 <span class="bi bi-book"></span> The University of Adelaide\
-<i class="bi bi-hourglass-bottom"> Aug. 2015 - Jan. 2018</i>\
+<span class="bi bi-hourglass-bottom"> August 2015 - January 2018</span>\
 <span class="bi bi-geo-alt"> South Australia, AU</span>
 
 :::
@@ -129,33 +129,9 @@ Machine learning
 ::: {.g-col-10 .g-col-md-5 .text-start}
 **B.S. in Mechanical Engineering**\
 <span class="bi bi-book"></span> Portland State University\
-<i class="bi bi-hourglass-bottom"> Jul. 2010 - Jun. 2012</i>\
+<span class="bi bi-hourglass-bottom"> July 2010 - June 2012</span>\
 <span class="bi bi-geo-alt"> Oregon, US</span>
 
 :::
-
-<!-- ::: {.g-col-2 .g-col-md-1 .text-end}
-[<img src="img/hcmcut_logo.svg" width="50" style="margin-top: 10px;">](https://oisp.hcmut.edu.vn/en/)
-:::
-
-::: {.g-col-10 .g-col-md-5 .text-start}
-**HCMC University of Technology**\
-<span class="bi bi-wrench-adjustable"> Mechatronic Engineering</span>\
-<i class="bi bi-hourglass-top"> Sep. 2007 - Jun. 2010</i>\
-<span class="bi bi-geo-alt"> Ho Chi Minh, VN</span>
-
-::: -->
-
-<!-- ::: {.g-col-2 .g-col-md-1 .text-end}
-[<img src="img/ctg_logo.svg" width="50" style="margin-top: 10px;">](http://chuyentiengiang.edu.vn)
-:::
-
-::: {.g-col-10 .g-col-md-5 .text-start}
-**Tien Giang Gifted Highschool**\
-<span class="bi bi-calculator"> Mathematics</span>\
-<i class="bi bi-hourglass-bottom"> Aug. 2004 - Jun. 2007</i>\
-<span class="bi bi-geo-alt"> Tien Giang, VN</span>
-
-::: -->
 
 :::

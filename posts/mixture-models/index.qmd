@@ -50,7 +50,7 @@ Such a data generation process is often visualised by the graphical model shown 
     }
 }%%
 flowchart LR
-    subgraph data["training data"]
+    subgraph data["data"]
         z((z)):::nonfilled-->x((x)):::filled;
     end
     pi((π)):::nonfilled-->z;
@@ -139,29 +139,30 @@ $$
 \max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
 $$
 
-The whole EM algorithm can be referred to Algorithm 1.
+The whole EM algorithm can be referred to @alg-em.
 
-```{.python code-line-numbers="true"}
-def EM_algorithm(x: Array, threshold: float) -> tuple[Array, Array]:
-    # initialise parameters
-    pi = random vector
-    theta = random initialisation
+```pseudocode
+#| label: alg-em
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
 
-    elbo = ELBO(x, pi, theta)  # calculate the ELBO
-
-    delta = threshold + 1.  # flag to check the convergence
-
-    while(delta > threshold):
-        q = E_step(x, pi, theta)
-        pi, theta = M_step(x, q, pi, theta)
-
-        elbo_new = ELBO(x, pi, theta)
-
-        delta = abs(elbo - elbo_new)
-
-        elbo = elbo_new
-
-    return pi, theta
+\begin{algorithm}
+    \caption{Expectation - Maximisation algorithm}
+    \begin{algorithmic}
+        \Procedure{EM}{$\mathbf{x}$}
+            \State initialise mixture coefficient $\pi$
+            \State initialise $\theta$
+            \While{not converged}
+                \State calculate the ELBO: $Q \gets \operatorname{E-step}(\mathbf{x}, \pi, \theta)$
+                \State maximise the ELBO: $\pi, \theta \gets \operatorname{M-step}(Q, \pi, \theta)$
+            \EndWhile
+            \State return $\pi, \theta$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
 ```
 
 ### Convergence of the EM algorithm
@@ -194,14 +195,19 @@ Substracting side by side of [@eq-likelihood_theta] and [@eq-likelihood_after_it
 $$
     \begin{aligned}
         & \ln \Pr(\mathbf{x} | \pi, \theta) - \ln \Pr(\mathbf{x} | \pi^{(t)}, \theta^{(t)}) \\
-        & = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) + \ln \Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)}) - \ln \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right] \\
-        & = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) \right] + \operatorname{KL} \left[ \Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)}) \| \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right].
+        & = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) \right.\\
+        & \quad \left. - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) + \ln \Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)}) - \ln \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right] \\
+        & = \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) \right.\\
+        & \quad \left. - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) \right] + \operatorname{KL} \left[ \Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)}) \| \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta) \right].
     \end{aligned}
 $$
 
 Since KL divergence is non-negative, one can imply that:
 $$
-    \ln \Pr(\mathbf{x} | \pi, \theta) - \ln \Pr(\mathbf{x} | \pi^{(t)}, \theta^{(t)}) \ge \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) \right].
+    \begin{aligned}
+        & \ln \Pr(\mathbf{x} | \pi, \theta) - \ln \Pr(\mathbf{x} | \pi^{(t)}, \theta^{(t)}) \\
+        & \quad \ge \mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln \Pr(\mathbf{x}, \mathbf{z} | \pi^{(t)}, \theta^{(t)}) \right].
+    \end{aligned}
 $$ {#eq-likelihood_difference}
 
 In the M-step, the parameters $(\pi^{(t + 1)}, \theta^{(t + 1)})$ are obtained by maximising the first term in the right hand side: $\mathbb{E}_{\Pr(\mathbf{z} | \mathbf{x}, \pi^{(t)}, \theta^{(t)})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) \right]$ w.r.t. $(\pi, \theta)$. Thus, according to the definition of the maximisation:
@@ -245,7 +251,7 @@ The data generation process can also be visualised in the graphical model shown 
     }
 }%%
 flowchart LR
-    subgraph data["training data"]
+    subgraph data["data"]
         direction LR
         z((z)):::rv --> x((x)):::rv
     end
@@ -414,7 +420,7 @@ The data generation process can also be visualised in the graphical model shown 
     }
 }%%
 flowchart LR
-    subgraph data["training data"]
+    subgraph data["data"]
         direction LR
         z((z)):::rv --> x((x)):::rv
     end

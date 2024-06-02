@@ -2,11 +2,11 @@ project:
   type: website
 
 website:
-  title: "Cuong Nguyen"
+  title: "Probabilistic ML"
   favicon: robot.svg
   twitter-card: true
   navbar:
-    background: light
+    background: primary
     search: true
     right:
       - icon: pencil-square
@@ -29,7 +29,9 @@ website:
 
 format:
   html:
-    theme: simplex
+    theme:
+      light: sandstone
+      dark: darkly
     toc: false
     mainfont: Arial
     html-math-method: katex
@@ -40,6 +42,10 @@ format:
       text: ''
     citations-hover: true
     footnotes-hover: true
+    linkcolor: midnightblue
+
+filters:
+  - pseudocode
 
 execute:
   freeze: auto

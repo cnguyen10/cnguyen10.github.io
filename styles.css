@@ -10,12 +10,33 @@ details {
     display: block;
     margin: 12px 0;
     padding: 0.5em;
-    /* font-style: italic; */
-    background-color: #EEF3F5;
+    border: 1px solid gray;
+    border-left: 5px solid navy;
+    border-radius: 0.25rem;
+}
+
+.lemma {
+    border-left: 5px solid teal;
+}
+
+.corrolary {
+    border-left: 5px solid steelblue;
+}
+
+.definition {
+    border-left: 5px solid dodgerblue;
+}
+
+.remark {
+    border: none;
+}
+
+.proof {
+    background-color: floralwhite;
+    padding: 1em;
 }
 
 div[class="proof"]::after {
-    /* content: '◾️'; */
     content: '\20DE';
     position: relative;
     left: calc(100% - 20px);
