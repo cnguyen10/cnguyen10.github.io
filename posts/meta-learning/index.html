@@ -9,7 +9,7 @@
 <meta name="author" content="Cuong Nguyen">
 <meta name="dcterms.date" content="2021-11-22">
 
-<title>Cuong Nguyen - From hyper-parameter optimisation to meta-learning</title>
+<title>Probabilistic ML - From hyper-parameter optimisation to meta-learning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,10 +58,14 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -151,7 +155,7 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="Cuong Nguyen - From hyper-parameter optimisation to meta-learning">
+<meta name="twitter:title" content="Probabilistic ML - From hyper-parameter optimisation to meta-learning">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://cnguyen10.github.io/posts/meta-learning/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta name="twitter:card" content="summary_large_image">
@@ -165,7 +169,7 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Cuong Nguyen</span>
+    <span class="navbar-title">Probabilistic ML</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -202,6 +206,7 @@ window.Quarto = {
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -340,11 +345,11 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 <p>The setting of the meta-learning problem considered in this paper follows the <em>task environment</em> <span class="citation" data-cites="baxter2000model">(<a href="#ref-baxter2000model" role="doc-biblioref">Baxter 2000</a>)</span> that describes the unknown distribution <span class="math inline">p(\mathcal{D}, f)</span> over a family of tasks. Each task <span class="math inline">\mathcal{T}_{i}</span> is sampled from this task environment and can be represented as <span class="math inline">\left( \mathcal{D}_{i}^{(t)}, \mathcal{D}_{i}^{(v)}, f_{i} \right)</span>, where <span class="math inline">\mathcal{D}_{i}^{(t)}</span> and <span class="math inline">\mathcal{D}_{i}^{(v)}</span> are the probability of training and validation input data, respectively, and are not necessarily identical. The aim of meta-learning is to use <span class="math inline">T</span> training tasks to train a meta-learning model that can be fine-tuned to perform well on an unseen task sampled from the same task environment.</p>
 <p>Such meta-learning methods use meta-parameters to model the common latent structure of the task distribution <span class="math inline">p(\mathcal{D}, f)</span>. In this thesis, we consider meta-learning as an extension of hyper-parameter optimisation in single-task learning, where the hyper-parameter of interest — often called <em>meta-parameter</em> — is shared across many tasks. Similar to hyper-parameter optimisation presented in subsection <a href="#hyper-parameter-optimisation">hyper-parameter-optimisation</a>, the objective of meta-learning is also a bi-level optimisation: <span id="eq-meta_learning_bilevel_optimisation"><span class="math display">
 \begin{aligned}
-&amp; \min_{\theta} \textcolor{red}{\mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f_{i} \right)}} \mathbb{E}_{ \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
+&amp; \min_{\theta}  \textcolor{crimson}{\mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f_{i} \right)}} \mathbb{E}_{ \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
 &amp; \text{s.t.: } \mathbf{w}^{*}_{i}(\theta) = \arg\min_{\mathbf{w}_{i}} \mathbb{E}_{\left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[ \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \mathbf{w}_{i}(\theta) \right) \right].
 \end{aligned}
 \tag{2}</span></span></p>
-<p>The difference between meta-learning and hyper-parameter optimisation is that the meta-parameter (also known as hyper-parameter) <span class="math inline">\theta</span> is shared across all tasks sampled from the task environment <span class="math inline">p(\mathcal{D}, f)</span> as highlighted in <span style="color: red;">red</span> colour in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a>.</p>
+<p>The difference between meta-learning and hyper-parameter optimisation is that the meta-parameter (also known as hyper-parameter) <span class="math inline">\theta</span> is shared across all tasks sampled from the task environment <span class="math inline">p(\mathcal{D}, f)</span> as highlighted in <span style="color: crimson;">red</span> colour in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a>.</p>
 <p>In practice, the meta-parameter (or shared hyper-parameter) <span class="math inline">\theta</span> can be chosen as one of the followings:</p>
 <ul>
 <li><em>learning rate</em> of gradient-based optimisation used to minimise the lower level objective function in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a> to learn <span class="math inline">\mathbf{w}_{i}^{*} \left(\theta\right)</span> <span class="citation" data-cites="li2017meta">(<a href="#ref-li2017meta" role="doc-biblioref">Z. Li et al. 2017</a>)</span>,</li>
@@ -359,26 +364,11 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 <p>The second step is to minimise the validation loss induced by the locally-optimal task-specific parameter <span class="math inline">\mathbf{w}_{i}^{*}(\theta)</span> evaluated on the validation subset w.r.t. the meta-parameter <span class="math inline">\theta</span>. This corresponds to the upper-level optimisation, and can be expressed as: <span id="eq-meta_parameter_update_sgd"><span class="math display">
 \theta \gets \theta - \gamma \mathbb{E}_{\mathcal{T}_{i} \sim p(\mathcal{D}, f)} \mathbb{E}_{ \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(v)}, \mathbf{y}_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right],
 \tag{4}</span></span> where <span class="math inline">\gamma</span> is another hyper-parameter representing the learning rate to learn <span class="math inline">\theta</span>.</p>
-<p>The general algorithm of meta-learning using gradient-based optimisation is shown in Algorithm 1.</p>
-<div>
-<pre class="pseudocode">\begin{algorithm}
-\caption{Training procedure of meta-learning in general}
-\begin{algorithmic}
-\PROCEDURE{Training}{task environment $p(\mathcal{D}, f)$, learning rates $\gamma$ and $\alpha$}
-\STATE initialise meta-parameter $\theta$
-\WHILE{$\theta$ not converged}
-\STATE sample a mini-batch of $T$ tasks from task environment $p\left( \mathcal{D}, f \right)$
-\FOR{each task $\mathcal{T}_{i}, i \in \{1, \ldots, T\}$}
-\STATE sample two data subsets $S_{i}^{(t)}$ and $S_{i}^{(v)}$ from task $\mathcal{T}_{i} = (\mathcal{D}_{i}^{(t)}, \mathcal{D}_{i}^{(v)}, f_{i})$
-\STATE adapt meta-parameter to task $\mathcal{T}_{i}$: $\mathbf{w}_{i}^{*} \left( \theta \right) = \theta - \frac{\alpha}{m_{i}^{(t)}} \sum_{j = 1}^{m_{i}^{(t)}} \nabla_{\theta} \left[ \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)};  \theta \right)\right]$ \COMMENT{Eq. @eq-task_adaptation_sgd}}
-\ENDFOR
-\STATE update meta-parameter: $\theta \gets \theta - \frac{\gamma}{T} \sum_{i=1}^{T} \frac{1}{m_{i}^{(v)}} \sum_{k=1}^{m_{i}^{(v)}} \nabla_{\theta} \left[\ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*} \left( \theta \right) \right) \right]$ \COMMENT{Eq. @eq-meta_parameter_update_sgd}}
-\ENDWHILE
-\STATE \textbf{return} the trained meta-parameter $\theta$
-\ENDPROCEDURE
-\end{algorithmic}
-\end{algorithm}
-</pre>
+<p>The general algorithm of meta-learning using gradient-based optimisation is shown in <a href="#alg-meta-learning">Algorithm 1</a>.</p>
+<div id="alg-meta-learning" class="pseudocode-container" data-pseudocode-index="1" data-no-end="false" data-indent-size="1.2em" data-comment-delimiter="//" data-alg-title="Algorithm" data-line-number="true" data-line-number-punc=":">
+<div class="pseudocode">
+\begin{algorithm} \caption{Training procedure of meta-learning in general} \begin{algorithmic} \Procedure{Training}{task environment $p(\mathcal{D}, f)$, learning rates $\gamma$ and $\alpha$} \State initialise meta-parameter $\theta$ \While{$\theta$ not converged} \State sample a mini-batch of $T$ tasks from task environment $p\left( \mathcal{D}, f \right)$ \For{each task $\mathcal{T}_{i}, i \in \{1, \ldots, T\}$} \State sample two data subsets $S_{i}^{(t)}$ and $S_{i}^{(v)}$ from task $\mathcal{T}_{i} = (\mathcal{D}_{i}^{(t)}, \mathcal{D}_{i}^{(v)}, f_{i})$ \State adapt meta-parameter to task $\mathcal{T}_{i}$: $\mathbf{w}_{i}^{*} \left( \theta \right) = \theta - \frac{\alpha}{m_{i}^{(t)}} \sum_{j = 1}^{m_{i}^{(t)}} \nabla_{\theta} \left[ \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)\right]$ \EndFor \State update meta-parameter: $\theta \gets \theta - \frac{\gamma}{T} \sum_{i=1}^{T} \frac{1}{m_{i}^{(v)}} \sum_{k=1}^{m_{i}^{(v)}} \nabla_{\theta} \left[\ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*} \left( \theta \right) \right) \right]$ \EndWhile \State \textbf{return} the trained meta-parameter $\theta$ \EndProcedure \end{algorithmic} \end{algorithm}
+</div>
 </div>
 </section>
 <section id="second-order-meta-learning" class="level3" data-number="1.4">
@@ -387,17 +377,17 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 \begin{aligned}
 &amp; \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
 &amp; = \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta}^{\top} \mathbf{w}_{i}^{*} \left( \theta \right) \times \nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right]\\
-&amp; = \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \left\{ \left[ \mathbf{I} - \alpha \mathbb{E}_{ \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[ \textcolor{red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)} \right] \right] \right.\\
+&amp; = \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \left\{ \left[ \mathbf{I} - \alpha \mathbb{E}_{ \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)} \right) \sim \left( \mathcal{D}_{i}^{(t)}, f_{i} \right)} \left[  \textcolor{crimson}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)} \right] \right] \right.\\
 &amp; \quad \times \left. \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \textcolor{green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)} \right] \right\},
 \end{aligned}
 </span> where the first equality is due to chain rule, and the second equality is the result that differentiates the gradient update in <a href="#eq-task_adaptation_sgd" class="quarto-xref">Equation&nbsp;3</a>. Note that in the second equality, we remove the transpose notation since the corresponding matrix is symmetric.</p>
-<p>Thus, naively implementing such gradient would require to calculate the Hessian matrix <span class="math inline">\textcolor{Red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)}</span>, resulting in an intractable procedure for large models, such as deep neural networks. To obtain a more efficient implementation, one can utilise the Hessian-vector product <span class="citation" data-cites="pearlmutter94fastexact">(<a href="#ref-pearlmutter94fastexact" role="doc-biblioref">Pearlmutter 1994</a>)</span> between the gradient vector <span class="math inline">\textcolor{green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span> and the Hessian matrix <span class="math inline">\textcolor{red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)}</span> to efficiently calculate the gradient of the validation loss w.r.t. <span class="math inline">\theta</span>.</p>
+<p>Thus, naively implementing such gradient would require to calculate the Hessian matrix $ $, resulting in an intractable procedure for large models, such as deep neural networks. To obtain a more efficient implementation, one can utilise the Hessian-vector product <span class="citation" data-cites="pearlmutter94fastexact">(<a href="#ref-pearlmutter94fastexact" role="doc-biblioref">Pearlmutter 1994</a>)</span> between the gradient vector <span class="math inline">\textcolor{green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span> and the Hessian matrix $ $ to efficiently calculate the gradient of the validation loss w.r.t. <span class="math inline">\theta</span>.</p>
 <p>Another way to calculate the gradient of the validation loss w.r.t. the meta-parameter <span class="math inline">\theta</span> is to use implicit differentiation <span class="citation" data-cites="domke2012generic rajeswaran2019meta lorraine2020optimizing">(<a href="#ref-domke2012generic" role="doc-biblioref">Domke 2012</a>; <a href="#ref-rajeswaran2019meta" role="doc-biblioref">Rajeswaran et al. 2019</a>; <a href="#ref-lorraine2020optimizing" role="doc-biblioref">Lorraine, Vicol, and Duvenaud 2020</a>)</span>. This approach is more advantaged since it does not need to stores the computational graph and takes gradient via chain rule. Such implicit differentiation technique reduces the memory usage and therefore, allows to work with large-scale models. However, the trade-off is the increasing computational time to apply the chain rule to calculate the gradient of interest.</p>
 <p>Nevertheless, the implementations that compute the exact gradient of the validation loss w.r.t. <span class="math inline">\theta</span> without approximation are often referred to as <q>second-order</q> meta-learning.</p>
 </section>
 <section id="first-order-meta-learning" class="level3" data-number="1.5">
 <h3 data-number="1.5" class="anchored" data-anchor-id="first-order-meta-learning"><span class="header-section-number">1.5</span> First-order meta-learning</h3>
-<p>In practice, the Hessian matrix <span class="math inline">\textcolor{Red}{\nabla_{\theta}^{2} \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)}</span> is often omitted from the calculation to simplify the update for the meta-parameter <span class="math inline">\theta</span> <span class="citation" data-cites="finn2017model">(<a href="#ref-finn2017model" role="doc-biblioref">Finn, Abbeel, and Levine 2017</a>)</span>. The resulting gradient consists of only the gradient of validation loss <span class="math inline">\textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span>, which is more efficient to calculate with a single forward-pass if auto differentiation is used. This approximation is often referred as <q>first-order</q> meta-learning, and the gradient of interest can be presented as: <span class="math display">
+<p>In practice, the Hessian matrix $ $ is often omitted from the calculation to simplify the update for the meta-parameter <span class="math inline">\theta</span> <span class="citation" data-cites="finn2017model">(<a href="#ref-finn2017model" role="doc-biblioref">Finn, Abbeel, and Levine 2017</a>)</span>. The resulting gradient consists of only the gradient of validation loss <span class="math inline">\textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span>, which is more efficient to calculate with a single forward-pass if auto differentiation is used. This approximation is often referred as <q>first-order</q> meta-learning, and the gradient of interest can be presented as: <span class="math display">
 \begin{aligned}
 &amp; \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left(\mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right] \\
 &amp; \approx \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)} \right].
@@ -429,14 +419,14 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 </section>
 <section id="domain-adaptation-and-generalisation" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="domain-adaptation-and-generalisation"><span class="header-section-number">2.2</span> Domain adaptation and generalisation</h3>
-<p>Domain adaptation or domain-shift refers to the case when the joint data-label distribution on source and target are different, denoted as <span class="math inline">p_{s} \left( \mathcal{D}, f \right) \neq p_{t} \left( \mathcal{D}, f \right)</span>, or simply <span class="math inline">p_{s}(\mathbf{x}, \mathbf{y}) \neq p_{t}(\mathbf{x}, \mathbf{y})</span>~<span class="citation" data-cites="heckman1979sample shimodaira2000improving japkowicz2002class daume2006domain ben2007analysis">(<a href="#ref-heckman1979sample" role="doc-biblioref">Heckman 1979</a>; <a href="#ref-shimodaira2000improving" role="doc-biblioref">Shimodaira 2000</a>; <a href="#ref-japkowicz2002class" role="doc-biblioref">Japkowicz and Stephen 2002</a>; <a href="#ref-daume2006domain" role="doc-biblioref">Daume III and Marcu 2006</a>; <a href="#ref-ben2007analysis" role="doc-biblioref">Ben-David et al. 2007</a>)</span>. The aim of domain adaptation is to leverage the model trained on source domain to available data in the target domain, so that the model adapted to the target domain can perform reasonably well. In other words, domain adaptation relies on a data transformation <span class="math inline">g(., .; \mathbf{w}_{0}): \mathcal{X} \times \mathcal{Y} \to \mathcal{X}^{\prime} \times \mathcal{Y}^{\prime}</span> that produces a domain-invariant latent space. Mathematically, the transformation <span class="math inline">g</span> is obtained by minimising a divergence between the two transformed data distribution: <span id="eq-domain_adaptation"><span class="math display">
+<p>Domain adaptation or domain-shift refers to the case when the joint data-label distribution on source and target are different, denoted as <span class="math inline">p_{s} \left( \mathcal{D}, f \right) \neq p_{t} \left( \mathcal{D}, f \right)</span>, or simply <span class="math inline">p_{s}(\mathbf{x}, \mathbf{y}) \neq p_{t}(\mathbf{x}, \mathbf{y})</span> <span class="citation" data-cites="heckman1979sample shimodaira2000improving japkowicz2002class daume2006domain ben2007analysis">(<a href="#ref-heckman1979sample" role="doc-biblioref">Heckman 1979</a>; <a href="#ref-shimodaira2000improving" role="doc-biblioref">Shimodaira 2000</a>; <a href="#ref-japkowicz2002class" role="doc-biblioref">Japkowicz and Stephen 2002</a>; <a href="#ref-daume2006domain" role="doc-biblioref">Daume III and Marcu 2006</a>; <a href="#ref-ben2007analysis" role="doc-biblioref">Ben-David et al. 2007</a>)</span>. The aim of domain adaptation is to leverage the model trained on source domain to available data in the target domain, so that the model adapted to the target domain can perform reasonably well. In other words, domain adaptation relies on a data transformation <span class="math inline">g(., .; \mathbf{w}_{0}): \mathcal{X} \times \mathcal{Y} \to \mathcal{X}^{\prime} \times \mathcal{Y}^{\prime}</span> that produces a domain-invariant latent space. Mathematically, the transformation <span class="math inline">g</span> is obtained by minimising a divergence between the two transformed data distribution: <span id="eq-domain_adaptation"><span class="math display">
 \begin{aligned}
 &amp; \min_{\mathbf{w}_{0}} \mathrm{Divergence} \left[ p\left( \mathbf{x}_{s}^{\prime}, \mathbf{y}_{s}^{\prime} \right) || p\left( \mathbf{x}_{t}^{\prime}, \mathbf{y}_{t}^{\prime} \right) \right]\\
 &amp; \text{s.t.: } \left( \mathbf{x}_{i}^{\prime}, \mathbf{y}_{i}^{\prime} \right) = g \left( \mathbf{x}_{i}, \mathbf{y}_{i}; \mathbf{w}_{0} \right), i \in \{s, t\}.
 \end{aligned}
 \tag{6}</span></span></p>
 <p>After obtaining the transformation <span class="math inline">g</span>, one can simply train a model using the transformed data of the source domain, and then use that model to make predictions on the target domain.</p>
-<p>Given the optimisation in~<a href="#eq-domain_adaptation" class="quarto-xref">Equation&nbsp;6</a>, domain adaptation is different from meta-learning due to the following reasons:</p>
+<p>Given the optimisation in <a href="#eq-domain_adaptation" class="quarto-xref">Equation&nbsp;6</a>, domain adaptation is different from meta-learning due to the following reasons:</p>
 <ul>
 <li>Domain adaptation assumes a shift in the task environments that generate source and target tasks, while meta-learning is based on the assumption of same task generation.</li>
 <li>Domain adaptation utilises information of data from target domain, while meta-learning does not have such access.</li>
@@ -445,14 +435,14 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 </section>
 <section id="multi-task-learning" class="level3" data-number="2.3">
 <h3 data-number="2.3" class="anchored" data-anchor-id="multi-task-learning"><span class="header-section-number">2.3</span> Multi-task learning</h3>
-<p>Multi-task learning learns several related auxiliary tasks and a target task simultaneously to exploit the diversity of task representation to regularise and improve the performance on the target task~<span class="citation" data-cites="caruana1997multitask">(<a href="#ref-caruana1997multitask" role="doc-biblioref">Caruana 1997</a>)</span>. If the input <span class="math inline">\mathbf{x}</span> is assumed to be the same across <span class="math inline">T</span> extra tasks and the target task <span class="math inline">\mathcal{T}_{T + 1}</span>, then the objective of multi-task learning can be expressed as: <span id="eq-mtl_formulation"><span class="math display">
+<p>Multi-task learning learns several related auxiliary tasks and a target task simultaneously to exploit the diversity of task representation to regularise and improve the performance on the target task <span class="citation" data-cites="caruana1997multitask">(<a href="#ref-caruana1997multitask" role="doc-biblioref">Caruana 1997</a>)</span>. If the input <span class="math inline">\mathbf{x}</span> is assumed to be the same across <span class="math inline">T</span> extra tasks and the target task <span class="math inline">\mathcal{T}_{T + 1}</span>, then the objective of multi-task learning can be expressed as: <span id="eq-mtl_formulation"><span class="math display">
 \min_{\mathbf{w}_{0}, \{\mathbf{w}_{i}\}_{i = 1}^{T + 1}} \frac{1}{T + 1} \sum_{i = 1}^{T + 1} \ell_{i} \left( h_{i} \left( g\left( \mathbf{x}; \mathbf{w}_{0} \right); \mathbf{w}_{i} \right), \mathbf{y}_{i} \right),
 \tag{7}</span></span> where <span class="math inline">\mathbf{y}_{i}, \ell_{i}</span> and <span class="math inline">h_{i}</span> are the label, loss function and the classifier for task <span class="math inline">\mathcal{T}_{i}</span>, respectively, and <span class="math inline">g(., \mathbf{w}_{0})</span> is the shared feature extractor for <span class="math inline">T + 1</span> tasks.</p>
 <p>Multi-task learning is often confused with meta-learning due to their similar nature extracting information from many tasks. However, the objective function of multi-task learning in <a href="#eq-mtl_formulation" class="quarto-xref">Equation&nbsp;7</a> is a single-level optimisation for the shared parameter <span class="math inline">\mathbf{w}_{0}</span> and multiple task-specific classifier <span class="math inline">\{\mathbf{w}_{i}\}_{i = 1}^{T + 1}</span>. It is, therefore, not as complicated as a bi-level optimisation seen in meta-learning as shown in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a>. Furthermore, multi-task learning aims to solve a number of specific tasks known during training (referred to as target tasks), while meta-learning targets the generalisation for unseen tasks in the future.</p>
 </section>
 <section id="continual-learning" class="level3" data-number="2.4">
 <h3 data-number="2.4" class="anchored" data-anchor-id="continual-learning"><span class="header-section-number">2.4</span> Continual learning</h3>
-<p>Continual or <em>life-long learning</em> refers to a situation where a learning agent has access to a continuous stream of tasks available over time, and the number of tasks to be learnt is not pre-defined~<span class="citation" data-cites="chen2018lifelong parisi2019continual">(<a href="#ref-chen2018lifelong" role="doc-biblioref">Chen and Liu 2018</a>; <a href="#ref-parisi2019continual" role="doc-biblioref">Parisi et al. 2019</a>)</span>. The aim is to accommodate the knowledge extracted from one-time observed tasks to accelerate the learning of new tasks without catastrophically forgetting old tasks~<span class="citation" data-cites="french1999catastrophic">(<a href="#ref-french1999catastrophic" role="doc-biblioref">French 1999</a>)</span>. In this sense, continual learning is very similar to meta-learning. However, continual learning most likely focuses on <b>systematic</b> design to acquire new knowledge in such a way that prevents interfering to the existing one, while meta-learning is more about <b>algorithmic</b> design to learn the new knowledge more efficiently. Thus, we cannot mathematically distinguish their differences as done in sub-sections <a href="#fine-tuning">Fine-tuning</a>, <a href="#domain-adaptation-and-generalisation">Domain adaptation and generalisation</a> and <a href="#multi-task-learning">Multi-task learning </a>. Nevertheless, continual learning criteria, especially catastrophic forgetting, can be encoded into meta-learning objective to advance further continual learning performance~<span class="citation" data-cites="al2018continuous nagabandi2019learning">(<a href="#ref-al2018continuous" role="doc-biblioref">Al-Shedivat et al. 2018</a>; <a href="#ref-nagabandi2019learning" role="doc-biblioref">Nagabandi et al. 2019</a>)</span>.</p>
+<p>Continual or <em>life-long learning</em> refers to a situation where a learning agent has access to a continuous stream of tasks available over time, and the number of tasks to be learnt is not pre-defined <span class="citation" data-cites="chen2018lifelong parisi2019continual">(<a href="#ref-chen2018lifelong" role="doc-biblioref">Chen and Liu 2018</a>; <a href="#ref-parisi2019continual" role="doc-biblioref">Parisi et al. 2019</a>)</span>. The aim is to accommodate the knowledge extracted from one-time observed tasks to accelerate the learning of new tasks without catastrophically forgetting old tasks <span class="citation" data-cites="french1999catastrophic">(<a href="#ref-french1999catastrophic" role="doc-biblioref">French 1999</a>)</span>. In this sense, continual learning is very similar to meta-learning. However, continual learning most likely focuses on <b>systematic</b> design to acquire new knowledge in such a way that prevents interfering to the existing one, while meta-learning is more about <b>algorithmic</b> design to learn the new knowledge more efficiently. Thus, we cannot mathematically distinguish their differences as done in sub-sections <a href="#fine-tuning">Fine-tuning</a>, <a href="#domain-adaptation-and-generalisation">Domain adaptation and generalisation</a> and <a href="#multi-task-learning">Multi-task learning </a>. Nevertheless, continual learning criteria, especially catastrophic forgetting, can be encoded into meta-learning objective to advance further continual learning performance <span class="citation" data-cites="al2018continuous nagabandi2019learning">(<a href="#ref-al2018continuous" role="doc-biblioref">Al-Shedivat et al. 2018</a>; <a href="#ref-nagabandi2019learning" role="doc-biblioref">Nagabandi et al. 2019</a>)</span>.</p>
 </section>
 </section>
 <section id="summary" class="level2" data-number="3">
@@ -583,6 +573,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -973,6 +1107,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.algTitle || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        titleSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        titlePrefix = el.dataset.algTitle;
+        titleIndex = el.dataset.chapterLevel ? el.dataset.chapterLevel + "." + el.dataset.pseudocodeIndex : el.dataset.pseudocodeIndex;
+        titleSpan.innerHTML = titlePrefix + " " + titleIndex + " ";
+      });
+    })(document);
+    </script>
+  
 
 
 

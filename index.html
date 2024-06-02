@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Cuong Nguyen - Welcome</title>
+<title>Probabilistic ML - Welcome to Probabilistic ML</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,10 +36,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -78,9 +82,53 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </script>
 
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
-<meta name="twitter:title" content="Cuong Nguyen - Welcome">
+<meta name="twitter:title" content="Probabilistic ML - Welcome to Probabilistic ML">
+<meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/15698019">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -93,7 +141,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Cuong Nguyen</span>
+    <span class="navbar-title">Probabilistic ML</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -130,6 +178,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -144,7 +193,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Welcome</h1>
+<h1 class="title">Welcome to Probabilistic ML</h1>
 </div>
 
 
@@ -161,18 +210,49 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </header>
 
 
-<div class="grid">
-<div class="g-col-12 g-col-md-8">
-<p><br></p>
-<p>Hello, my name is <strong>Cường Cao Nguyễn</strong> (pronounced similarly to: <em>Ker-uhng Kao Ner-win</em>).</p>
-<p>My main research interest lies in the modelling, formulating and understanding machine learning algorithms and their applications in medical data analysis.</p>
-</div>
-<div class="g-col-6 g-col-md-4">
-<p><img src="https://avatars.githubusercontent.com/u/15698019" width="200" style="border-radius: 50%; margin-top: 10px;"></p>
-</div>
-</div>
+<p>This website is dedicated to introducing the foundational motivations and key concepts of various probabilistic machine learning techniques. The aim is to facilitate a comprehensive understanding of how learning algorithms are derived and formulated through some level of mathematics, particularly probability theory, linear algebra, and multivariate calculus. While this content sounds boring and may not encompass several recently developed advanced techniques, these foundational principles are expected to remain central to the field of machine learning, despite the rapid advancements of the field.</p>
+<section id="what-is-machine-learning" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-machine-learning">What is machine learning?</h2>
+<p>Machine learning has been trendy, especially after the Image-Net challenge 2012 with AlexNet improving the benchmark significantly compared to non-deep learning approaches. There are several definitions of machine learning that could be found on the internet from pretigious research labs to mediocre blog posts. Here, machine learning is defined in a simple term:</p>
+<p><span class="math display">
+  \begin{aligned}
+    \text{machine learning} &amp; = \text{solving inverse problems}.
+  \end{aligned}
+</span></p>
+<p>What is an inverse problem then? In simple terms, it is to <em>work out unknown parameters from observations of a system of interest</em>. For example:</p>
+<ul>
+<li>Forward problem: given <span class="math inline">f(x) = x^{2} + 1</span>, one can easily calculate <span class="math inline">y_{i} = f(x_{i})</span> for different values of <span class="math inline">x_{i}</span>.</li>
+<li>Inverse problem: given a set of observations <span class="math inline">\{(x_{i}, y_{i})\}_{i = 1}^{N}</span>, how to find the function <span class="math inline">f</span> that satisfies: <span class="math inline">y_{i} = f(x_{i})</span>.</li>
+</ul>
+<p>Although the inverse problem may easily be solved for the example above, the difficulty to find <span class="math inline">f</span> increases with the complexity of <span class="math inline">f</span>. In general, the inverse problem is far more difficult than the forward problem.</p>
+</section>
+<section id="what-is-probabilistic-machine-learning" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-probabilistic-machine-learning">What is <em>probabilistic</em> machine learning?</h2>
+<p>Probabilistic machine learning is to model the data generation process, for example, through some graphical models, then infer the parameter of that model based on the observed data.</p>
+<!-- For example, in linear regression, one common approach (not exactly probabilistic approach) is to minise the mean square error between model
+- Common approach (not exactly probabilistic one): minimises the mean squared error between model prediction and observed data and an L2 regularisation:
+
+$$
+\min_{w} \sum_{i = 1}^{N} \left[ f(x_{i}; w) - y_{i} \right] + \frac{1}{2} \beta w^{2}.
+$$
+
+- Probabilistic approach: models the data generation process and then infer the parameter as follow:
+
+**Data generation process:**
+- draw an input sample: $x \sim \Pr(x)$
+- draw a parameter from its prior distribution: $w \sim \Pr(w | m, \sigma) = \mathcal{N}(w; m, \sigma^{2})$
+- draw a label given the input sample and parameter: $y \sim \Pr(y | x, w) = \mathcal{N}(y | f(x; w), \frac{1}{\beta})$
+
+**Parameter inference:** performs maximum a posterior
+$$
+  \begin{aligned}
+    \max_{w} \ln \Pr(w | \{(x_{i}, y_{i})\}_{i = 1}^{N}, m, \beta) & = \max_{w} \sum_{i = 1}^{N} \ln \Pr(y_{i} | x_{i}, w) + \ln \Pr(w | m, \beta) \\
+    & = \max_{w} \sum_{i = 1}^{N} \ln \mathcal{N}(y | f(x; w), \frac{1}{\beta}) + \ln \mathcal{N}(w; m, \sigma^{2})
+  \end{aligned}
+$$ -->
 
 
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -195,6 +275,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -585,6 +809,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.algTitle || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        titleSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        titlePrefix = el.dataset.algTitle;
+        titleIndex = el.dataset.chapterLevel ? el.dataset.chapterLevel + "." + el.dataset.pseudocodeIndex : el.dataset.pseudocodeIndex;
+        titleSpan.innerHTML = titlePrefix + " " + titleIndex + " ";
+      });
+    })(document);
+    </script>
+  
 
 
 
