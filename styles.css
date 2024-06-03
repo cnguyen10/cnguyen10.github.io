@@ -32,12 +32,12 @@ details {
 }
 
 .proof {
-    background-color: floralwhite;
     padding: 1em;
 }
 
 div[class="proof"]::after {
-    content: '\20DE';
+    /* content: '\20DE'; */
+    content: '\25FC';
     position: relative;
     left: calc(100% - 20px);
 }
