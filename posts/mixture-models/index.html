@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -186,26 +186,6 @@ window.Quarto = {
 </i> 
 <span class="menu-text">Blog</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> <i class="bi bi-person-circle" role="img">
-</i> 
-<span class="menu-text">About</span></a>
-  </li>  
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-more" role="button" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">More</span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-more">    
-        <li>
-    <a class="dropdown-item" href="../../teaching.html">
- <span class="dropdown-text">Teaching</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../publication.html">
- <span class="dropdown-text">Publication</span></a>
-  </li>  
-    </ul>
-  </li>
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
@@ -279,7 +259,7 @@ window.Quarto = {
 <section id="notations" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="notations"><span class="header-section-number">1</span> Notations</h2>
 <p>Before diving into the explanation and formulation, it is important to define the notations used in this post as follows:</p>
-<table class="table-striped table-hover table">
+<table class="table-striped table-hover caption-top table">
 <caption>Notations used in the formulation of the EM algorithm.</caption>
 <thead>
 <tr class="header">
@@ -439,7 +419,7 @@ True posterior in the E-step
 \max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
 </span></p>
 <p>The whole EM algorithm can be referred to <a href="#alg-em">Algorithm 1</a>.</p>
-<div id="alg-em" class="pseudocode-container" data-indent-size="1.2em" data-line-number-punc=":" data-comment-delimiter="//" data-no-end="false" data-alg-title="Algorithm" data-line-number="true" data-pseudocode-index="1">
+<div id="alg-em" class="pseudocode-container" data-indent-size="1.2em" data-alg-title="Algorithm" data-no-end="false" data-comment-delimiter="//" data-line-number="true" data-line-number-punc=":" data-pseudocode-index="1">
 <div class="pseudocode">
 \begin{algorithm} \caption{Expectation - Maximisation algorithm} \begin{algorithmic} \Procedure{EM}{$\mathbf{x}$} \State initialise mixture coefficient $\pi$ \State initialise $\theta$ \While{not converged} \State calculate the ELBO: $Q \gets \operatorname{E-step}(\mathbf{x}, \pi, \theta)$ \State maximise the ELBO: $\pi, \theta \gets \operatorname{M-step}(Q, \pi, \theta)$ \EndWhile \State return $\pi, \theta$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>

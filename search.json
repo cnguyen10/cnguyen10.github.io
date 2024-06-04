@@ -212,44 +212,37 @@
   {
     "objectID": "teaching.html",
     "href": "teaching.html",
-    "title": "Teaching",
+    "title": "Probabilita ML",
     "section": "",
-    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor"
+    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor\n\n\n\n\n\n\n Back to top"
   },
   {
-    "objectID": "teaching.html#the-university-of-adelaide",
-    "href": "teaching.html#the-university-of-adelaide",
-    "title": "Teaching",
+    "objectID": "probabilita-ml.html",
+    "href": "probabilita-ml.html",
+    "title": "Welcome to Probabilita ML",
     "section": "",
-    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor"
+    "text": "This website is dedicated to introducing the foundational motivations and key concepts of various probabilistic machine learning techniques. The aim is to facilitate a comprehensive understanding of how learning algorithms are derived and formulated through some level of mathematics, particularly probability theory, linear algebra, and multivariate calculus. While this content sounds boring and may not encompass several recently developed advanced techniques, these foundational principles are expected to remain central to the field of machine learning, despite the rapid advancements of the field."
   },
   {
-    "objectID": "about.html#biography",
-    "href": "about.html#biography",
-    "title": "About",
-    "section": "Biography",
-    "text": "Biography\n\nMy name is Cuong Nguyen (Cường Cao Nguyễn - pronounced similarly to: Ker-uhng Kao Ner-win). I am a Research Fellow at the Centre for Vision, Speech and Signal Processing, University of Surrey.\nBefore that, I was a Research Associate at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012."
+    "objectID": "probabilita-ml.html#what-is-machine-learning",
+    "href": "probabilita-ml.html#what-is-machine-learning",
+    "title": "Welcome to Probabilita ML",
+    "section": "What is machine learning?",
+    "text": "What is machine learning?\nMachine learning has been trendy, especially after the Image-Net challenge 2012 with AlexNet improving the benchmark significantly compared to non-deep learning approaches. There are several definitions of machine learning that could be found on the internet. Here, machine learning is defined in a simple term:\n\n  \\begin{aligned}\n    \\text{machine learning} & = \\text{solving inverse problems}.\n  \\end{aligned}\n\nWhat is an inverse problem then? In simple terms, it is to work out unknown parameters from observations of a system of interest. For example:\n\nForward problem: given f(x) = x^{2} + 1, one can easily calculate y_{i} = f(x_{i}) for different values of x_{i}.\nInverse problem: given a set of observations \\{(x_{i}, y_{i})\\}_{i = 1}^{N}, how to find the function f that satisfies: y_{i} = f(x_{i}).\n\nAlthough the inverse problem may easily be solved for the example above, the difficulty to find f increases with the complexity of f. In general, the inverse problem is far more difficult than the forward problem."
   },
   {
-    "objectID": "about.html#areas-of-specialism",
-    "href": "about.html#areas-of-specialism",
-    "title": "About",
-    "section": "Areas of specialism",
-    "text": "Areas of specialism\nMachine learning, probabilistic programming"
+    "objectID": "probabilita-ml.html#what-is-probabilistic-machine-learning",
+    "href": "probabilita-ml.html#what-is-probabilistic-machine-learning",
+    "title": "Welcome to Probabilita ML",
+    "section": "What is probabilistic machine learning?",
+    "text": "What is probabilistic machine learning?\nProbabilistic machine learning is to model the data generation process, for example, through some graphical models, then use the observed data to infer the posterior of the model’s parameter."
   },
   {
-    "objectID": "about.html#current-and-previous-roles",
-    "href": "about.html#current-and-previous-roles",
-    "title": "About",
-    "section": "Current and previous roles",
-    "text": "Current and previous roles\n\n\n\n\n\nResearch Fellow\n University of Surrey\n March 2024 - present\n Surrey, UK\n\n\n\n\n\nResearch Associate\n The University of Adelaide\n April 2022 - January 2024\n South Australia, AU\n\n\n\n\n\nProcess & Equipment Engineer\n Intel Products Vietnam\n July 2012 - July 2015\n Ho Chi Minh, VN"
-  },
-  {
-    "objectID": "about.html#my-qualifications",
-    "href": "about.html#my-qualifications",
-    "title": "About",
-    "section": "My qualifications",
-    "text": "My qualifications\n\n\n\n\n\nPhD in Computer Science\n The University of Adelaide\n April 2018 - March 2022\n South Australia, AU\n\n\n\n\n\nMPhil in Electronic Engineering\n The University of Adelaide\n August 2015 - January 2018\n South Australia, AU\n\n\n\n\n\nB.S. in Mechanical Engineering\n Portland State University\n July 2010 - June 2012\n Oregon, US"
+    "objectID": "probabilita-ml.html#why-is-the-name-probabilita",
+    "href": "probabilita-ml.html#why-is-the-name-probabilita",
+    "title": "Welcome to Probabilita ML",
+    "section": "Why is the name probabilita?",
+    "text": "Why is the name probabilita?\nThis is derived from the Latin word probabilitas, meaning probability."
   },
   {
     "objectID": "presentations/pecman/index.html#outline",
@@ -343,32 +336,18 @@
     "text": "Stochastic gradient and Hamiltonian Monte Carlo\n\n\n\n\n\n\n\n\n\n\n\nNov 19, 2023\n\n\nCuong Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\nExpectation - Maximisation algorithm and its applications in finite mixture models\n\n\n\n\n\n\n\n\n\n\n\nJul 17, 2022\n\n\nCuong Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\nBias - variance decomposition\n\n\n\n\n\n\n\n\n\n\n\nMay 3, 2022\n\n\nCuong Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\nFrom hyper-parameter optimisation to meta-learning\n\n\n\n\n\n\n\n\n\n\n\nNov 22, 2021\n\n\nCuong Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\nOuter product approximation of Hessian matrix\n\n\n\n\n\n\n\n\n\n\n\nApr 12, 2021\n\n\nCuong Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\nPAC-Bayes bounds for generalisation error\n\n\n\n\n\n\n\n\n\n\n\nDec 26, 2020\n\n\nCuong Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\nVAE: normalising constant matters\n\n\n\n\n\n\n\n\n\n\n\nNov 24, 2020\n\n\nCuong Nguyen\n\n\n\n\n\n\nNo matching items\n\n Back to top"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome to Probabilita ML",
-    "section": "",
-    "text": "This website is dedicated to introducing the foundational motivations and key concepts of various probabilistic machine learning techniques. The aim is to facilitate a comprehensive understanding of how learning algorithms are derived and formulated through some level of mathematics, particularly probability theory, linear algebra, and multivariate calculus. While this content sounds boring and may not encompass several recently developed advanced techniques, these foundational principles are expected to remain central to the field of machine learning, despite the rapid advancements of the field."
+    "objectID": "index.html#biography",
+    "href": "index.html#biography",
+    "title": "Cuong Nguyen",
+    "section": "Biography",
+    "text": "Biography\n\nI am a Research Fellow at the Centre for Vision, Speech and Signal Processing, University of Surrey.\nBefore that, I was a Research Associate at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012."
   },
   {
-    "objectID": "index.html#what-is-machine-learning",
-    "href": "index.html#what-is-machine-learning",
-    "title": "Welcome to Probabilita ML",
-    "section": "What is machine learning?",
-    "text": "What is machine learning?\nMachine learning has been trendy, especially after the Image-Net challenge 2012 with AlexNet improving the benchmark significantly compared to non-deep learning approaches. There are several definitions of machine learning that could be found on the internet. Here, machine learning is defined in a simple term:\n\n  \\begin{aligned}\n    \\text{machine learning} & = \\text{solving inverse problems}.\n  \\end{aligned}\n\nWhat is an inverse problem then? In simple terms, it is to work out unknown parameters from observations of a system of interest. For example:\n\nForward problem: given f(x) = x^{2} + 1, one can easily calculate y_{i} = f(x_{i}) for different values of x_{i}.\nInverse problem: given a set of observations \\{(x_{i}, y_{i})\\}_{i = 1}^{N}, how to find the function f that satisfies: y_{i} = f(x_{i}).\n\nAlthough the inverse problem may easily be solved for the example above, the difficulty to find f increases with the complexity of f. In general, the inverse problem is far more difficult than the forward problem."
-  },
-  {
-    "objectID": "index.html#what-is-probabilistic-machine-learning",
-    "href": "index.html#what-is-probabilistic-machine-learning",
-    "title": "Welcome to Probabilita ML",
-    "section": "What is probabilistic machine learning?",
-    "text": "What is probabilistic machine learning?\nProbabilistic machine learning is to model the data generation process, for example, through some graphical models, then use the observed data to infer the posterior of the model’s parameter."
-  },
-  {
-    "objectID": "index.html#why-is-the-name-probabilita",
-    "href": "index.html#why-is-the-name-probabilita",
-    "title": "Welcome to Probabilita ML",
-    "section": "Why is the name probabilita?",
-    "text": "Why is the name probabilita?\nThis is derived from the Latin word probabilitas, meaning probability."
+    "objectID": "index.html#areas-of-study",
+    "href": "index.html#areas-of-study",
+    "title": "Cuong Nguyen",
+    "section": "Areas of study",
+    "text": "Areas of study\nMachine learning, graphical models and probabilistic programming\n\n\n\n\n\n\n\nSelected publications\n\n\n\n\n\n\nNguyen, C., Do, T.T., Carneiro, G., 2023. Task Weighting in Meta-learning with Trajectory Optimisation. In Transactions on Machine Learning Research.\nNguyen, C., Do, T.T., Carneiro, G., 2022. PAC-Bayes Meta-learning with Implicit Task-specific Posteriors. In IEEE Transactions on Pattern Analysis and Machine Intelligence, doi: 10.1109/TPAMI.2022.3147798.\nNguyen, C., Do, T.T., Carneiro, G., 2021. Probabilistic task modelling for meta-learning. In Conference on Uncertainty in Artificial Intelligence\nNguyen, C., Do, T.T. and Carneiro, G., 2020. Similarity of classification tasks. In Neurips 2020 Meta-learn Workshop. [Supplementary]\nNguyen, C., Do, T.T. and Carneiro, G., 2020. Uncertainty in model-agnostic meta-learning using variational inference. In The IEEE Winter Conference on Applications of Computer Vision (pp. 3090-3100).\n\n\n\n\n\n\n\n\n\n\nTeaching\n\n\n\n\n\n\nCourses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor\n\n\n\n\n\n\n\n\n\n\n\n\nExperience\n\n\n\n\n\n\n\n\n\n\nResearch Fellow\n University of Surrey, UK\n March 2024 - present\n\n\n\n\n\n\n\nResearch Associate\n The University of Adelaide, Australia\n April 2022 - January 2024\n\n\n\n\n\n\n\nProcess & Equipment Engineer\n Intel Products Vietnam, Vietnam\n July 2012 - July 2015\n\n\n\n\n\n\n\n\n\n\n\nEducation\n\n\n\n\n\n\n\n\n\n\nPhD in Computer Science\n The University of Adelaide, Australia\n April 2018 - March 2022\n\n\n\n\n\n\n\nMPhil in Electronic Engineering\n The University of Adelaide, Australia\n August 2015 - January 2018\n\n\n\n\n\n\n\nB.S. in Mechanical Engineering\n Portland State University, USA\n July 2010 - June 2012"
   },
   {
     "objectID": "posts/PAC-Bayes-bounds/index.html",
@@ -492,8 +471,8 @@
   {
     "objectID": "publication.html",
     "href": "publication.html",
-    "title": "Publication",
+    "title": "Probabilita ML",
     "section": "",
-    "text": "Please see the list of my publications at my Google Scholar page\n\n\n\n\n Back to top"
+    "text": "Nguyen, C., Do, T.T., Carneiro, G., 2023. Task Weighting in Meta-learning with Trajectory Optimisation. In Transactions on Machine Learning Research.\nNguyen, C., Do, T.T., Carneiro, G., 2022. PAC-Bayes Meta-learning with Implicit Task-specific Posteriors. In IEEE Transactions on Pattern Analysis and Machine Intelligence, doi: 10.1109/TPAMI.2022.3147798.\nNguyen, C., Do, T.T., Carneiro, G., 2021. Probabilistic task modelling for meta-learning. In Conference on Uncertainty in Artificial Intelligence\nNguyen, C., Do, T.T. and Carneiro, G., 2020. Similarity of classification tasks. In Neurips 2020 Meta-learn Workshop. [Supplementary]\nNguyen, C., Do, T.T. and Carneiro, G., 2020. Uncertainty in model-agnostic meta-learning using variational inference. In The IEEE Winter Conference on Applications of Computer Vision (pp. 3090-3100).\n\n\n\n\n Back to top"
   }
 ]
