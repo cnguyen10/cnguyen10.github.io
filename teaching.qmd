@@ -1,13 +1,3 @@
----
-title: "Teaching"
-title-block-banner: false
-format:
-  html:
-    toc: true
-    number-sections: false
----
-
-## The University of Adelaide
 | Year | Semester | Course | Level | Role |
 | --- | --- | --- | --- | --- |
 | 2023 | 2 | Grand Challenges in Computer Science | Undergraduate | Intructor |

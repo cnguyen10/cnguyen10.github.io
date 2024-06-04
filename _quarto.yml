@@ -12,17 +12,17 @@ website:
       - icon: pencil-square
         text: Blog
         file: blog.qmd
-      - icon: person-circle
-        text: About
-        file: about.qmd
+      # - icon: person-circle
+      #   text: About
+      #   file: about.qmd
       # - icon: github
       #   href: https://github.com/cnguyen10
       # - icon: twitter
       #   href: https://twitter.com/cuongcn10
-      - text: "More"
-        menu:
-          - teaching.qmd
-          - publication.qmd
+      # - text: "More"
+      #   menu:
+      #     - teaching.qmd
+      #     - publication.qmd
   back-to-top-navigation: true
   google-analytics: G-NLRVZL0JSR
   site-url: https://cnguyen10.github.io

@@ -1,0 +1,61 @@
+---
+title: "Welcome to Probabilita ML"
+# description: "Home page"
+page-layout: full
+title-block-banner: false
+format:
+  html:
+    toc: false
+    number-sections: false
+
+comments: false
+---
+
+This website is dedicated to introducing the foundational motivations and key concepts of various probabilistic machine learning techniques. The aim is to facilitate a comprehensive understanding of how learning algorithms are derived and formulated through some level of mathematics, particularly probability theory, linear algebra, and multivariate calculus. While this content sounds boring and may not encompass several recently developed advanced techniques, these foundational principles are expected to remain central to the field of machine learning, despite the rapid advancements of the field.
+
+## What is machine learning?
+
+Machine learning has been trendy, especially after the Image-Net challenge 2012 with AlexNet improving the benchmark significantly compared to non-deep learning approaches. There are several definitions of machine learning that could be found on the internet. Here, machine learning is defined in a simple term:
+
+$$
+  \begin{aligned}
+    \text{machine learning} & = \text{solving inverse problems}.
+  \end{aligned}
+$$
+
+What is an inverse problem then? In simple terms, it is to *work out unknown parameters from observations of a system of interest*. For example:
+
+- Forward problem: given $f(x) = x^{2} + 1$, one can easily calculate $y_{i} = f(x_{i})$ for different values of $x_{i}$.
+- Inverse problem: given a set of observations $\{(x_{i}, y_{i})\}_{i = 1}^{N}$, how to find the function $f$ that satisfies: $y_{i} = f(x_{i})$.
+
+Although the inverse problem may easily be solved for the example above, the difficulty to find $f$ increases with the complexity of $f$. In general, the inverse problem is far more difficult than the forward problem.
+
+## What is *probabilistic* machine learning?
+
+Probabilistic machine learning is to model the data generation process, for example, through some graphical models, then use the observed data to infer the posterior of the model's parameter.
+
+<!-- For example, in linear regression, one common approach (not exactly probabilistic approach) is to minise the mean square error between model
+- Common approach (not exactly probabilistic one): minimises the mean squared error between model prediction and observed data and an L2 regularisation:
+
+$$
+\min_{w} \sum_{i = 1}^{N} \left[ f(x_{i}; w) - y_{i} \right] + \frac{1}{2} \beta w^{2}.
+$$
+
+- Probabilistic approach: models the data generation process and then infer the parameter as follow:
+
+**Data generation process:**
+- draw an input sample: $x \sim \Pr(x)$
+- draw a parameter from its prior distribution: $w \sim \Pr(w | m, \sigma) = \mathcal{N}(w; m, \sigma^{2})$
+- draw a label given the input sample and parameter: $y \sim \Pr(y | x, w) = \mathcal{N}(y | f(x; w), \frac{1}{\beta})$
+
+**Parameter inference:** performs maximum a posterior
+$$
+  \begin{aligned}
+    \max_{w} \ln \Pr(w | \{(x_{i}, y_{i})\}_{i = 1}^{N}, m, \beta) & = \max_{w} \sum_{i = 1}^{N} \ln \Pr(y_{i} | x_{i}, w) + \ln \Pr(w | m, \beta) \\
+    & = \max_{w} \sum_{i = 1}^{N} \ln \mathcal{N}(y | f(x; w), \frac{1}{\beta}) + \ln \mathcal{N}(w; m, \sigma^{2})
+  \end{aligned}
+$$ -->
+
+## Why is the name *probabilita*?
+
+This is derived from the Latin word *probabilitas*, meaning probability.

@@ -1,62 +1,162 @@
 ---
-title: "Welcome to Probabilita ML"
-# description: "Home page"
-page-layout: full
-title-block-banner: false
+title: "Cuong Nguyen"
 image: https://avatars.githubusercontent.com/u/15698019
+page-layout: full
+about:
+  template: solana
+  image-shape: round
+  image-width: 10em
+  links:
+    - icon: mortarboard-fill
+      text: Google Scholar
+      href: https://scholar.google.com.au/citations?user=eAkq43kAAAAJ
+    - icon: github
+      text: Github
+      href: https://github.com/cnguyen10
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/cuongcn10
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/in/cuong-c-nguyen
+    - icon: envelope-at
+      text: Email
+      href: mailto:cuong.c.nguyen@hotmail.com
 format:
   html:
-    toc: false
+    toc: true
     number-sections: false
-
-comments: false
 ---
 
-This website is dedicated to introducing the foundational motivations and key concepts of various probabilistic machine learning techniques. The aim is to facilitate a comprehensive understanding of how learning algorithms are derived and formulated through some level of mathematics, particularly probability theory, linear algebra, and multivariate calculus. While this content sounds boring and may not encompass several recently developed advanced techniques, these foundational principles are expected to remain central to the field of machine learning, despite the rapid advancements of the field.
+---
 
-## What is machine learning?
+## Biography
 
-Machine learning has been trendy, especially after the Image-Net challenge 2012 with AlexNet improving the benchmark significantly compared to non-deep learning approaches. There are several definitions of machine learning that could be found on the internet. Here, machine learning is defined in a simple term:
+::: {.text-start}
+I am a *Research Fellow* at the Centre for Vision, Speech and Signal Processing, University of Surrey.
 
-$$
-  \begin{aligned}
-    \text{machine learning} & = \text{solving inverse problems}.
-  \end{aligned}
-$$
+Before that, I was a *Research Associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
+:::
 
-What is an inverse problem then? In simple terms, it is to *work out unknown parameters from observations of a system of interest*. For example:
+---
 
-- Forward problem: given $f(x) = x^{2} + 1$, one can easily calculate $y_{i} = f(x_{i})$ for different values of $x_{i}$.
-- Inverse problem: given a set of observations $\{(x_{i}, y_{i})\}_{i = 1}^{N}$, how to find the function $f$ that satisfies: $y_{i} = f(x_{i})$.
+## Areas of study
 
-Although the inverse problem may easily be solved for the example above, the difficulty to find $f$ increases with the complexity of $f$. In general, the inverse problem is far more difficult than the forward problem.
+Machine learning, graphical models and probabilistic programming
 
-## What is *probabilistic* machine learning?
+---
 
-Probabilistic machine learning is to model the data generation process, for example, through some graphical models, then use the observed data to infer the posterior of the model's parameter.
+::: {.callout-note icon=false collapse="true" title="Selected publications"}
 
-<!-- For example, in linear regression, one common approach (not exactly probabilistic approach) is to minise the mean square error between model
-- Common approach (not exactly probabilistic one): minimises the mean squared error between model prediction and observed data and an L2 regularisation:
+{{< include publication.qmd >}}
 
-$$
-\min_{w} \sum_{i = 1}^{N} \left[ f(x_{i}; w) - y_{i} \right] + \frac{1}{2} \beta w^{2}.
-$$
+:::
 
-- Probabilistic approach: models the data generation process and then infer the parameter as follow:
+::: {.callout-note icon=false collapse="true" title="Teaching"}
 
-**Data generation process:**
-- draw an input sample: $x \sim \Pr(x)$
-- draw a parameter from its prior distribution: $w \sim \Pr(w | m, \sigma) = \mathcal{N}(w; m, \sigma^{2})$
-- draw a label given the input sample and parameter: $y \sim \Pr(y | x, w) = \mathcal{N}(y | f(x; w), \frac{1}{\beta})$
+{{< include teaching.qmd >}}
 
-**Parameter inference:** performs maximum a posterior
-$$
-  \begin{aligned}
-    \max_{w} \ln \Pr(w | \{(x_{i}, y_{i})\}_{i = 1}^{N}, m, \beta) & = \max_{w} \sum_{i = 1}^{N} \ln \Pr(y_{i} | x_{i}, w) + \ln \Pr(w | m, \beta) \\
-    & = \max_{w} \sum_{i = 1}^{N} \ln \mathcal{N}(y | f(x; w), \frac{1}{\beta}) + \ln \mathcal{N}(w; m, \sigma^{2})
-  \end{aligned}
-$$ -->
+:::
 
-## Why is the name *probabilita*?
+::: {.callout-note icon=false collapse="true" title="Experience"}
 
-This is derived from the Latin word *probabilitas*, meaning probability.
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+<img src="img/uos_logo.svg" width="50" style="margin-top: 10px;">
+
+:::
+
+::: {.g-col-10 .text-start}
+**Research Fellow**\
+<span class="bi bi-briefcase"> University of Surrey, UK</span>\
+<span class="bi bi-hourglass-top"> March 2024 - present</span>
+
+:::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">
+
+:::
+
+::: {.g-col-10 .text-start}
+**Research Associate**\
+<span class="bi bi-briefcase"> The University of Adelaide, Australia</span>\
+<span class="bi bi-hourglass-bottom"> April 2022 - January 2024</span>
+
+:::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+<img src="img/intel_logo.svg" width="50" style="margin-top: 10px;">
+
+:::
+
+::: {.g-col-10 .text-start}
+**Process & Equipment Engineer**\
+<span class="bi bi-briefcase"> Intel Products Vietnam, Vietnam</span>\
+<span class="bi bi-hourglass-bottom"> July 2012 - July 2015</span>
+
+:::
+
+:::
+
+:::
+
+
+::: {.callout-note icon=false collapse="true" title="Education"}
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+[<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">](https://www.adelaide.edu.au/)
+
+:::
+
+::: {.g-col-10 .text-start}
+**PhD in Computer Science**\
+<span class="bi bi-book"></span> The University of Adelaide, Australia\
+<span class="bi bi-hourglass-bottom"> April 2018 - March 2022</span>
+
+:::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+[<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">](https://www.adelaide.edu.au/)
+:::
+
+::: {.g-col-10 .text-start}
+**MPhil in Electronic Engineering**\
+<span class="bi bi-book"></span> The University of Adelaide, Australia\
+<span class="bi bi-hourglass-bottom"> August 2015 - January 2018</span>
+
+:::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-2 .text-end}
+[<img src="img/pdx_logo.svg" width="50" style="margin-top: 10px;">](https://www.pdx.edu/)
+:::
+
+::: {.g-col-10 .text-start}
+**B.S. in Mechanical Engineering**\
+<span class="bi bi-book"></span> Portland State University, USA\
+<span class="bi bi-hourglass-bottom"> July 2010 - June 2012</span>
+
+:::
+
+:::
+
+:::
