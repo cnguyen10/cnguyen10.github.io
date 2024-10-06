@@ -46,19 +46,26 @@ Machine learning, graphical models and probabilistic programming
 
 ---
 
-::: {.callout-note icon=false collapse="true" title="Selected publications"}
+<details>
+    <summary style="background: none; color: inherit; padding: 0;"><h2 style="display:inline-block">Publications</h2></summary>
 
 {{< include publication.qmd >}}
 
-:::
+</details>
 
-::: {.callout-note icon=false collapse="true" title="Teaching"}
+---
+
+<details>
+    <summary style="background: none; color: inherit; padding: 0;"><h2 style="display:inline-block">Teaching</h2></summary>
 
 {{< include teaching.qmd >}}
 
-:::
+</details>
 
-::: {.callout-note icon=false collapse="true" title="Experience"}
+---
+
+<details>
+    <summary style="background: none; color: inherit; padding: 0;"><h2 style="display:inline-block">Experience</h2></summary>
 
 ::: {.grid}
 
@@ -108,10 +115,12 @@ Machine learning, graphical models and probabilistic programming
 
 :::
 
-:::
+</details>
 
+---
 
-::: {.callout-note icon=false collapse="true" title="Education"}
+<details>
+    <summary style="background: none; color: inherit; padding: 0;"><h2 style="display:inline-block">Education</h2></summary>
 
 ::: {.grid}
 
@@ -159,4 +168,4 @@ Machine learning, graphical models and probabilistic programming
 
 :::
 
-:::
+</details>

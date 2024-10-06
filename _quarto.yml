@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "Probabilita ML"
+  title: "Cuong Nguyen"
   favicon: robot.svg
   twitter-card: true
   navbar:
