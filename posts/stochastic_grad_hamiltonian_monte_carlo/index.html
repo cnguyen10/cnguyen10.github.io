@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cuong Nguyen">
 <meta name="dcterms.date" content="2023-11-19">
 
-<title>Probabilita ML - Stochastic gradient and Hamiltonian Monte Carlo</title>
+<title>Stochastic gradient and Hamiltonian Monte Carlo – Cuong Nguyen</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -110,7 +110,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </script>
 
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
  var macros = [];
@@ -125,7 +125,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
    });
 }}});
   </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -155,7 +155,7 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="Probabilita ML - Stochastic gradient and Hamiltonian Monte Carlo">
+<meta name="twitter:title" content="Stochastic gradient and Hamiltonian Monte Carlo – Cuong Nguyen">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta name="twitter:card" content="summary_large_image">
@@ -169,11 +169,11 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Probabilita ML</span>
+    <span class="navbar-title">Cuong Nguyen</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -185,7 +185,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
@@ -315,7 +315,7 @@ Why is sampling from <span class="math inline">P(\theta)</span> hard?
 <li>Otherwise, the previous state is kept: <span class="math inline">\theta^{(t + 1)} = \theta^{(t)}</span>.</li>
 </ul>
 <p>The details of the Metropolis - Hastings algorithm can be seen in <a href="#alg-metropolis-hastings">Algorithm 1</a>.</p>
-<div id="alg-metropolis-hastings" class="pseudocode-container" data-indent-size="1.2em" data-pseudocode-index="1" data-alg-title="Algorithm" data-line-number-punc=":" data-line-number="true" data-no-end="false" data-comment-delimiter="//">
+<div id="alg-metropolis-hastings" class="pseudocode-container" data-pseudocode-index="1" data-alg-title="Algorithm" data-line-number-punc=":" data-comment-delimiter="//" data-line-number="true" data-no-end="false" data-indent-size="1.2em">
 <div class="pseudocode">
 \begin{algorithm} \caption{The Metropolis - Hastings sampling method} \begin{algorithmic} \Procedure{Metropolis-Hastings}{$P^{*}(\theta), Q(\theta; \theta^{(t)})$} \State initialise $\theta^{(0)}$ \While{$t = 0, 1, \dots, T, \dots, T_{\mathrm{end}}$} \State $\theta^{\prime} \gets$ \Call{sample-from-proposal-distribution}{$Q(\theta; \theta^{(t)})$} \Comment{generate a new state} \State $a \gets \displaystyle \frac{p^{*}(\theta^{\prime})}{p^{*}(\theta^{(t)})} \frac{q(\theta^{(t)}; \theta^{\prime})}{q(\theta^{\prime}; \theta^{(t)})}$ \Comment{calculate Metropolis - Hastings score} \If{$a \ge 1$} \State $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state} \Else \State $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state} \EndIf \EndWhile \State return $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -397,7 +397,7 @@ Dependency of samples generated from the Metropolis - Hastings method
     \frac{\operatorname{d} H}{\operatorname{d} t} = \sum_{i = 1}^{N} \frac{\operatorname{d} \theta_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \theta_{i}} + \frac{\operatorname{d} \rho_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \rho_{i}} = \sum_{d = 1}^{N} \frac{\partial H}{\partial \rho_{i}} \frac{\partial H}{\partial \theta_{i}} -\frac{\partial H}{\partial \theta_{i}} \frac{\partial H}{\partial \rho_{i}} = 0.
 </span></p>
 <p>This makes any proposal <span class="math inline">(\theta, \rho)</span> obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in <span class="math inline">H(\theta, \rho)</span>, which is zero if the simulation is perfect. Please refer to <a href="#alg-hamiltonian-mc">Algorithm 2</a> for further details of the Hamiltonian Monte Carlo method.</p>
-<div id="alg-hamiltonian-mc" class="pseudocode-container" data-indent-size="1.2em" data-pseudocode-index="2" data-alg-title="Algorithm" data-line-number-punc=":" data-line-number="true" data-no-end="false" data-comment-delimiter="//">
+<div id="alg-hamiltonian-mc" class="pseudocode-container" data-pseudocode-index="2" data-alg-title="Algorithm" data-line-number-punc=":" data-comment-delimiter="//" data-line-number="true" data-no-end="false" data-indent-size="1.2em">
 <div class="pseudocode">
 \begin{algorithm} \caption{Hamiltonian Monte Carlo method} \begin{algorithmic} \Procedure{Hamiltonian-MC}{$U(.), M, \varepsilon$} \State initialise $\theta^{(1)}$ \While{$t = 1, 2, \dots, T, \dots, T_{\mathrm{end}}$} \State sample momentum: $\rho^{(t)} \sim \mathcal{N}(0, M^{-1})$ \State evaluate total energy: $H \gets U(\theta^{(t)}) + K(\rho^{(t)})$ \State $\theta^{(t, 1)} \gets \theta^{(t)}$ \State $\rho^{(t, 1)} \gets \rho^{(t)}$ \For{$i = 1, 2, \dots, \tau$} \Comment{Simulate for next state} \State $\rho^{(t, i + \frac{1}{2})} \gets \rho^{(t, i)} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make a half-step in $\rho$} \State $\theta^{(t, i + 1)} \gets \theta^{(t, i)} + \varepsilon M^{-1} \rho^{(t, i + \frac{1}{2})}$ \Comment{make a step in $\theta$} \State $\rho^{(t, i + 1)} \gets \rho^{(t, i + \frac{1}{2})} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make another half-step in $\rho$} \EndFor \State $\theta^{\prime} \gets \theta^{(t, \tau)}$ \Comment{new state of $\theta$} \State $\rho^{\prime} \gets \rho^{(t, \tau)}$ \Comment{new state of momentum} \State evaluate total energy with the new state: $H_{\mathrm{new}} \gets U(\theta^{\prime}) + K(\rho^{\prime})$ \State calculate: $\operatorname{d}H \gets H_{\mathrm{new}} - H$ \State sample: $u \sim \mathrm{uniform}(0, 1)$ \If{$u &lt; \exp(-\operatorname{d}H)$} \Comment{Metropolis - Hastings step} \State $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state} \Else \State $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state} \EndIf \EndWhile \State return $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -643,12 +643,12 @@ Welling, Max, and Yee W Teh. 2011. <span>“<span>B</span>ayesian Learning via S
   author = {Nguyen, Cuong},
   title = {Stochastic Gradient and {Hamiltonian} {Monte} {Carlo}},
   date = {2023-11-19},
-  url = {https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo},
+  url = {https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-nguyen2023" class="csl-entry quarto-appendix-citeas" role="listitem">
 Nguyen, Cuong. 2023. <span>“Stochastic Gradient and Hamiltonian Monte
-Carlo.”</span> November 19, 2023. <a href="https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo">https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo</a>.
+Carlo.”</span> November 19, 2023. <a href="https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo/">https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -829,18 +829,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -872,7 +861,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/cnguyen10\.github\.io");
@@ -880,7 +891,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
