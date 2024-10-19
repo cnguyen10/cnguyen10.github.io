@@ -27,7 +27,7 @@ format:
     toc: true
     number-sections: false
 include-after-body:
-  text: <script type="text/javascript" src="js/fetch_orcid_pub.js"></script>
+  text: <script type="text/javascript" src="js/fetch_orcid.js"></script>
 ---
 
 ---
