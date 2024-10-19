@@ -419,7 +419,7 @@ True posterior in the E-step
 \max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
 </span></p>
 <p>The whole EM algorithm can be referred to <a href="#alg-em">Algorithm 1</a>.</p>
-<div id="alg-em" class="pseudocode-container" data-line-number="true" data-indent-size="1.2em" data-no-end="false" data-alg-title="Algorithm" data-line-number-punc=":" data-comment-delimiter="//" data-pseudocode-index="1">
+<div id="alg-em" class="pseudocode-container" data-indent-size="1.2em" data-line-number-punc=":" data-line-number="true" data-comment-delimiter="//" data-no-end="false" data-alg-title="Algorithm" data-pseudocode-index="1">
 <div class="pseudocode">
 \begin{algorithm} \caption{Expectation - Maximisation algorithm} \begin{algorithmic} \Procedure{EM}{$\mathbf{x}$} \State initialise mixture coefficient $\pi$ \State initialise $\theta$ \While{not converged} \State calculate the ELBO: $Q \gets \operatorname{E-step}(\mathbf{x}, \pi, \theta)$ \State maximise the ELBO: $\pi, \theta \gets \operatorname{M-step}(Q, \pi, \theta)$ \EndWhile \State return $\pi, \theta$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
