@@ -26,6 +26,8 @@ format:
   html:
     toc: true
     number-sections: false
+include-after-body:
+  text: <script type="text/javascript" src="js/fetch_orcid_pub.js"></script>
 ---
 
 ---
@@ -38,7 +40,6 @@ I am a *Research Fellow* at the Centre for Vision, Speech and Signal Processing,
 Before that, I was a *Research Associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
 :::
 
----
 
 ## Areas of study
 
@@ -46,81 +47,26 @@ Machine learning, graphical models and probabilistic programming
 
 ---
 
-<details>
-    <summary style="background: none; color: inherit; padding: 0;"><h2 style="display:inline-block">Publications</h2></summary>
+## Publications
 
-{{< include publication.qmd >}}
-
-</details>
+<button id="fetch-button" style="border-radius=5px;"><i class="bi bi-chevron-right"></i> Show publications</button>
+<ol reversed id="publication-list"></ol>
 
 ---
 
-<details>
-    <summary style="background: none; color: inherit; padding: 0;"><h2 style="display:inline-block">Teaching</h2></summary>
+## Teaching
 
 {{< include teaching.qmd >}}
 
-</details>
+---
+
+## Experience
+
+{{< include experience.qmd >}}
 
 ---
 
-<details>
-    <summary style="background: none; color: inherit; padding: 0;"><h2 style="display:inline-block">Experience</h2></summary>
-
-::: {.grid}
-
-::: {.g-col-2 .text-end}
-<img src="img/uos_logo.svg" width="50" style="margin-top: 10px;">
-
-:::
-
-::: {.g-col-10 .text-start}
-**Research Fellow**\
-<span class="bi bi-briefcase"> University of Surrey, UK</span>\
-<span class="bi bi-hourglass-top"> March 2024 - present</span>
-
-:::
-
-:::
-
-::: {.grid}
-
-::: {.g-col-2 .text-end}
-<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">
-
-:::
-
-::: {.g-col-10 .text-start}
-**Research Associate**\
-<span class="bi bi-briefcase"> The University of Adelaide, Australia</span>\
-<span class="bi bi-hourglass-bottom"> April 2022 - January 2024</span>
-
-:::
-
-:::
-
-::: {.grid}
-
-::: {.g-col-2 .text-end}
-<img src="img/intel_logo.svg" width="50" style="margin-top: 10px;">
-
-:::
-
-::: {.g-col-10 .text-start}
-**Process & Equipment Engineer**\
-<span class="bi bi-briefcase"> Intel Products Vietnam, Vietnam</span>\
-<span class="bi bi-hourglass-bottom"> July 2012 - July 2015</span>
-
-:::
-
-:::
-
-</details>
-
----
-
-<details>
-    <summary style="background: none; color: inherit; padding: 0;"><h2 style="display:inline-block">Education</h2></summary>
+## Education
 
 ::: {.grid}
 
@@ -167,5 +113,3 @@ Machine learning, graphical models and probabilistic programming
 :::
 
 :::
-
-</details>

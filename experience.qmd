@@ -1,0 +1,11 @@
+```{mermaid}
+gantt
+    %% title Timeline
+    dateFormat YYYY-MM-DD
+    %% tickInterval 1month
+    axisFormat %y-%m
+    section 1
+        Research Fellow - University of Surrey      :surrey, 2024-03-07, 2025-03-31
+    section 0
+        Research Associate - University of Adelaide :adelaide, 2022-04-08, 2024-01-31
+```
