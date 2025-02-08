@@ -50,7 +50,7 @@ Machine learning, graphical models and probabilistic programming
 ## Publications
 
 <button id="fetch-button" style="border-radius=5px;"><i class="bi bi-chevron-right"></i> Show publications</button>
-<ol reversed id="publication-list"></ol>
+<ul id="publication-list" style="list-style-type: square; margin-left: 0px;"></ul>
 <button id="load-more-btn" style="display:none;" onclick="fetchMorePublications()">Display More</button>
 
 ---
