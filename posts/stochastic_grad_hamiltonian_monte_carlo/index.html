@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,12 +58,12 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b5a5b43f05a2c57eac4668926145edcb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-6bbd255acef0535ade7e849cb878dd0d.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -315,7 +315,7 @@ Why is sampling from <span class="math inline">P(\theta)</span> hard?
 <li>Otherwise, the previous state is kept: <span class="math inline">\theta^{(t + 1)} = \theta^{(t)}</span>.</li>
 </ul>
 <p>The details of the Metropolis - Hastings algorithm can be seen in <a href="#alg-metropolis-hastings">Algorithm 1</a>.</p>
-<div id="alg-metropolis-hastings" class="pseudocode-container" data-pseudocode-index="1" data-indent-size="1.2em" data-line-number-punc=":" data-line-number="true" data-no-end="false" data-comment-delimiter="//" data-alg-title="Algorithm">
+<div id="alg-metropolis-hastings" class="pseudocode-container" data-no-end="false" data-pseudocode-index="1" data-comment-delimiter="//" data-alg-title="Algorithm" data-indent-size="1.2em" data-line-number="true" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \caption{The Metropolis - Hastings sampling method} \begin{algorithmic} \Procedure{Metropolis-Hastings}{$P^{*}(\theta), Q(\theta; \theta^{(t)})$} \State initialise $\theta^{(0)}$ \While{$t = 0, 1, \dots, T, \dots, T_{\mathrm{end}}$} \State $\theta^{\prime} \gets$ \Call{sample-from-proposal-distribution}{$Q(\theta; \theta^{(t)})$} \Comment{generate a new state} \State $a \gets \displaystyle \frac{p^{*}(\theta^{\prime})}{p^{*}(\theta^{(t)})} \frac{q(\theta^{(t)}; \theta^{\prime})}{q(\theta^{\prime}; \theta^{(t)})}$ \Comment{calculate Metropolis - Hastings score} \If{$a \ge 1$} \State $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state} \Else \State $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state} \EndIf \EndWhile \State return $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -397,7 +397,7 @@ Dependency of samples generated from the Metropolis - Hastings method
     \frac{\operatorname{d} H}{\operatorname{d} t} = \sum_{i = 1}^{N} \frac{\operatorname{d} \theta_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \theta_{i}} + \frac{\operatorname{d} \rho_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \rho_{i}} = \sum_{d = 1}^{N} \frac{\partial H}{\partial \rho_{i}} \frac{\partial H}{\partial \theta_{i}} -\frac{\partial H}{\partial \theta_{i}} \frac{\partial H}{\partial \rho_{i}} = 0.
 </span></p>
 <p>This makes any proposal <span class="math inline">(\theta, \rho)</span> obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in <span class="math inline">H(\theta, \rho)</span>, which is zero if the simulation is perfect. Please refer to <a href="#alg-hamiltonian-mc">Algorithm 2</a> for further details of the Hamiltonian Monte Carlo method.</p>
-<div id="alg-hamiltonian-mc" class="pseudocode-container" data-pseudocode-index="2" data-indent-size="1.2em" data-line-number-punc=":" data-line-number="true" data-no-end="false" data-comment-delimiter="//" data-alg-title="Algorithm">
+<div id="alg-hamiltonian-mc" class="pseudocode-container" data-no-end="false" data-pseudocode-index="2" data-comment-delimiter="//" data-alg-title="Algorithm" data-indent-size="1.2em" data-line-number="true" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \caption{Hamiltonian Monte Carlo method} \begin{algorithmic} \Procedure{Hamiltonian-MC}{$U(.), M, \varepsilon$} \State initialise $\theta^{(1)}$ \While{$t = 1, 2, \dots, T, \dots, T_{\mathrm{end}}$} \State sample momentum: $\rho^{(t)} \sim \mathcal{N}(0, M^{-1})$ \State evaluate total energy: $H \gets U(\theta^{(t)}) + K(\rho^{(t)})$ \State $\theta^{(t, 1)} \gets \theta^{(t)}$ \State $\rho^{(t, 1)} \gets \rho^{(t)}$ \For{$i = 1, 2, \dots, \tau$} \Comment{Simulate for next state} \State $\rho^{(t, i + \frac{1}{2})} \gets \rho^{(t, i)} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make a half-step in $\rho$} \State $\theta^{(t, i + 1)} \gets \theta^{(t, i)} + \varepsilon M^{-1} \rho^{(t, i + \frac{1}{2})}$ \Comment{make a step in $\theta$} \State $\rho^{(t, i + 1)} \gets \rho^{(t, i + \frac{1}{2})} - \frac{1}{2} \varepsilon \nabla_{\theta} U(\theta^{(t, i)})$ \Comment{make another half-step in $\rho$} \EndFor \State $\theta^{\prime} \gets \theta^{(t, \tau)}$ \Comment{new state of $\theta$} \State $\rho^{\prime} \gets \rho^{(t, \tau)}$ \Comment{new state of momentum} \State evaluate total energy with the new state: $H_{\mathrm{new}} \gets U(\theta^{\prime}) + K(\rho^{\prime})$ \State calculate: $\operatorname{d}H \gets H_{\mathrm{new}} - H$ \State sample: $u \sim \mathrm{uniform}(0, 1)$ \If{$u &lt; \exp(-\operatorname{d}H)$} \Comment{Metropolis - Hastings step} \State $\theta^{(t + 1)} \gets \theta^{\prime}$ \Comment{accept the new state} \Else \State $\theta^{(t + 1)} \gets \theta^{(t)}$ \Comment{reject the new state} \EndIf \EndWhile \State return $\{\theta^{(t)}\}_{t = T}^{T_{\mathrm{end}}}$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -876,8 +876,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -988,7 +986,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

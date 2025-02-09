@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -36,12 +36,12 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-b5a5b43f05a2c57eac4668926145edcb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-6bbd255acef0535ade7e849cb878dd0d.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -80,9 +80,6 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </script>
-<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 
@@ -127,17 +124,13 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">gantt
+<!-- ```{mermaid}
+gantt
     %% title Timeline
     dateFormat YYYY-MM-DD
     %% tickInterval 1month
@@ -146,12 +139,36 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
         Research Fellow - University of Surrey      :surrey, 2024-03-07, 2025-03-31
     section 0
         Research Associate - University of Adelaide :adelaide, 2022-04-08, 2024-01-31
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
+``` -->
+<ul>
+<li style="margin-bottom: 20px;">
+<span><strong>Research Fellow</strong></span> &nbsp; - &nbsp; <em>March 2024 - present</em><br> <span>Centre for Vision, Speech and Signal Processing</span><br> <span>University of Surrey, UK</span> <span>
+<ul>
+<li>
+<em>research in human-AI cooperation:</em> Current setting in human-AI cooperation requires <em>(i)</em> each sample must be annotated by all human experts, and <em>(ii)</em> each annotation must be associated with the identification of a human expert. Such requirements complicate the data collection, resulting in a more expensive and time-consuming process. My research is to relax each of the two assumptions to increase the applicability and practicability of human-AI cooperation, and
+</li>
+<li>
+co-supervise two PhD students in human-AI cooperation and multirater learning.
+</li>
+</ul>
+</span>
+</li>
+<li>
+<span><strong>Research Associate</strong></span> &nbsp; - &nbsp; <em>April 2022 - Januray 2024</em><br> <span>School of Computer Science</span><br> <span>The University of Adelaide, Australia</span><br> <span>
+<ul>
+<li>
+<em>research in the identifiability of noisy label learning:</em> The noisy label learning problem with a single noisy label per sample is non-identifiable, meaning that there are infinite number of models that can generate the given dataset. My research is to find conditions to make the problem identifiable (i.e., having one unique solution). In short, for a C-way classification problem, at least (2C - 1) noisy labels per sample must be collected,
+</li>
+<li>
+co-supervise a PhD student in the same topic about noisy label learning, and
+</li>
+<li>
+teach the course <em>COMP SCI 1104 - Challenges in Computer Science</em>.
+</li>
+</ul>
+</span>
+</li>
+</ul>
 
 
 
@@ -382,8 +399,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -494,7 +509,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
