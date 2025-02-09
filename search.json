@@ -217,11 +217,11 @@
     "text": "4 References\n\n\nBanerjee, Arindam. 2006. “On Bayesian Bounds.” In International Conference on Machine Learning, 81–88.\n\n\nMcAllester, David A. 1999. “PAC-Bayesian Model Averaging.” In Conference on Computational Learning Theory, 164–70.\n\n\nShalev-Shwartz, Shai, and Shai Ben-David. 2014. Understanding Machine Learning: From Theory to Algorithms. Cambridge university press."
   },
   {
-    "objectID": "index.html#biography",
-    "href": "index.html#biography",
+    "objectID": "index.html",
+    "href": "index.html",
     "title": "Cuong Nguyen",
-    "section": "Biography",
-    "text": "Biography\n\nI am a Research Fellow at the Centre for Vision, Speech and Signal Processing, University of Surrey.\nBefore that, I was a Research Associate at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012."
+    "section": "",
+    "text": "Google Scholar\n  \n  \n    \n     Github\n  \n  \n    \n     Twitter\n  \n  \n    \n     LinkedIn\n  \n  \n    \n     Email\nI am a Research Fellow at the Centre for Vision, Speech and Signal Processing, University of Surrey.\nBefore that, I was a Research Associate at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012."
   },
   {
     "objectID": "index.html#areas-of-study",
@@ -235,21 +235,14 @@
     "href": "index.html#publications",
     "title": "Cuong Nguyen",
     "section": "Publications",
-    "text": "Publications\n\n Show publications\n\n\n\n\nDisplay More"
-  },
-  {
-    "objectID": "index.html#teaching",
-    "href": "index.html#teaching",
-    "title": "Cuong Nguyen",
-    "section": "Teaching",
-    "text": "Teaching\n\n\nCourses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor"
+    "text": "Publications\nPlease refer to my Google Scholar, or click the button below to retrieve the list of my publications from my ORCID.\n\n Show publications\n\n\n\n\nDisplay More"
   },
   {
     "objectID": "index.html#experience",
     "href": "index.html#experience",
     "title": "Cuong Nguyen",
     "section": "Experience",
-    "text": "Experience\n\n\n\nResearch Fellow   -   March 2024 - present Centre for Vision, Speech and Signal Processing University of Surrey, UK \n\n\nresearch in human-AI cooperation: Current setting in human-AI cooperation requires (i) each sample must be annotated by all human experts, and (ii) each annotation must be associated with the identification of a human expert. Such requirements complicate the data collection, resulting in a more expensive and time-consuming process. My research is to relax each of the two assumptions to increase the applicability and practicability of human-AI cooperation, and\n\n\nco-supervise two PhD students in human-AI cooperation and multirater learning.\n\n\n\n\n\nResearch Associate   -   April 2022 - Januray 2024 School of Computer Science The University of Adelaide, Australia \n\n\nresearch in the identifiability of noisy label learning: The noisy label learning problem with a single noisy label per sample is non-identifiable, meaning that there are infinite number of models that can generate the given dataset. My research is to find conditions to make the problem identifiable (i.e., having one unique solution). In short, for a C-way classification problem, at least (2C - 1) noisy labels per sample must be collected,\n\n\nco-supervise a PhD student in the same topic about noisy label learning, and\n\n\nteach the course COMP SCI 1104 - Challenges in Computer Science."
+    "text": "Experience\n\n\n\nResearch Fellow   -   March 2024 - present Centre for Vision, Speech and Signal Processing University of Surrey, UK \n\n\nresearch in human-AI cooperation: Current setting in human-AI cooperation requires (i) each sample must be annotated by all human experts, and (ii) each annotation must be associated with the identification of a human expert. Such requirements complicate the data collection, resulting in a more expensive and time-consuming process. My research is to relax each of the two assumptions to make the human-AI cooperation more practical, and\n\n\nco-supervise two PhD students in human-AI cooperation and multirater learning.\n\n\n\n\n\nResearch Associate   -   April 2022 - Januray 2024 School of Computer Science The University of Adelaide, Australia \n\n\nresearch in the identifiability of noisy label learning: The noisy label learning problem with a single noisy label per sample is non-identifiable, meaning that there are infinite number of models that can generate the given dataset. My research is to find conditions to make the problem identifiable (i.e., having one unique solution). In short, for a C-way classification problem, at least (2C - 1) noisy labels per sample must be collected,\n\n\nco-supervise a PhD student in the same topic about noisy label learning, and\n\n\nteach the course COMP SCI 1104 - Challenges in Computer Science."
   },
   {
     "objectID": "index.html#education",
@@ -259,11 +252,18 @@
     "text": "Education\n\n\nPhD in Computer Science   -   April 2018 - March 2022 The University of Adelaide, Australia  Research in meta-learning:\n\n\nprobabilistic meta-learning: extends from learning a point estimate of meta-learning models to a distribution of meta-learning models by employing variational inference,\n\n\nPAC-Bayes meta-learning: extends the PAC-Bayes bound of single task learning to multiple tasks in meta-learning,\n\n\ntask modelling for meta-learning: adopts the latent Dirichlet allocation to model tasks in meta-learning and measure their similarity, and\n\n\ntask-weighting in meta-learning with trajectory optimisation: adopts the trajectory optimisation to weight the contribution of each task when training a meta-learning model.\n\n\n\n\n\nMPhil in Electronic Engineering   -   August 2015 - Januray 2018 The University of Adelaide, Australia Research in micro-scaled vibration energy harvesting, focusing on electret-based approach.\n\n\nBS in Mechanical Engineering   -   July 2010 - June 2012 Portland State University, USA"
   },
   {
+    "objectID": "index.html#teaching",
+    "href": "index.html#teaching",
+    "title": "Cuong Nguyen",
+    "section": "Teaching",
+    "text": "Teaching\n\n\nCourses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor"
+  },
+  {
     "objectID": "teaching.html",
     "href": "teaching.html",
     "title": "Cuong Nguyen",
     "section": "",
-    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor\n\n\n\n\n\n\n\n Back to top"
+    "text": "Courses taught at The University of Adelaide\n\n\n\n\n\n\n\n\n\nYear\nSemester\nCourse\nLevel\nRole\n\n\n\n\n2023\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2022\n2\nGrand Challenges in Computer Science\nUndergraduate\nIntructor\n\n\n2021\n1\nFoundations on Computer Science\nMaster\nTutor\n\n\n2021\n2\nFoundations on Computer Science\nMaster\nTutor\n\n\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "probabilita-ml.html",
@@ -312,7 +312,7 @@
     "href": "experience.html",
     "title": "Cuong Nguyen",
     "section": "",
-    "text": "Research Fellow   -   March 2024 - present Centre for Vision, Speech and Signal Processing University of Surrey, UK \n\n\nresearch in human-AI cooperation: Current setting in human-AI cooperation requires (i) each sample must be annotated by all human experts, and (ii) each annotation must be associated with the identification of a human expert. Such requirements complicate the data collection, resulting in a more expensive and time-consuming process. My research is to relax each of the two assumptions to increase the applicability and practicability of human-AI cooperation, and\n\n\nco-supervise two PhD students in human-AI cooperation and multirater learning.\n\n\n\n\n\nResearch Associate   -   April 2022 - Januray 2024 School of Computer Science The University of Adelaide, Australia \n\n\nresearch in the identifiability of noisy label learning: The noisy label learning problem with a single noisy label per sample is non-identifiable, meaning that there are infinite number of models that can generate the given dataset. My research is to find conditions to make the problem identifiable (i.e., having one unique solution). In short, for a C-way classification problem, at least (2C - 1) noisy labels per sample must be collected,\n\n\nco-supervise a PhD student in the same topic about noisy label learning, and\n\n\nteach the course COMP SCI 1104 - Challenges in Computer Science.\n\n\n\n\n\n\n\n\n Back to top"
+    "text": "Research Fellow   -   March 2024 - present Centre for Vision, Speech and Signal Processing University of Surrey, UK \n\n\nresearch in human-AI cooperation: Current setting in human-AI cooperation requires (i) each sample must be annotated by all human experts, and (ii) each annotation must be associated with the identification of a human expert. Such requirements complicate the data collection, resulting in a more expensive and time-consuming process. My research is to relax each of the two assumptions to make the human-AI cooperation more practical, and\n\n\nco-supervise two PhD students in human-AI cooperation and multirater learning.\n\n\n\n\n\nResearch Associate   -   April 2022 - Januray 2024 School of Computer Science The University of Adelaide, Australia \n\n\nresearch in the identifiability of noisy label learning: The noisy label learning problem with a single noisy label per sample is non-identifiable, meaning that there are infinite number of models that can generate the given dataset. My research is to find conditions to make the problem identifiable (i.e., having one unique solution). In short, for a C-way classification problem, at least (2C - 1) noisy labels per sample must be collected,\n\n\nco-supervise a PhD student in the same topic about noisy label learning, and\n\n\nteach the course COMP SCI 1104 - Challenges in Computer Science.\n\n\n\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "posts/vae-normalising-constant-matters/index.html",
