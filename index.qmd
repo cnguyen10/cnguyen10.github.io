@@ -3,6 +3,7 @@ title: "Cuong Nguyen"
 image: https://avatars.githubusercontent.com/u/15698019
 page-layout: full
 about:
+  id: about-div
   template: solana
   image-shape: round
   image-width: 10em
@@ -30,42 +31,36 @@ include-after-body:
   text: <script type="text/javascript" src="js/fetch_orcid.js"></script>
 ---
 
----
+:::{#about-div}
 
-## Biography
+:::
 
-::: {.text-start}
+
 I am a *Research Fellow* at the Centre for Vision, Speech and Signal Processing, University of Surrey.
 
 Before that, I was a *Research Associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
-:::
 
 
 ## Areas of study
 
+
 My main research interest include probabilistic machine learning and graphical models. In particular, I prefer modelling how the given data is generated (e.g., through a graphical model), then perform parameter inference on such a modelling using the Expectation - Maximisation or variational inference coupled with some numerical optimisation techniques. I am also interested in statistical machine learning (e.g., PAC learning).
 
----
 
 ## Publications
+
+Please refer to my Google Scholar, or click the button below to retrieve the list of my publications from my ORCID.
 
 <button id="fetch-button" style="border-radius=5px;"><i class="bi bi-chevron-right"></i> Show publications</button>
 <ul id="publication-list" style="list-style-type: square; margin-left: 0px;"></ul>
 <button id="load-more-btn" style="display:none;" onclick="fetchMorePublications()">Display More</button>
 
----
 
-## Teaching
-
-{{< include teaching.qmd >}}
-
----
 
 ## Experience
 
 {{< include experience.qmd >}}
 
----
 
 ## Education
 
@@ -88,8 +83,14 @@ My main research interest include probabilistic machine learning and graphical m
         <span>The University of Adelaide, Australia</span><br />
         <span style="margin-left: 1em;">Research in micro-scaled vibration energy harvesting, focusing on electret-based approach.</span>
     </li>
-    <li>
+    <li style="margin-bottom: 20px;">
       <span><strong>BS in Mechanical Engineering</strong></span> &nbsp; - &nbsp; <em>July 2010 - June 2012</em><br />
       <span>Portland State University, USA</span><br />
     </li>
 </ul>
+
+
+## Teaching
+
+
+{{< include teaching.qmd >}}

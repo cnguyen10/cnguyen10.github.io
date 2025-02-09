@@ -1,5 +1,5 @@
-<details>
-    <summary style="background: none; color: inherit; padding: 0;">Courses taught at The University of Adelaide</summary>
+<!-- <details>
+    <summary style="background: none; color: inherit; padding: 0;">Courses taught at The University of Adelaide</summary> -->
 
 | Year | Semester | Course | Level | Role |
 | --- | --- | --- | --- | --- |
@@ -8,6 +8,7 @@
 | 2021 | 1 | Foundations on Computer Science | Master | Tutor |
 | 2021 | 2 | Foundations on Computer Science | Master | Tutor |
 
-: {tbl-colwidths="[15, 15, 30, 20, 20]" .striped .hover}
+: Courses taught at The University of Adelaide {tbl-colwidths="[15, 15, 30, 20, 20]" .striped .hover}
 
-</details>
+
+<!-- </details> -->
