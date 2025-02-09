@@ -33,7 +33,7 @@ format:
       light: sandstone
       dark: darkly
     toc: false
-    fontsize: 12pt
+    fontsize: 14px
     mainfont: Lato, sans-serif
     backgroundcolor: whitesmoke
     html-math-method: katex

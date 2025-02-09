@@ -1,4 +1,4 @@
-```{mermaid}
+<!-- ```{mermaid}
 gantt
     %% title Timeline
     dateFormat YYYY-MM-DD
@@ -8,4 +8,29 @@ gantt
         Research Fellow - University of Surrey      :surrey, 2024-03-07, 2025-03-31
     section 0
         Research Associate - University of Adelaide :adelaide, 2022-04-08, 2024-01-31
-```
+``` -->
+<ul>
+    <li style="margin-bottom: 20px;">
+        <span><strong>Research Fellow</strong></span> &nbsp; - &nbsp; <em>March 2024 - present</em><br />
+        <span>Centre for Vision, Speech and Signal Processing</span><br />
+        <span>University of Surrey, UK</span>
+        <span>
+            <ul>
+                <li><em>research in human-AI cooperation:</em> Current setting in human-AI cooperation requires <em>(i)</em> each sample must be annotated by all human experts, and <em>(ii)</em> each annotation must be associated with the identification of a human expert. Such requirements complicate the data collection, resulting in a more expensive and time-consuming process. My research is to relax each of the two assumptions to increase the applicability and practicability of human-AI cooperation, and</li>
+                <li>co-supervise two PhD students in human-AI cooperation and multirater learning.</li>
+            </ul>
+        </span>
+    </li>
+    <li>
+        <span><strong>Research Associate</strong></span> &nbsp; - &nbsp; <em>April 2022 - Januray 2024</em><br />
+        <span>School of Computer Science</span><br />
+        <span>The University of Adelaide, Australia</span><br />
+        <span>
+            <ul>
+                <li><em>research in the identifiability of noisy label learning:</em> The noisy label learning problem with a single noisy label per sample is non-identifiable, meaning that there are infinite number of models that can generate the given dataset. My research is to find conditions to make the problem identifiable (i.e., having one unique solution). In short, for a C-way classification problem, at least (2C - 1) noisy labels per sample must be collected,</li>
+                <li>co-supervise a PhD student in the same topic about noisy label learning, and</li>
+                <li>teach the course <em>COMP SCI 1104 - Challenges in Computer Science</em>.</li>
+            </ul>
+        </span>
+    </li>
+</ul>

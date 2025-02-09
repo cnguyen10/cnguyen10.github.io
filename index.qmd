@@ -43,7 +43,7 @@ Before that, I was a *Research Associate* at the School of Computer Science, The
 
 ## Areas of study
 
-Machine learning, graphical models and probabilistic programming
+My main research interest include probabilistic machine learning and graphical models. In particular, I prefer modelling how the given data is generated (e.g., through a graphical model), then perform parameter inference on such a modelling using the Expectation - Maximisation or variational inference coupled with some numerical optimisation techniques. I am also interested in statistical machine learning (e.g., PAC learning).
 
 ---
 
@@ -69,48 +69,27 @@ Machine learning, graphical models and probabilistic programming
 
 ## Education
 
-::: {.grid}
-
-::: {.g-col-2 .text-end}
-[<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">](https://www.adelaide.edu.au/)
-
-:::
-
-::: {.g-col-10 .text-start}
-**PhD in Computer Science**\
-<span class="bi bi-book"></span> The University of Adelaide, Australia\
-<span class="bi bi-hourglass-bottom"> April 2018 - March 2022</span>
-
-:::
-
-:::
-
-::: {.grid}
-
-::: {.g-col-2 .text-end}
-[<img src="img/uofa_logo.svg" width="50" style="margin-top: 10px;">](https://www.adelaide.edu.au/)
-:::
-
-::: {.g-col-10 .text-start}
-**MPhil in Electronic Engineering**\
-<span class="bi bi-book"></span> The University of Adelaide, Australia\
-<span class="bi bi-hourglass-bottom"> August 2015 - January 2018</span>
-
-:::
-
-:::
-
-::: {.grid}
-
-::: {.g-col-2 .text-end}
-[<img src="img/pdx_logo.svg" width="50" style="margin-top: 10px;">](https://www.pdx.edu/)
-:::
-
-::: {.g-col-10 .text-start}
-**B.S. in Mechanical Engineering**\
-<span class="bi bi-book"></span> Portland State University, USA\
-<span class="bi bi-hourglass-bottom"> July 2010 - June 2012</span>
-
-:::
-
-:::
+<ul>
+    <li style="margin-bottom: 20px;">
+        <span><strong>PhD in Computer Science</strong></span> &nbsp; - &nbsp; <em>April 2018 - March 2022</em><br />
+        <span>The University of Adelaide, Australia</span><br />
+        <span style="margin-left: 1em;">
+            <span>Research in meta-learning:</span>
+            <ul>
+                <li><em>probabilistic meta-learning:</em> extends from learning a point estimate of meta-learning models to a distribution of meta-learning models by employing variational inference,</li>
+                <li><em>PAC-Bayes meta-learning:</em> extends the PAC-Bayes bound of single task learning to multiple tasks in meta-learning,</li>
+                <li><em>task modelling for meta-learning:</em> adopts the <em>latent Dirichlet allocation</em> to model tasks in meta-learning and measure their similarity, and</li>
+                <li><em>task-weighting in meta-learning with trajectory optimisation:</em> adopts the trajectory optimisation to weight the contribution of each task when training a meta-learning model.</li>
+            </ul>
+        </span>
+    </li>
+    <li style="margin-bottom: 20px;">
+        <span><strong>MPhil in Electronic Engineering</strong></span> &nbsp; - &nbsp; <em>August 2015 - Januray 2018</em><br />
+        <span>The University of Adelaide, Australia</span><br />
+        <span style="margin-left: 1em;">Research in micro-scaled vibration energy harvesting, focusing on electret-based approach.</span>
+    </li>
+    <li>
+      <span><strong>BS in Mechanical Engineering</strong></span> &nbsp; - &nbsp; <em>July 2010 - June 2012</em><br />
+      <span>Portland State University, USA</span><br />
+    </li>
+</ul>
