@@ -33,12 +33,12 @@ include-after-body:
 
 :::{#about-div}
 
-:::
-
-
-I am a *Research Fellow* at the Centre for Vision, Speech and Signal Processing, University of Surrey.
+:::{.text-start}
+I am a *Research Fellow* at the Centre for Vision, Speech and Signal Processing, University of Surrey, working on human-AI cooperation in Professor Carneiro's group.
 
 Before that, I was a *Research Associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
+:::
+:::
 
 
 ## Areas of study
@@ -69,23 +69,26 @@ Please refer to my Google Scholar, or click the button below to retrieve the lis
         <span><strong>PhD in Computer Science</strong></span> &nbsp; - &nbsp; <em>April 2018 - March 2022</em><br />
         <span>The University of Adelaide, Australia</span><br />
         <span style="margin-left: 1em;">
-            <span>Research in meta-learning:</span>
+            <span>Supervised by Professor <a href="https://scholar.google.co.uk/citations?user=E0TtOWAAAAAJ&hl=en">Carneiro, Gustavo</a> and Dr <a href="https://scholar.google.co.uk/citations?user=nihSW_QAAAAJ&hl=en">Do, Thanh-Toan</a> to research in meta-learning:</span>
             <ul>
                 <li><em>probabilistic meta-learning:</em> extends from learning a point estimate of meta-learning models to a distribution of meta-learning models by employing variational inference,</li>
                 <li><em>PAC-Bayes meta-learning:</em> extends the PAC-Bayes bound of single task learning to multiple tasks in meta-learning,</li>
-                <li><em>task modelling for meta-learning:</em> adopts the <em>latent Dirichlet allocation</em> to model tasks in meta-learning and measure their similarity, and</li>
-                <li><em>task-weighting in meta-learning with trajectory optimisation:</em> adopts the trajectory optimisation to weight the contribution of each task when training a meta-learning model.</li>
+                <li><em>task modelling for meta-learning:</em> adapts the <em>latent Dirichlet allocation</em> to model tasks in meta-learning and measure their similarity, and</li>
+                <li><em>task-weighting in meta-learning with trajectory optimisation:</em> adapts the trajectory optimisation to weight the contribution of each task when training a meta-learning model.</li>
             </ul>
         </span>
     </li>
     <li style="margin-bottom: 20px;">
-        <span><strong>MPhil in Electronic Engineering</strong></span> &nbsp; - &nbsp; <em>August 2015 - Januray 2018</em><br />
+        <span><strong>MPhil in Electronic Engineering</strong></span> &nbsp; - &nbsp; <em>August 2015 - January 2018</em><br />
         <span>The University of Adelaide, Australia</span><br />
         <span style="margin-left: 1em;">Research in micro-scaled vibration energy harvesting, focusing on electret-based approach.</span>
     </li>
     <li style="margin-bottom: 20px;">
       <span><strong>BS in Mechanical Engineering</strong></span> &nbsp; - &nbsp; <em>July 2010 - June 2012</em><br />
       <span>Portland State University, USA</span><br />
+      <span style="margin-left: 1em;">
+        <span>Awarded a scholarship from Intel Products Vietnam to study oversea.</span>
+      </span>
     </li>
 </ul>
 

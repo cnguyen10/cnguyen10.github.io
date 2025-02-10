@@ -22,7 +22,7 @@ gantt
         </span>
     </li>
     <li>
-        <span><strong>Research Associate</strong></span> &nbsp; - &nbsp; <em>April 2022 - Januray 2024</em><br />
+        <span><strong>Research Associate</strong></span> &nbsp; - &nbsp; <em>April 2022 - January 2024</em><br />
         <span>School of Computer Science</span><br />
         <span>The University of Adelaide, Australia</span><br />
         <span>
