@@ -33,9 +33,8 @@ format:
       light: sandstone
       dark: darkly
     toc: false
-    fontsize: 14px
+    fontsize: 16px
     mainfont: Lato, sans-serif
-    backgroundcolor: whitesmoke
     html-math-method: katex
     number-sections: true
     anchor-sections: true
