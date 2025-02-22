@@ -44,16 +44,20 @@ Before that, I was a *Research Associate* at the School of Computer Science, The
 ## Areas of study
 
 
-My main research interest include probabilistic machine learning and graphical models. In particular, I prefer modelling how the given data is generated (e.g., through a graphical model), then perform parameter inference on such a modelling using the Expectation - Maximisation or variational inference coupled with some numerical optimisation techniques. I am also interested in statistical machine learning (e.g., PAC learning).
+My main research interest include probabilistic machine learning, graphical models and statistical learning theory.
 
 
 ## Publications
 
+{{< include highlighted_publications.qmd >}}
+
+### &#128218; Full list of publications
+
 Please refer to my Google Scholar, or click the button below to retrieve the list of my publications from my ORCID.
 
-<button id="fetch-button" style="border-radius=5px;"><i class="bi bi-chevron-right"></i> Show publications</button>
-<ul id="publication-list" style="list-style-type: square; margin-left: 0px;"></ul>
-<button id="load-more-btn" style="display:none;" onclick="fetchMorePublications()">Display More</button>
+<button id="fetch-button" type="button" class="btn btn-outline-info">Show publications</button>
+<div id="publication-list"></div>
+<button id="load-more-btn" type="button" class="btn btn-outline-info" style="display:none;" onclick="fetchMorePublications()">Display More</button>
 
 
 
