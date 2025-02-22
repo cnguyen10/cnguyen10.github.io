@@ -1,0 +1,68 @@
+::: {.grid .gap-0 .row-gap-0 .column-gap-1}
+
+::: {.g-col-3 .mb-0 .pb-0}
+Apr. 2018 - Mar. 2022
+:::
+
+::: {.g-col-8 .mb-0 .pb-0}
+**PhD in Computer Science**
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+School of Computer Science
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+The University of Adelaide, Australia
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+ - Supervised by Professor [Carneiro, Gustavo](https://scholar.google.com/citations?user=E0TtOWAAAAAJ&hl=en) and Dr [Do, Thanh-Toan](https://scholar.google.com/citations?user=nihSW_QAAAAJ&hl=en) to research in meta-learning.
+:::
+
+<!--  -->
+
+::: {.g-col-3 .mb-0 .pb-0}
+Aug. 2015 - Jan. 2018
+:::
+
+::: {.g-col-8 .mb-0 .pb-0}
+**MPhil in Electronic Engineering**
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+School of Electrical and Electronic Engineering
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+The University of Adelaide, Australia
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+ - Research in micro-scaled vibration energy harvesting, focusing on electret-based approach.
+:::
+
+<!--  -->
+
+::: {.g-col-3 .mb-0 .pb-0}
+July. 2010 - Jun. 2012
+:::
+
+::: {.g-col-8 .mb-0 .pb-0}
+**BS in Mechanical Engineering**
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+Department of Mechanical and Materials Engineering
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+Portland State University, USA
+:::
+
+::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+ - Awarded a scholarship from Intel Products Vietnam to study oversea,
+ - Awarded *Magna cum laude*.
+:::
+
+:::
