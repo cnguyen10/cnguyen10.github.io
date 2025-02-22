@@ -81,13 +81,13 @@ async function displayPublications(publications) {
         const pubYear = workDetails['publication-date']['year']['value'];
 
         // Create list item for publication
-        const pubItem = document.createElement('li');
+        const pubItem = document.createElement('div');
         const pub_title = formatString(title);
-        let publication_text = `<span><strong>${pub_title}</strong> (${pubYear})</span><br /> <span><small>${authors}</small></span><br />`;
+        let publication_text = `<div class="g-col-10 ms-3 mb-0 pb-0"><b>${pub_title}</b></div><div class="g-col-1 mb-0 pb-0">${pubYear}</div><div class="g-col-10 ms-3 my-0 py-0"><small>${authors}</small></div>`;
         if (journalTitle != null) {
-            publication_text = publication_text + `<span><small><i>${journalTitle}</i></small></span>`;
+            publication_text = publication_text + `<div class="g-col-10 ms-3 my-0 py-0"><small>${journalTitle}</small></div>`;
         }
-        pubItem.innerHTML = publication_text;
+        pubItem.innerHTML = `<div class="grid gap-0 row-gap-0 column-gap-3">${publication_text}</div><div class="g-col-10 ms-3 mb-0 pb-0"><hr></div>`;
         pubItem.style.marginTop = "10px";
         publicationList.appendChild(pubItem);
     }
