@@ -43,7 +43,7 @@ format:
       text: ''
     citations-hover: true
     footnotes-hover: true
-    linkcolor: midnightblue
+    linkcolor: royalblue
 
 filters:
   - pseudocode
