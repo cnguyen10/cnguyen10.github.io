@@ -1,13 +1,9 @@
 ### <i class="bi bi-award text-info"></i> Highlighted publications
 
-::: {.grid .gap-0 .row-gap-0 .column-gap-1}
+::: {.grid .gap-0 .row-gap-0 .column-gap-0}
 
-::: {.g-col-10 .ms-3 .mb-0 .pb-0}
+::: {.g-col-11 .ms-3 .mb-0 .pb-0}
 **Probabilistic learning to defer: Handling missing expert annotations and controlling workload distribution**
-:::
-
-::: {.g-col-1 .ms-3 .mb-0 .pb-0}
-<i class="bi bi-mic" data-toggle="tooltip" data-placement="top" title="Oral presentation"></i>
 :::
 
 ::: {.g-col-1 .mb-0 .pb-0}
@@ -19,29 +15,35 @@ Cuong Nguyen, Thanh-Toan Do, Gustavo Carneiro
 :::
 
 ::: {.g-col-10 .ms-3 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
-International Conference on Learning Representations
+International Conference on Learning Representations (<i class="bi bi-mic" data-toggle="tooltip" data-placement="top" title="Oral presentation"></i> oral)
 :::
 
 ::: {.g-col-2 .mb-0 .pb-0}
 :::
 
-::: {.g-col-2 .ms-3 .my-0 .py-0 style="margin-top: -1rem !important;"}
+::: {.g-col-3 .ms-3 .my-0 .py-0 style="margin-top: -1rem !important;"}
 
-<button type="button" class="btn btn-outline-primary btn-sm">
-    <a class="link-offset-2 link-underline link-underline-opacity-0" data-toggle="tooltip" data-placement="top" title="Paper" href="https://openreview.net/forum?id=zl0HLZOJC9">
+::: {.grid}
+
+::: {.g-col-4}
+<button type="button" class="btn btn-outline-secondary btn-sm text-lowercase">
+    <a class="link-secondary link-underline link-underline-opacity-0" data-toggle="tooltip" data-placement="top" title="Paper" href="https://openreview.net/forum?id=zl0HLZOJC9">
         <i class="bi bi-journals"></i> paper
     </a>
 </button>
 
 :::
 
-::: {.g-col-2 .ms-3 .my-0 .py-0 style="margin-top: -1rem !important;"}
-
-<button type="button" class="btn btn-outline-primary btn-sm">
-    <a class="link-underline link-underline-opacity-0" data-toggle="tooltip" data-placement="top" title="Code" href="https://github.com/cnguyen10/pl2d">
+::: {.g-col-4}
+<button type="button" class="btn btn-outline-secondary btn-sm text-lowercase">
+    <a class="link-secondary link-underline link-underline-opacity-0" data-toggle="tooltip" data-placement="top" title="Code" href="https://github.com/cnguyen10/pl2d">
         <i class="bi bi-code"></i> code
     </a>
 </button>
+
+:::
+
+:::
 
 :::
 
