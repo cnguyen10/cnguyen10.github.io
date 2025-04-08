@@ -2,7 +2,7 @@
 
 ::: {.grid .gap-0 .row-gap-0 .column-gap-0}
 
-::: {.g-col-11 .ms-3 .mb-0 .pb-0}
+::: {.g-col-10 .ms-3 .mb-0 .pb-0}
 **Probabilistic learning to defer: Handling missing expert annotations and controlling workload distribution**
 :::
 
@@ -15,6 +15,9 @@
 
 ::: {.g-col-10 .ms-3 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
 Cuong Nguyen, Thanh-Toan Do, Gustavo Carneiro
+:::
+
+::: {.g-col-2 .mb-0 .pb-0}
 :::
 
 ::: {.g-col-10 .ms-3 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
