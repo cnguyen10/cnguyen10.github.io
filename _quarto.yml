@@ -34,7 +34,7 @@ format:
       dark: darkly
     toc: false
     fontsize: 16px
-    mainfont: Lato, sans-serif
+    mainfont: sans-serif
     html-math-method: katex
     number-sections: true
     anchor-sections: true

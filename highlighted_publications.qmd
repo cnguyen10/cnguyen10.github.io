@@ -6,6 +6,12 @@
 **Probabilistic learning to defer: Handling missing expert annotations and controlling workload distribution**
 :::
 
+<<<<<<< HEAD
+=======
+::: {.g-col-1 .ms-3 .mb-0 .pb-0}
+:::
+
+>>>>>>> 9ceb790 (Update the display of publications to have one emptied column between title and year)
 ::: {.g-col-1 .mb-0 .pb-0}
 2025
 :::
@@ -15,7 +21,11 @@ Cuong Nguyen, Thanh-Toan Do, Gustavo Carneiro
 :::
 
 ::: {.g-col-10 .ms-3 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+<<<<<<< HEAD
 International Conference on Learning Representations (<i class="bi bi-mic" data-toggle="tooltip" data-placement="top" title="Oral presentation"></i> oral)
+=======
+International Conference on Learning Representations (oral)
+>>>>>>> 9ceb790 (Update the display of publications to have one emptied column between title and year)
 :::
 
 ::: {.g-col-2 .mb-0 .pb-0}
@@ -26,19 +36,29 @@ International Conference on Learning Representations (<i class="bi bi-mic" data-
 ::: {.grid}
 
 ::: {.g-col-4}
+<<<<<<< HEAD
 <button type="button" class="btn btn-outline-secondary btn-sm text-lowercase">
     <a class="link-secondary link-underline link-underline-opacity-0" data-toggle="tooltip" data-placement="top" title="Paper" href="https://openreview.net/forum?id=zl0HLZOJC9">
         <i class="bi bi-journals"></i> paper
     </a>
+=======
+<button type="button" class="btn btn-outline-secondary btn-sm text-lowercase" onclick="location.href='https://openreview.net/forum?id=zl0HLZOJC9'">
+    <i class="bi bi-journals"></i> paper
+>>>>>>> 9ceb790 (Update the display of publications to have one emptied column between title and year)
 </button>
 
 :::
 
 ::: {.g-col-4}
+<<<<<<< HEAD
 <button type="button" class="btn btn-outline-secondary btn-sm text-lowercase">
     <a class="link-secondary link-underline link-underline-opacity-0" data-toggle="tooltip" data-placement="top" title="Code" href="https://github.com/cnguyen10/pl2d">
         <i class="bi bi-code"></i> code
     </a>
+=======
+<button type="button" class="btn btn-outline-secondary btn-sm text-lowercase" onclick="location.href='https://github.com/cnguyen10/pl2d'">
+    <i class="bi bi-code"></i> code
+>>>>>>> 9ceb790 (Update the display of publications to have one emptied column between title and year)
 </button>
 
 :::

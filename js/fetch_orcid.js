@@ -83,7 +83,7 @@ async function displayPublications(publications) {
         // Create list item for publication
         const pubItem = document.createElement('div');
         const pub_title = formatString(title);
-        let publication_text = `<div class="g-col-10 ms-3 mb-0 pb-0"><b>${pub_title}</b></div><div class="g-col-1 mb-0 pb-0">${pubYear}</div><div class="g-col-10 ms-3 my-0 py-0"><small>${authors}</small></div>`;
+        let publication_text = `<div class="g-col-10 ms-3 mb-0 pb-0"><b>${pub_title}</b></div><div class="g-col-1 mb-0 pb-0"></div><div class="g-col-1 mb-0 pb-0">${pubYear}</div><div class="g-col-10 ms-3 my-0 py-0"><small>${authors}</small></div>`;
         if (journalTitle != null) {
             publication_text = publication_text + `<div class="g-col-10 ms-3 my-0 py-0"><small>${journalTitle}</small></div>`;
         }
