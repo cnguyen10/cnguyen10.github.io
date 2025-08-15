@@ -1,48 +1,55 @@
 ::: {.grid .gap-0 .row-gap-0 .column-gap-1}
 
-::: {.g-col-3 .mb-0 .pb-0}
-Mar. 2024 - now
+::: {.g-col-8 .mb-0 .pb-0}
+**Lecturer**
 :::
+
+::: {.g-col-4 .mb-0 .pb-0 style="font-size: 90%;"}
+Aug. 2024 - now
+:::
+
+::: {.g-col-8 .g-start-0 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+Centre for Vision, Speech and Signal Processing
+:::
+
+::: {.g-col-8 .g-start-0 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+University of Surrey, UK
+:::
+
+<!--  -->
 
 ::: {.g-col-8 .mb-0 .pb-0}
 **Research Fellow**
 :::
 
-::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+::: {.g-col-4 .mb-0 .pb-0 style="font-size: 90%;"}
+Mar. 2024 - Jul. 2025
+:::
+
+::: {.g-col-8 .g-start-0 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
 Centre for Vision, Speech and Signal Processing
 :::
 
-::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+::: {.g-col-8 .g-start-0 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
 University of Surrey, UK
 :::
 
-::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
- - research in human-AI cooperation
- - co-supervise two PhD students
-:::
-
 <!--  -->
-
-::: {.g-col-3 .mb-0 .pb-0}
-Apr. 2022 - Jan. 2024
-:::
 
 ::: {.g-col-8 .mb-0 .pb-0}
 **Research Associate**
 :::
 
-::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+::: {.g-col-4 .mb-0 .pb-0 style="font-size: 90%;"}
+Apr. 2022 - Jan. 2024
+:::
+
+::: {.g-col-8 .g-start-0 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
 Australia Institute for Machine Learning
 :::
 
-::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
+::: {.g-col-8 .g-start-0 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
 The University of Adelaide, Australia
-:::
-
-::: {.g-col-8 .g-start-4 .my-0 .py-0 style="margin-top: -1rem !important; font-size: 90%;"}
- - research in noisy label learning,
- - co-supervise a PhD student, and</li>
- - teach the course *COMP SCI 1104 - Challenges in Computer Science*.
 :::
 
 :::

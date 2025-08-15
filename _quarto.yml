@@ -12,6 +12,9 @@ website:
       - icon: pencil-square
         text: Blog
         file: blog.qmd
+      - icon: easel
+        text: Teaching
+        file: teaching.qmd
       # - icon: person-circle
       #   text: About
       #   file: about.qmd

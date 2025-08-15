@@ -34,9 +34,9 @@ include-after-body:
 :::{#about-div}
 
 :::{.text-start}
-I am a *Research Fellow* at the Centre for Vision, Speech and Signal Processing, University of Surrey, working on human-AI cooperation in Professor Carneiro's group.
+I am a *Lecturer in People-centred AI* at the Centre for Vision, Speech and Signal Processing, University of Surrey.
 
-Before that, I was a *Research Associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
+Before that, I was a *Research Fellow* working in Professor Gustavo Carneiro's group at Centre for Vision, Speech and Signal Processing, University of Surrey from March 2024 to July 2025. I was also working as a *Research Associate* at the School of Computer Science, The University of Adelaide from April 2022 to January 2024. I received my PhD in Computer Science from The University of Adelaide in March 2022, an MPhil in Electronic Engineering also from The University of Adelaide in January 2018, and a B.S. in Mechanical Engineering from Portland State University in June 2012.
 :::
 :::
 
@@ -63,17 +63,17 @@ Please refer to my Google Scholar, or click the button below to retrieve the lis
 
 
 
-## Experience
+<!-- ## Experience
 
-{{< include experience.qmd >}}
-
-
-## Education
-
-{{< include education.qmd >}}
+{{< include experience.qmd >}} -->
 
 
-## Teaching
+<!-- ## Education
+
+{{< include education.qmd >}} -->
 
 
-{{< include teaching.qmd >}}
+<!-- ## Teaching
+
+
+{{< include teaching.qmd >}} -->
