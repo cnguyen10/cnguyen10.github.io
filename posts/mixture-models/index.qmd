@@ -139,10 +139,10 @@ $$
 \max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
 $$
 
-The whole EM algorithm can be referred to @alg-em.
+The whole EM algorithm can be referred to @algo-em.
 
 ```pseudocode
-#| label: alg-em
+#| label: algo-em
 #| html-indent-size: "1.2em"
 #| html-comment-delimiter: "//"
 #| html-line-number: true

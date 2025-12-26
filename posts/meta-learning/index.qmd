@@ -122,10 +122,10 @@ $$
 $$ {#eq-meta_parameter_update_sgd}
 where $\gamma$ is another hyper-parameter representing the learning rate to learn $\theta$.
 
-The general algorithm of meta-learning using gradient-based optimisation is shown in @alg-meta-learning.
+The general algorithm of meta-learning using gradient-based optimisation is shown in @algo-meta-learning.
 
 ```pseudocode
-#| label: alg-meta-learning
+#| label: algo-meta-learning
 #| html-indent-size: "1.2em"
 #| html-comment-delimiter: "//"
 #| html-line-number: true

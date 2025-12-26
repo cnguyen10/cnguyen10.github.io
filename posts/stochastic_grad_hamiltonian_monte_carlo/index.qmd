@@ -55,11 +55,11 @@ As before, it is assumed that the un-normalised probability $P^{*}(\theta)$ can 
 - If the step is accepted, then $\theta^{(t + 1)} = \theta^{\prime}$.
 - Otherwise, the previous state is kept: $\theta^{(t + 1)} = \theta^{(t)}$.
 
-The details of the Metropolis - Hastings algorithm can be seen in @alg-metropolis-hastings.
+The details of the Metropolis - Hastings algorithm can be seen in @algo-metropolis-hastings.
 
 
 ```pseudocode
-#| label: alg-metropolis-hastings
+#| label: algo-metropolis-hastings
 #| html-indent-size: "1.2em"
 #| html-comment-delimiter: "//"
 #| html-line-number: true
@@ -157,10 +157,10 @@ $$
     \frac{\operatorname{d} H}{\operatorname{d} t} = \sum_{i = 1}^{N} \frac{\operatorname{d} \theta_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \theta_{i}} + \frac{\operatorname{d} \rho_{i}}{\operatorname{d} t} \frac{\partial H}{\partial \rho_{i}} = \sum_{d = 1}^{N} \frac{\partial H}{\partial \rho_{i}} \frac{\partial H}{\partial \theta_{i}} -\frac{\partial H}{\partial \theta_{i}} \frac{\partial H}{\partial \rho_{i}} = 0.
 $$
 
-This makes any proposal $(\theta, \rho)$ obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in $H(\theta, \rho)$, which is zero if the simulation is perfect. Please refer to @alg-hamiltonian-mc for further details of the Hamiltonian Monte Carlo method.
+This makes any proposal $(\theta, \rho)$ obtained from such a perfect simulation always acceptable. If the simulation is imperfect, due to the finite step size when performing the integration for example, then some of the dynamical proposals will be rejected. The rejection rule makes use of the change in $H(\theta, \rho)$, which is zero if the simulation is perfect. Please refer to @algo-hamiltonian-mc for further details of the Hamiltonian Monte Carlo method.
 
 ```pseudocode
-#| label: alg-hamiltonian-mc
+#| label: algo-hamiltonian-mc
 #| html-indent-size: "1.2em"
 #| html-comment-delimiter: "//"
 #| html-line-number: true
