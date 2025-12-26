@@ -3,10 +3,10 @@ project:
 
 website:
   title: "Cuong Nguyen"
-  favicon: robot.svg
-  twitter-card: true
+  description: "Probabilistic machine learning"
   navbar:
-    background: primary
+    title: ""
+    background: light
     search: true
     right:
       - icon: pencil-square
@@ -15,29 +15,24 @@ website:
       - icon: easel
         text: Teaching
         file: teaching.qmd
-      # - icon: person-circle
-      #   text: About
-      #   file: about.qmd
-      # - icon: github
-      #   href: https://github.com/cnguyen10
-      # - icon: twitter
-      #   href: https://twitter.com/cuongcn10
+      - icon: person-circle
+        text: About
+        file: about.qmd
       # - text: "More"
       #   menu:
       #     - teaching.qmd
       #     - publication.qmd
   back-to-top-navigation: true
-  google-analytics: G-NLRVZL0JSR
+  google-analytics:
+    tracking-id: G-NLRVZL0JSR
+    version: 4
   site-url: https://cnguyen10.github.io
 
 format:
   html:
-    theme:
-      light: sandstone
-      dark: darkly
     toc: false
-    fontsize: 16px
-    mainfont: sans-serif
+    lightbox: true
+    mainfont: Arial, sans-serif
     html-math-method: katex
     number-sections: true
     anchor-sections: true
