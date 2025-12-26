@@ -1,67 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://cnguyen10.github.io/presentations/pecman/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.677Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.674Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/probabilita-ml.html</loc>
-    <lastmod>2025-08-15T12:58:48.677Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/posts/bias-variance-decomposition/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.675Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/posts/meta-learning/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.675Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/posts/mixture-models/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.675Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/teaching.html</loc>
-    <lastmod>2025-08-15T12:58:48.677Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/education.html</loc>
-    <lastmod>2025-08-15T12:58:48.657Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/highlighted_publications.html</loc>
-    <lastmod>2025-08-15T12:58:48.657Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/experience.html</loc>
-    <lastmod>2025-08-15T12:58:48.657Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/posts/vae-normalising-constant-matters/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.676Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.675Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cnguyen10.github.io/posts/PAC-Bayes-bounds/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.674Z</lastmod>
+    <loc>https://cnguyen10.github.io/about.html</loc>
+    <lastmod>2025-12-26T03:16:27.693Z</lastmod>
   </url>
   <url>
     <loc>https://cnguyen10.github.io/posts/Gauss-Newton-matrix/index.html</loc>
-    <lastmod>2025-08-15T12:58:48.674Z</lastmod>
+    <lastmod>2025-12-26T03:16:27.710Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/posts/vae-normalising-constant-matters/index.html</loc>
+    <lastmod>2025-12-26T03:16:27.712Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/posts/mixture-models/index.html</loc>
+    <lastmod>2025-12-26T03:16:27.711Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/posts/meta-learning/index.html</loc>
+    <lastmod>2025-12-26T03:16:27.711Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/probabilita-ml.html</loc>
+    <lastmod>2025-12-26T03:16:27.713Z</lastmod>
   </url>
   <url>
     <loc>https://cnguyen10.github.io/presentation.html</loc>
-    <lastmod>2025-08-15T12:58:48.676Z</lastmod>
+    <lastmod>2025-12-26T03:16:27.712Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/presentations/pecman/index.html</loc>
+    <lastmod>2025-12-26T03:16:27.713Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/index.html</loc>
+    <lastmod>2025-12-26T03:16:27.710Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/teaching.html</loc>
+    <lastmod>2025-12-26T03:16:27.713Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/posts/bias-variance-decomposition/index.html</loc>
+    <lastmod>2025-12-26T03:16:27.710Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/posts/stochastic_grad_hamiltonian_monte_carlo/index.html</loc>
+    <lastmod>2025-12-26T03:16:27.711Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cnguyen10.github.io/posts/PAC-Bayes-bounds/index.html</loc>
+    <lastmod>2025-12-26T03:16:27.710Z</lastmod>
   </url>
   <url>
     <loc>https://cnguyen10.github.io/blog.html</loc>
-    <lastmod>2025-08-15T12:58:48.657Z</lastmod>
+    <lastmod>2025-12-26T03:16:27.693Z</lastmod>
   </url>
 </urlset>

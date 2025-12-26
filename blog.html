@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -30,23 +30,19 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./robot.svg" rel="icon" type="image/svg+xml">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-bc185b5c5bdbcb35c2eb49d8a876ef70.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e1a6dd3446ac699a7b7257813ff491ff.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-a24f0f2b4383c4c86d1fae33f9cc3efa.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e1a6dd3446ac699a7b7257813ff491ff.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-737dd490c381fc24f2bdb2267972f27e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -86,9 +82,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
+      searchColumns: ["listing-date","listing-title","listing-author"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -115,6 +111,22 @@ gtag('js', new Date());
 gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </script>
 
+    <style type="text/css">
+    .ps-root .ps-algorithm {
+      border-top: 2px solid;
+      border-bottom: 2px solid;
+    }
+    .pseudocode-container {
+      text-align: left;
+    }
+    </style>
+  
+      <style type="text/css">
+      .ps-algorithm > .ps-line {
+        text-align: left;
+      }
+      </style>
+    
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -144,7 +156,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -161,173 +173,9 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
-<meta name="twitter:title" content="Blog – Cuong Nguyen">
-<meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
-    const toggleBodyColorMode = (bsSheetEl) => {
-      const mode = bsSheetEl.getAttribute("data-mode");
-      const bodyEl = window.document.querySelector("body");
-      if (mode === "dark") {
-        bodyEl.classList.add("quarto-dark");
-        bodyEl.classList.remove("quarto-light");
-      } else {
-        bodyEl.classList.add("quarto-light");
-        bodyEl.classList.remove("quarto-dark");
-      }
-    }
-    const toggleBodyColorPrimary = () => {
-      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
-      if (bsSheetEl) {
-        toggleBodyColorMode(bsSheetEl);
-      }
-    }
-    const setColorSchemeToggle = (alternate) => {
-      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-      for (let i=0; i < toggles.length; i++) {
-        const toggle = toggles[i];
-        if (toggle) {
-          if (alternate) {
-            toggle.classList.add("alternate");
-          } else {
-            toggle.classList.remove("alternate");
-          }
-        }
-      }
-    };
-    const toggleColorMode = (alternate) => {
-      // Switch the stylesheets
-      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
-      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-      manageTransitions('#quarto-margin-sidebar .nav-link', false);
-      if (alternate) {
-        // note: dark is layered on light, we don't disable primary!
-        enableStylesheet(alternateStylesheets);
-        for (const sheetNode of alternateStylesheets) {
-          if (sheetNode.id === "quarto-bootstrap") {
-            toggleBodyColorMode(sheetNode);
-          }
-        }
-      } else {
-        disableStylesheet(alternateStylesheets);
-        enableStylesheet(primaryStylesheets)
-        toggleBodyColorPrimary();
-      }
-      manageTransitions('#quarto-margin-sidebar .nav-link', true);
-      // Switch the toggles
-      setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
-      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-        manageTransitions("body", false);
-        window.scrollTo(0, 1);
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-          manageTransitions("body", true);
-        }, 40);
-      }
-    }
-    const disableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        stylesheet.rel = 'disabled-stylesheet';
-      }
-    }
-    const enableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
-          stylesheet.rel = 'stylesheet';
-        }
-      }
-    }
-    const manageTransitions = (selector, allowTransitions) => {
-      const els = window.document.querySelectorAll(selector);
-      for (let i=0; i < els.length; i++) {
-        const el = els[i];
-        if (allowTransitions) {
-          el.classList.remove('notransition');
-        } else {
-          el.classList.add('notransition');
-        }
-      }
-    }
-    const isFileUrl = () => {
-      return window.location.protocol === 'file:';
-    }
-    const hasAlternateSentinel = () => {
-      let styleSentinel = getColorSchemeSentinel();
-      if (styleSentinel !== null) {
-        return styleSentinel === "alternate";
-      } else {
-        return false;
-      }
-    }
-    const setStyleSentinel = (alternate) => {
-      const value = alternate ? "alternate" : "default";
-      if (!isFileUrl()) {
-        window.localStorage.setItem("quarto-color-scheme", value);
-      } else {
-        localAlternateSentinel = value;
-      }
-    }
-    const getColorSchemeSentinel = () => {
-      if (!isFileUrl()) {
-        const storageValue = window.localStorage.getItem("quarto-color-scheme");
-        return storageValue != null ? storageValue : localAlternateSentinel;
-      } else {
-        return localAlternateSentinel;
-      }
-    }
-    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-      let newTheme = '';
-      if(authorPrefersDark) {
-        newTheme = isAlternate ? baseTheme : alternateTheme;
-      } else {
-        newTheme = isAlternate ? alternateTheme : baseTheme;
-      }
-      const changeGiscusTheme = () => {
-        // From: https://github.com/giscus/giscus/issues/336
-        const sendMessage = (message) => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return;
-          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-        }
-        sendMessage({
-          setConfig: {
-            theme: newTheme
-          }
-        });
-      }
-      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-      if (isGiscussLoaded) {
-        changeGiscusTheme();
-      }
-    };
-    const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
-      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-    // Dark / light mode switch
-    window.quartoToggleColorScheme = () => {
-      // Read the current dark / light value
-      let toAlternate = !hasAlternateSentinel();
-      toggleColorMode(toAlternate);
-      setStyleSentinel(toAlternate);
-      toggleGiscusIfUsed(toAlternate, darkModeDefault);
-      window.dispatchEvent(new Event('resize'));
-    };
-    // Switch to dark mode if need be
-    if (hasAlternateSentinel()) {
-      toggleColorMode(true);
-    } else {
-      toggleColorMode(false);
-    }
-  </script>
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -354,10 +202,14 @@ window.Quarto = {
 </i> 
 <span class="menu-text">Teaching</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> <i class="bi bi-person-circle" role="img">
+</i> 
+<span class="menu-text">About</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -369,7 +221,6 @@ window.Quarto = {
     
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
-
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -394,201 +245,124 @@ window.Quarto = {
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1700352000000" data-listing-file-modified-sort="1755262728675" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4516">
-<div class="thumbnail"><a href="./posts/stochastic_grad_hamiltonian_monte_carlo/index.html" class="no-external">
+<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<th>
+Date
+</th>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/stochastic_grad_hamiltonian_monte_carlo/index.html" class="no-external">Stochastic gradient and Hamiltonian Monte Carlo</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/stochastic_grad_hamiltonian_monte_carlo/index.html" class="no-external">
-This post is to introduce the formulation of stochastic gradient descent as a Monte Carlo sampling to approximate the posterior of the variables of interest.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/stochastic_grad_hamiltonian_monte_carlo/index.html" class="no-external">
-<div class="listing-date">
-Nov 19, 2023
-</div>
-<div class="listing-author">
-Cuong Nguyen
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1658016000000" data-listing-file-modified-sort="1755262728675" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4608">
-<div class="thumbnail"><a href="./posts/mixture-models/index.html" class="no-external">
+<th>
+Title
+</th>
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<th>
+Author
+</th>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/mixture-models/index.html" class="no-external">Expectation - Maximisation algorithm and its applications in finite mixture models</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/mixture-models/index.html" class="no-external">
-Missing data and latent variables are frequently encountered in various machine learning and statistical inference applications. A common example is the finite mixture…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/mixture-models/index.html" class="no-external">
-<div class="listing-date">
-Jul 17, 2022
-</div>
-<div class="listing-author">
-Cuong Nguyen
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1651536000000" data-listing-file-modified-sort="1755262728675" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4401">
-<div class="thumbnail"><a href="./posts/bias-variance-decomposition/index.html" class="no-external">
+</tr>
+</thead>
+<tbody class="list">
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<tr data-index="0" data-listing-date-sort="1700352000000" data-listing-file-modified-sort="1766718987711" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4516" data-listing-title-sort="Stochastic gradient and Hamiltonian Monte Carlo" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Nov 19, 2023</span>
+</td>
+<td>
+<a href="./posts/stochastic_grad_hamiltonian_monte_carlo/index.html" class="title listing-title">Stochastic gradient and Hamiltonian Monte Carlo</a>
+</td>
+<td>
+<span class="listing-author">Cuong Nguyen</span>
+</td>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/bias-variance-decomposition/index.html" class="no-external">Bias - variance decomposition</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/bias-variance-decomposition/index.html" class="no-external">
-Bias and variance decomposition is one of the key tools to understand machine learning. However, conventional discussion about bias - variance decomposition revolves around…<em></em><span class="citation" data-cites="domingos2000unified"></span><em></em><em></em><span class="citation" data-cites="pfau2013generalized"></span><span class="citation" data-cites="heskes1998bias"></span>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/bias-variance-decomposition/index.html" class="no-external">
-<div class="listing-date">
-May 3, 2022
-</div>
-<div class="listing-author">
-Cuong Nguyen
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1637539200000" data-listing-file-modified-sort="1755262728675" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3343">
-<div class="thumbnail"><a href="./posts/meta-learning/index.html" class="no-external">
+</tr>
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<tr data-index="1" data-listing-date-sort="1658016000000" data-listing-file-modified-sort="1766718987711" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4608" data-listing-title-sort="Expectation - Maximisation algorithm and its applications in finite mixture models" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Jul 17, 2022</span>
+</td>
+<td>
+<a href="./posts/mixture-models/index.html" class="title listing-title">Expectation - Maximisation algorithm and its applications in finite mixture models</a>
+</td>
+<td>
+<span class="listing-author">Cuong Nguyen</span>
+</td>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/meta-learning/index.html" class="no-external">From hyper-parameter optimisation to meta-learning</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/meta-learning/index.html" class="no-external">
-Meta-learning, also known as <em>learn-how-to-learning</em>, has been being studied from 1980s <span class="citation" data-cites="schmidhuber1987evolutionary naik1992meta">(Schmidhuber 1987; Naik and Mammone 1992)</span>, and recently attracted much attention from…<em></em><q></q><em></em><em></em><em></em><em></em><em></em><em></em>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/meta-learning/index.html" class="no-external">
-<div class="listing-date">
-Nov 22, 2021
-</div>
-<div class="listing-author">
-Cuong Nguyen
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1618185600000" data-listing-file-modified-sort="1755262728674" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1330">
-<div class="thumbnail"><a href="./posts/Gauss-Newton-matrix/index.html" class="no-external">
+</tr>
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<tr data-index="2" data-listing-date-sort="1651536000000" data-listing-file-modified-sort="1766718987710" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4401" data-listing-title-sort="Bias - variance decomposition" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">May 3, 2022</span>
+</td>
+<td>
+<a href="./posts/bias-variance-decomposition/index.html" class="title listing-title">Bias - variance decomposition</a>
+</td>
+<td>
+<span class="listing-author">Cuong Nguyen</span>
+</td>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/Gauss-Newton-matrix/index.html" class="no-external">Outer product approximation of Hessian matrix</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/Gauss-Newton-matrix/index.html" class="no-external">
-Hessian matrix is heavily studied in the optimization community. The purpose is to utilize the second order derivative to optimize a function of interest (also known as…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/Gauss-Newton-matrix/index.html" class="no-external">
-<div class="listing-date">
-Apr 12, 2021
-</div>
-<div class="listing-author">
-Cuong Nguyen
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1608940800000" data-listing-file-modified-sort="1755262728674" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1333">
-<div class="thumbnail"><a href="./posts/PAC-Bayes-bounds/index.html" class="no-external">
+</tr>
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<tr data-index="3" data-listing-date-sort="1637539200000" data-listing-file-modified-sort="1766718987711" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3343" data-listing-title-sort="From hyper-parameter optimisation to meta-learning" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Nov 22, 2021</span>
+</td>
+<td>
+<a href="./posts/meta-learning/index.html" class="title listing-title">From hyper-parameter optimisation to meta-learning</a>
+</td>
+<td>
+<span class="listing-author">Cuong Nguyen</span>
+</td>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/PAC-Bayes-bounds/index.html" class="no-external">PAC-Bayes bounds for generalisation error</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/PAC-Bayes-bounds/index.html" class="no-external">
-Properly approaximately correct (PAC) learning is a part of <em>statistical machine learning</em> which has been a fundamental course for most of graduate programs in machine…<em></em><em></em><span class="math display"></span><span class="math inline"></span><span class="math inline"></span><span class="math inline"></span><span class="math inline"></span><em></em><span class="math inline"></span><span class="math inline"></span><em></em><span class="math display"></span><span class="citation" data-cites="mcallester1999pac"></span>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/PAC-Bayes-bounds/index.html" class="no-external">
-<div class="listing-date">
-Dec 26, 2020
-</div>
-<div class="listing-author">
-Cuong Nguyen
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1606176000000" data-listing-file-modified-sort="1755262728676" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1525">
-<div class="thumbnail"><a href="./posts/vae-normalising-constant-matters/index.html" class="no-external">
+</tr>
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<tr data-index="4" data-listing-date-sort="1618185600000" data-listing-file-modified-sort="1766718987710" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1330" data-listing-title-sort="Outer product approximation of Hessian matrix" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Apr 12, 2021</span>
+</td>
+<td>
+<a href="./posts/Gauss-Newton-matrix/index.html" class="title listing-title">Outer product approximation of Hessian matrix</a>
+</td>
+<td>
+<span class="listing-author">Cuong Nguyen</span>
+</td>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/vae-normalising-constant-matters/index.html" class="no-external">VAE: normalising constant matters</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/vae-normalising-constant-matters/index.html" class="no-external">
-Variational auto-encoder (VAE) is one of the most popular generative models in machine learning nowadays. However, the rapid development of the field has made many machine…<span class="math inline"></span>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/vae-normalising-constant-matters/index.html" class="no-external">
-<div class="listing-date">
-Nov 24, 2020
-</div>
-<div class="listing-author">
-Cuong Nguyen
-</div>
-</a>
-</div>
-</div>
-</div>
+</tr>
+
+<tr data-index="5" data-listing-date-sort="1608940800000" data-listing-file-modified-sort="1766718987710" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1333" data-listing-title-sort="PAC-Bayes bounds for generalisation error" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Dec 26, 2020</span>
+</td>
+<td>
+<a href="./posts/PAC-Bayes-bounds/index.html" class="title listing-title">PAC-Bayes bounds for generalisation error</a>
+</td>
+<td>
+<span class="listing-author">Cuong Nguyen</span>
+</td>
+
+</tr>
+
+<tr data-index="6" data-listing-date-sort="1606176000000" data-listing-file-modified-sort="1766718987712" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1525" data-listing-title-sort="VAE: normalising constant matters" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Nov 24, 2020</span>
+</td>
+<td>
+<a href="./posts/vae-normalising-constant-matters/index.html" class="title listing-title">VAE: normalising constant matters</a>
+</td>
+<td>
+<span class="listing-author">Cuong Nguyen</span>
+</td>
+
+</tr>
+
+</tbody>
+</table>
 <div class="listing-no-matching d-none">No matching items</div>
 </div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    // Ensure there is a toggle, if there isn't float one in the top right
-    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-      const i = window.document.createElement("i");
-      i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
-    }
-    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -638,13 +412,14 @@ Cuong Nguyen
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -991,22 +766,30 @@ Cuong Nguyen
     (function(d) {
       d.querySelectorAll(".pseudocode-container").forEach(function(el) {
         let pseudocodeOptions = {
-          indentSize: el.dataset.indentSize || "1.2em",
-          commentDelimiter: el.dataset.commentDelimiter || "//",
-          lineNumber: el.dataset.lineNumber === "true" ? true : false,
-          lineNumberPunc: el.dataset.lineNumberPunc || ":",
-          noEnd: el.dataset.noEnd === "true" ? true : false,
-          titlePrefix: el.dataset.algTitle || "Algorithm"
+          indentSize: el.dataset.indentSize,
+          commentDelimiter: el.dataset.commentDelimiter,
+          lineNumber: el.dataset.lineNumber.toLowerCase() === "true",
+          lineNumberPunc: el.dataset.lineNumberPunc,
+          noEnd: el.dataset.noEnd.toLowerCase() === "true",
+          titlePrefix: el.dataset.captionPrefix
         };
         pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
       });
     })(document);
     (function(d) {
       d.querySelectorAll(".pseudocode-container").forEach(function(el) {
-        titleSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
-        titlePrefix = el.dataset.algTitle;
-        titleIndex = el.dataset.chapterLevel ? el.dataset.chapterLevel + "." + el.dataset.pseudocodeIndex : el.dataset.pseudocodeIndex;
-        titleSpan.innerHTML = titlePrefix + " " + titleIndex + " ";
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
       });
     })(document);
     </script>
