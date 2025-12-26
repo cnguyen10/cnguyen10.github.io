@@ -1,0 +1,169 @@
+---
+title: "About me"
+image: img/cuong.jpg
+page-layout: full
+about:
+  id: about-div
+  template: solana
+  image-shape: round
+  image-width: 10em
+  links:
+    - icon: mortarboard-fill
+      text: Google Scholar
+      href: https://scholar.google.com.au/citations?user=eAkq43kAAAAJ
+    - icon: github
+      text: Github
+      href: https://github.com/cnguyen10
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/ProbabilitaML
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/in/cuong-c-nguyen
+    - icon: envelope-at
+      text: Email
+      href: mailto:cuong.c.nguyen@hotmail.com
+format:
+  html:
+    toc: true
+    number-sections: false
+---
+:::{#about-div}
+:::{.text-start}
+I am Cuong Nguyen (and in my native &#x1f1fb;&#x1f1f3; language: Nguy&#x1EC5;n Cao C&#x01B0;&#x1EDD;ng).
+
+I am currently holding a lecturer position at the Centre for Vision, Speech and Signal Processing, University of Surrey, UK.
+
+I am interested in machine learning research, especially probabilistic graphical model, Bayesian inference and statistical learning.
+
+:::
+:::
+
+## Career
+
+<ul class="timeline-with-icons">
+    <li class="timeline-item mb-5">
+        <span class="timeline-icon">
+            <i class="bi bi-easel text-primary fa-sm fa-fw"></i>
+        </span>
+        <h5 class="fw-bold">Lecturer in People-Centred AI</h5>
+        <p class="text-muted mb-2">
+            <i class="bi bi-pin-map">&nbsp;</i>
+            University of Surrey, UK &#x1F1EC;&#x1F1E7;
+        </p>
+        <p class="text-muted mb-2">
+            <i class="bi bi-calendar">&nbsp;</i>
+            1 August 2025 - present
+        </p>
+        <p class="text-muted">
+            Research in human-centric AI
+        </p>
+    </li>
+    <li class="timeline-item mb-5">
+        <span class="timeline-icon">
+            <i class="bi bi-search text-primary fa-sm fa-fw"></i>
+        </span>
+        <h5 class="fw-bold">Post-doctoral Researcher</h5>
+        <p class="text-muted mb-2">
+            <i class="bi bi-pin-map">&nbsp;</i>
+            University of Surrey, UK &#x1F1EC;&#x1F1E7;
+        </p>
+        <p class="text-muted mb-2">
+            <i class="bi bi-calendar">&nbsp;</i>
+            7 March 2024 - 31 July 2025
+        </p>
+        <p class="text-muted">
+            Research in human-machine cooperation, especially learning to defer
+        </p>
+    </li>
+    <li class="timeline-item mb-5">
+        <span class="timeline-icon">
+            <i class="bi bi-search text-primary fa-sm fa-fw"></i>
+        </span>
+        <h5 class="fw-bold">Research Associate</h5>
+        <p class="text-muted mb-2">
+            <i class="bi bi-pin-map">&nbsp;</i>
+            The University of Adelaide, Australia &#x1F1E6;&#x1F1FA;
+        </p>
+        <p class="text-muted mb-2">
+            <i class="bi bi-calendar">&nbsp;</i>
+            8 April 2022 - 31 January 2024
+        </p>
+        <p class="text-muted">
+            Research in data-centric noisy-label learning
+        </p>
+    </li>
+    <li class="timeline-item mb-5">
+        <span class="timeline-icon">
+            <i class="bi bi-wrench text-primary fa-sm fa-fw"></i>
+        </span>
+        <h5 class="fw-bold">Process and Equipment Engineer</h5>
+        <p class="text-muted mb-2">
+            <i class="bi bi-pin-map">&nbsp;</i>
+            Intel Products Vietnam &#x1f1fb;&#x1f1f3;
+        </p>
+        <p class="text-muted mb-2">
+            <i class="bi bi-calendar">&nbsp;</i>
+            21 July 2012 - 16 July 2015
+        </p>
+        <p class="text-muted">
+            Maintain the production line of the classification module
+        </p>
+    </li>
+</ul>
+
+## Education
+
+<ul class="timeline-with-icons">
+    <li class="timeline-item mb-5">
+        <span class="timeline-icon">
+            <i class="bi bi-mortarboard text-primary fa-sm fa-fw"></i>
+        </span>
+        <h5 class="fw-bold">Doctor of Philosophy</h5>
+        <p class="text-muted mb-2">
+            <i class="bi bi-pin-map">&nbsp;</i>
+            The University of Adelaide, Australia &#x1F1E6;&#x1F1FA;
+        </p>
+        <p class="text-muted mb-2">
+            <i class="bi bi-calendar">&nbsp;</i>
+            16 April 2018 - 9 March 2022
+        </p>
+        <p class="text-muted">
+            Research in few-shot meta-learning under the supervision of Prof. Gustavo Carneiro and Dr Thanh-Toan Do
+        </p>
+    </li>
+    <li class="timeline-item mb-5">
+        <span class="timeline-icon">
+            <i class="bi bi-mortarboard text-primary fa-sm fa-fw"></i>
+        </span>
+        <h5 class="fw-bold">MPhil. in Electronic Engineering</h5>
+        <p class="text-muted mb-2">
+            <i class="bi bi-pin-map">&nbsp;</i>
+            The University of Adelaide, Australia &#x1F1E6;&#x1F1FA;
+        </p>
+        <p class="text-muted mb-2">
+            <i class="bi bi-calendar">&nbsp;</i>
+            2 August 2015 - 8 January 2018
+        </p>
+        <p class="text-muted">
+            Research in micro-scaled vibration energy harvesting under the supervision of Prof. Said Al-Sarawi and Prof. Damith Ranasinghe
+        </p>
+    </li>
+    <li class="timeline-item mb-5">
+        <span class="timeline-icon">
+            <i class="bi bi-mortarboard text-primary fa-sm fa-fw"></i>
+        </span>
+        <h5 class="fw-bold">BS. in Mechanical Engineering</h5>
+        <p class="text-muted mb-2">
+            <i class="bi bi-pin-map">&nbsp;</i>
+            Portland State University, US &#x1F1FA;&#x1F1F8;
+        </p>
+        <p class="text-muted mb-2">
+            <i class="bi bi-calendar">&nbsp;</i>
+            12 July 2010 - 17 June 2012
+        </p>
+        <p class="text-muted">
+            Awarded the Magna cum laude
+        </p>
+    </li>
+</ul>
