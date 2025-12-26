@@ -5,36 +5,75 @@ local function ensure_html_deps()
     scripts = { "pseudocode.min.js" },
     stylesheets = { "pseudocode.min.css" }
   })
+  quarto.doc.include_text("in-header", [[
+    <style type="text/css">
+    .ps-root .ps-algorithm {
+      border-top: 2px solid;
+      border-bottom: 2px solid;
+    }
+    .pseudocode-container {
+      text-align: left;
+    }
+    </style>
+  ]])
   quarto.doc.include_text("after-body", [[
     <script type="text/javascript">
     (function(d) {
       d.querySelectorAll(".pseudocode-container").forEach(function(el) {
         let pseudocodeOptions = {
-          indentSize: el.dataset.indentSize || "1.2em",
-          commentDelimiter: el.dataset.commentDelimiter || "//",
-          lineNumber: el.dataset.lineNumber === "true" ? true : false,
-          lineNumberPunc: el.dataset.lineNumberPunc || ":",
-          noEnd: el.dataset.noEnd === "true" ? true : false,
-          titlePrefix: el.dataset.algTitle || "Algorithm"
+          indentSize: el.dataset.indentSize,
+          commentDelimiter: el.dataset.commentDelimiter,
+          lineNumber: el.dataset.lineNumber.toLowerCase() === "true",
+          lineNumberPunc: el.dataset.lineNumberPunc,
+          noEnd: el.dataset.noEnd.toLowerCase() === "true",
+          titlePrefix: el.dataset.captionPrefix
         };
         pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
       });
     })(document);
     (function(d) {
       d.querySelectorAll(".pseudocode-container").forEach(function(el) {
-        titleSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
-        titlePrefix = el.dataset.algTitle;
-        titleIndex = el.dataset.chapterLevel ? el.dataset.chapterLevel + "." + el.dataset.pseudocodeIndex : el.dataset.pseudocodeIndex;
-        titleSpan.innerHTML = titlePrefix + " " + titleIndex + " ";
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
       });
     })(document);
     </script>
   ]])
 end
 
+local function nil_to_default(value, default)
+  if value == nil then
+    return default
+  else
+    return value
+  end
+end
+
 local function ensure_latex_deps()
   quarto.doc.use_latex_package("algorithm")
   quarto.doc.use_latex_package("algpseudocode")
+  quarto.doc.use_latex_package("caption")
+  quarto.doc.include_text("in-header", [[
+    \makeatletter
+    \newcommand\fs@nocaption{
+      \def\@fs@cfont{\bfseries}
+      \let\@fs@capt\floatc@plain
+      \def\@fs@pre{}%
+      \def\@fs@post{\kern2pt\hrule}%
+      \def\@fs@mid{\hrule\kern2pt}%
+      \let\@fs@iftopcapt\iftrue}
+    \makeatother
+  ]])
 end
 
 local function extract_source_code_options(source_code, render_type)
@@ -71,6 +110,16 @@ end
 local function render_pseudocode_block_html(global_options)
   ensure_html_deps()
 
+  if global_options.caption_align then
+    quarto.doc.include_text("in-header", [[
+      <style type="text/css">
+      .ps-algorithm > .ps-line {
+        text-align: ]] .. global_options.caption_align .. [[;
+      }
+      </style>
+    ]])
+  end
+
   local filter = {
     CodeBlock = function(el)
       if not el.attr.classes:includes("pseudocode") then
@@ -82,15 +131,23 @@ local function render_pseudocode_block_html(global_options)
       source_code = string.gsub(source_code, "%s*\\begin{algorithm}[^\n]+", "\\begin{algorithm}")
       source_code = string.gsub(source_code, "%s*\\begin{algorithmic}[^\n]+", "\\begin{algorithmic}")
 
-      local alg_id = options["label"]
+      local algorithm_id = options["label"]
       options["label"] = nil
-      options["html-alg-title"] = global_options.alg_title
-      options["html-pseudocode-index"] = global_options.html_current_index
-      global_options.html_current_index = global_options.html_current_index + 1
+      options["html-caption-prefix"] = global_options.caption_prefix
 
-      if global_options.chapter_level then
-        options["html-chapter-level"] = global_options.chapter_level
+      if global_options.number_with_in_chapter and global_options.html_chapter_level then
+        options["html-chapter-level"] = global_options.html_chapter_level
       end
+
+      if global_options.caption_number then
+        options["html-pseudocode-number"] = global_options.html_current_number
+      end
+
+      options["html-indent-size"] = nil_to_default(options["html-indent-size"], "1.2em")
+      options["html-comment-delimiter"] = nil_to_default(options["html-comment-delimiter"], "//")
+      options["html-line-number"] = string.lower(nil_to_default(options["html-line-number"], "true"))
+      options["html-line-number-punc"] = nil_to_default(options["html-line-number-punc"], ":")
+      options["html-no-end"] = string.lower(nil_to_default(options["html-no-end"], "false"))
 
       local data_options = {}
       for k, v in pairs(options) do
@@ -107,10 +164,13 @@ local function render_pseudocode_block_html(global_options)
       local outer_el = pandoc.Div(inner_el)
       outer_el.attr.classes = pandoc.List()
       outer_el.attr.classes:insert("pseudocode-container")
+      outer_el.attr.classes:insert("quarto-float")
       outer_el.attr.attributes = data_options
 
-      if alg_id then
-        outer_el.attr.identifier = alg_id
+      if algorithm_id then
+        outer_el.attr.identifier = algorithm_id
+        global_options.html_identifier_number_mapping[algorithm_id] = global_options.html_current_number
+        global_options.html_current_number = global_options.html_current_number + 1
       end
 
       return outer_el
@@ -122,7 +182,27 @@ end
 
 local function render_pseudocode_block_latex(global_options)
   ensure_latex_deps()
-  quarto.doc.include_text("before-body", "\\floatname{algorithm}{" .. global_options.alg_title .. "}")
+
+  if global_options.caption_number then
+    quarto.doc.include_text("before-body", "\\floatname{algorithm}{" .. global_options.caption_prefix .. "}")
+  else
+    quarto.doc.include_text("in-header", "\\DeclareCaptionLabelFormat{algnonumber}{" .. global_options.caption_prefix .. "}")
+    quarto.doc.include_text("before-body", "\\captionsetup[algorithm]{labelformat=algnonumber}")
+  end
+
+  if global_options.caption_align then
+    if global_options.caption_align == "center" then
+      quarto.doc.include_text("in-header", "\\captionsetup[algorithm]{justification=centering}")
+    elseif global_options.caption_align == "right" then
+      quarto.doc.include_text("in-header", "\\captionsetup[algorithm]{justification=raggedleft}")
+    else
+      quarto.doc.include_text("in-header", "\\captionsetup[algorithm]{justification=raggedright}")
+    end
+  end
+
+  if global_options.number_with_in_chapter then
+    quarto.doc.include_text("before-body", "\\numberwithin{algorithm}{chapter}")
+  end
 
   local filter = {
     CodeBlock = function(el)
@@ -132,16 +212,24 @@ local function render_pseudocode_block_latex(global_options)
 
       local options, source_code = extract_source_code_options(el.text, "pdf")
 
-      if options["pdf-placement"] then
-        source_code = string.gsub(source_code, "\\begin{algorithm}%s*\n", "\\begin{algorithm}[" .. options["pdf-placement"] .. "]\n")
-      end
+      options["pdf-placement"] = nil_to_default(options["pdf-placement"], "H")
+      source_code = string.gsub(source_code, "\\begin{algorithm}%s*\n",
+        "\\begin{algorithm}[" .. options["pdf-placement"] .. "]\n")
 
-      if not options["pdf-line-number"] or options["pdf-line-number"] == "true" then
+      if string.lower(nil_to_default(options["pdf-line-number"], "true")) == "true" then
         source_code = string.gsub(source_code, "\\begin{algorithmic}%s*\n", "\\begin{algorithmic}[1]\n")
+      else
+        source_code = string.gsub(source_code, "\\begin{algorithmic}%s*\n", "\\begin{algorithmic}[0]\n")
       end
 
       if options["label"] then
-        source_code = string.gsub(source_code, "\\begin{algorithmic}", "\\label{" .. options["label"] .. "}\n\\begin{algorithmic}")
+        source_code = string.gsub(source_code, "\\caption{", "\\caption{\\label{" .. options["label"] .. "}")
+      end
+
+      if string.find(source_code, "\\caption{") then
+        source_code = "\\floatstyle{ruled}\n\\restylefloat{algorithm}\n" .. source_code .. "\n\\floatstyle{plain}\n"
+      else
+        source_code = "\\floatstyle{nocaption}\n\\restylefloat{algorithm}\n" .. source_code .. "\n\\floatstyle{plain}\n"
       end
 
       return pandoc.RawInline("latex", source_code)
@@ -172,17 +260,21 @@ local function render_pseudocode_ref_html(global_options)
     Cite = function(el)
       local cite_text = pandoc.utils.stringify(el.content)
 
-      for k, v in pairs(global_options.html_identifier_index_mapping) do
+      for k, v in pairs(global_options.html_identifier_number_mapping) do
         if cite_text == "@" .. k then
           local link_src = "#" .. k
-          local alg_id = v
+          local algorithm_id = v
 
-          if global_options.chapater_level then
-            alg_id = global_options.chapater_level .. "." .. alg_id
+          if global_options.html_chapter_level then
+            algorithm_id = global_options.html_chapter_level .. "." .. algorithm_id
           end
 
-          local link_text = global_options.alg_prefix .. " " .. alg_id
-          return pandoc.Link(link_text, link_src)
+          local link_text = global_options.reference_prefix .. " " .. algorithm_id
+          local link = pandoc.Link(link_text, link_src)
+          link.attr.classes = pandoc.List()
+          link.attr.classes:insert("quarto-xref")
+
+          return link
         end
       end
     end
@@ -196,8 +288,9 @@ local function render_pseudocode_ref_latex(global_options)
     Cite = function(el)
       local cite_text = pandoc.utils.stringify(el.content)
 
-      if string.match(cite_text, "^@alg-") then
-        return pandoc.RawInline("latex", " " .. global_options.alg_prefix .. "~\\ref{" .. string.gsub(cite_text, "^@", "") .. "} " )
+      if string.match(cite_text, "^@algo-") then
+        return pandoc.RawInline("latex",
+          global_options.reference_prefix .. "~\\ref{" .. string.gsub(cite_text, "^@", "") .. "}")
       end
     end
   }
@@ -223,36 +316,43 @@ end
 
 function Pandoc(doc)
   local global_options = {
-    alg_title = "Algorithm",
-    alg_prefix = "Algorithm",
-    chapater_level = nil,
-    html_current_index = 1,
-    html_identifier_index_mapping = {}
+    caption_prefix = "Algorithm",
+    reference_prefix = "Algorithm",
+    caption_number = true,
+    caption_align = "left",
+    number_with_in_chapter = false,
+    html_chapter_level = nil,
+    html_current_number = 1,
+    html_identifier_number_mapping = {}
   }
 
   if doc.meta["pseudocode"] then
-    global_options.alg_title = pandoc.utils.stringify(doc.meta["pseudocode"]["alg-title"]) or "Algorithm"
-    global_options.alg_prefix = pandoc.utils.stringify(doc.meta["pseudocode"]["alg-prefix"]) or "Algorithm"
+    global_options.caption_prefix = pandoc.utils.stringify(nil_to_default(doc.meta["pseudocode"]["caption-prefix"],
+      global_options.caption_prefix))
+    global_options.reference_prefix = pandoc.utils.stringify(nil_to_default(doc.meta["pseudocode"]["reference-prefix"],
+      global_options.reference_prefix))
+    global_options.caption_number = nil_to_default(doc.meta["pseudocode"]["caption-number"],
+      global_options.caption_number)
+    global_options.caption_align = pandoc.utils.stringify(nil_to_default(doc.meta["pseudocode"]["caption-align"],
+      global_options.caption_align))
   end
 
   if doc.meta["book"] then
-    local _, input_qmd_filename = string.match(quarto.doc["input_file"], "^(.-)([^\\/]-%.([^\\/%.]-))$")
-    local renders = doc.meta["book"]["render"]
+    global_options.number_with_in_chapter = true
 
-    for _, render in pairs(renders) do
-      if render["file"] and render["number"] and pandoc.utils.stringify(render["file"]) == input_qmd_filename then
-        global_options.chapater_level = pandoc.utils.stringify(render["number"])
+    if quarto.doc.is_format("html") then
+      local _, input_qmd_filename = string.match(quarto.doc["input_file"], "^(.-)([^\\/]-%.([^\\/%.]-))$")
+      local renders = doc.meta["book"]["render"]
+
+      for _, render in pairs(renders) do
+        if render["file"] and render["number"] and pandoc.utils.stringify(render["file"]) == input_qmd_filename then
+          global_options.html_chapter_level = pandoc.utils.stringify(render["number"])
+        end
       end
     end
   end
 
   doc = doc:walk(render_pseudocode_block(global_options))
-
-  for _, el in pairs(doc.blocks) do
-    if el.t == "Div" and el.attr and el.attr.classes:includes("pseudocode-container") then
-      global_options.html_identifier_index_mapping[el.identifier] = el.attr.attributes["data-pseudocode-index"]
-    end
-  end
 
   return doc:walk(render_pseudocode_ref(global_options))
 end
