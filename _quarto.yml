@@ -41,7 +41,7 @@ format:
       text: ''
     citations-hover: true
     footnotes-hover: true
-    linkcolor: royalblue
+    linkcolor: "#006400"
 
 filters:
   - pseudocode

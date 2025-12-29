@@ -8,25 +8,30 @@ include-after-body:
   text: <script type="text/javascript" src="js/fetch_orcid.js"></script>
 ---
 
-::: {.grid .gap-0 .row-gap-0 .column-gap-0}
+::: {.grid .gap-0 .row-gap-0 .column-gap-2}
 
-::: {.g-col-8 .ms-0 .mb-0 .pb-0}
-[<i class="bi bi-mortarboard"></i> Google Scholar](https://scholar.google.co.uk/citations?user=eAkq43kAAAAJ){.btn .btn-outline-success}
-&nbsp;
-[<i class="bi bi-linkedin"></i> LinkedIn](https://linkedin.com/in/cuong-c-nguyen){.btn .btn-outline-success}
+::: {.g-col-12 .g-col-md-9 .ms-0 .mb-0 .pb-0}
 
+::: {.grid .row-gap-0}
+::: {.g-col-12 .g-col-md-4 .ms-0 .mb-0 .pb-0}
+[<i class="bi bi-mortarboard"></i> Google Scholar](https://scholar.google.co.uk/citations?user=eAkq43kAAAAJ){.btn .btn-outline-success .w-100}
+:::
+
+::: {.g-col-12 .g-col-md-4 .ms-0 .mb-0 .pb-0}
+[<i class="bi bi-linkedin"></i> LinkedIn](https://linkedin.com/in/cuong-c-nguyen){.btn .btn-outline-success .w-100}
+:::
+:::
+
+::: {.g-col-12 .g-col-md-12}
 I am a *Lecturer in People-centred AI* at the Centre for Vision, Speech and Signal Processing, University of Surrey.
 
-
 My research focuses on probabilistic machine learning, uncertainty modelling, and AI systems that support human decision-making.
+:::
 
 :::
 
-::: {.g-col-1 .ms-3 .mb-0 .pb-0}
-:::
-
-::: {.g-col-3 .ms-3 .mb-0 .pb-0}
-![](img/cuong.jpg){fig-alt="Cuong's photo" style="border-radius: 50%;"}
+::: {.g-col-12 .g-col-md-3 .ms-3 .mb-0 .pb-0 .text-center}
+![](img/cuong.png){fig-alt="Cuong's photo" style="border-radius: 50%; max-width: 200px;"}
 :::
 
 :::

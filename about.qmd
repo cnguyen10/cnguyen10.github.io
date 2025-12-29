@@ -1,6 +1,6 @@
 ---
 title: "About me"
-image: img/cuong.jpg
+image: img/cuong.png
 page-layout: full
 about:
   id: about-div
