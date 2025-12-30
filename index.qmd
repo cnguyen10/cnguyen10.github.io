@@ -10,14 +10,14 @@ include-after-body:
 
 ::: {.grid .gap-0 .row-gap-0 .column-gap-2}
 
-::: {.g-col-12 .g-col-md-9 .ms-0 .mb-0 .pb-0}
+::: {.g-col-12 .g-col-md-9 .g-col-lg-9 .ms-0 .mb-0 .pb-0}
 
 ::: {.grid .row-gap-0}
-::: {.g-col-12 .g-col-md-4 .ms-0 .mb-0 .pb-0}
+::: {.g-col-12 .g-col-md-6 .g-col-lg-4 .ms-0 .mb-0 .pb-0}
 [<i class="bi bi-mortarboard"></i> Google Scholar](https://scholar.google.co.uk/citations?user=eAkq43kAAAAJ){.btn .btn-outline-success .w-100}
 :::
 
-::: {.g-col-12 .g-col-md-4 .ms-0 .mb-0 .pb-0}
+::: {.g-col-12 .g-col-md-6 .g-col-lg-4 .ms-0 .mb-0 .pb-0}
 [<i class="bi bi-linkedin"></i> LinkedIn](https://linkedin.com/in/cuong-c-nguyen){.btn .btn-outline-success .w-100}
 :::
 :::
@@ -30,7 +30,7 @@ My research focuses on probabilistic machine learning, uncertainty modelling, an
 
 :::
 
-::: {.g-col-12 .g-col-md-3 .ms-3 .mb-0 .pb-0 .text-center}
+::: {.g-col-12 .g-col-md-3 .g-col-lg-3 .ms-3 .mb-0 .pb-0 .text-center}
 ![](img/cuong.png){fig-alt="Cuong's photo" style="border-radius: 50%; max-width: 200px;"}
 :::
 
@@ -43,3 +43,36 @@ Please refer to my Google Scholar, or click the button below to retrieve the lis
 <button id="fetch-button" type="button" class="btn btn-outline-success">Show publications</button>
 <div id="publication-list"></div>
 <button id="load-more-btn" type="button" class="btn btn-outline-success" style="display:none;" onclick="fetchMorePublications()">Display More</button>
+
+## <i class="bi bi-bluesky text-primary"></i> News
+
+::: {#my-bsky-feed .lozad style="min-height: 300px;"}
+:::
+<script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+
+<script>
+  const observer = lozad('#my-bsky-feed', {
+    load: function(el) {
+      // 1. Import the Bluesky script module
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = "https://cdn.jsdelivr.net/npm/bsky-embed/dist/bsky-embed.es.js";
+      document.head.appendChild(script);
+
+      // Add the component attributes
+      el.innerHTML = `
+        <bsky-embed
+          username="probabilita.bsky.social"
+          limit="3"
+          disable-images="false"
+          disable-videos="false"
+          disable-autoplay="true"
+          load-more="true"
+          date-format='{"type":"absolute","locale":"en-GB","options":{"year":"numeric", "month":"short", "day":"numeric"}}'
+          custom-styles="img.rounded-full { display: none; } span.font-bold {display: none;}"
+        ></bsky-embed>`;
+      console.log("Bluesky feed lazily loaded.");
+    }
+  });
+  observer.observe();
+</script>
