@@ -439,7 +439,7 @@ q^{*} = \operatorname*{argmax}_{q} \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\ma
 \max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
 </span></p>
 <p>The whole EM algorithm can be referred to <a href="#algo-em" class="quarto-xref">Algorithm 1</a>.</p>
-<div id="algo-em" class="pseudocode-container quarto-float" data-pseudocode-number="1" data-line-number="true" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-comment-delimiter="//" data-no-end="false" data-line-number-punc=":">
+<div id="algo-em" class="pseudocode-container quarto-float" data-no-end="false" data-pseudocode-number="1" data-line-number="true" data-indent-size="1.2em" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \caption{Expectation - Maximisation algorithm} \begin{algorithmic} \Procedure{EM}{$\mathbf{x}$} \State initialise mixture coefficient $\pi$ \State initialise $\theta$ \While{not converged} \State calculate the ELBO: $Q \gets \operatorname{E-step}(\mathbf{x}, \pi, \theta)$ \State maximise the ELBO: $\pi, \theta \gets \operatorname{M-step}(Q, \pi, \theta)$ \EndWhile \State return $\pi, \theta$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>

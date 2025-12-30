@@ -153,6 +153,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
    
   <ul>
   <li><a href="#publications" id="toc-publications" class="nav-link active" data-scroll-target="#publications">📚 Publications</a></li>
+  <li><a href="#news" id="toc-news" class="nav-link" data-scroll-target="#news"><i class="bi bi-bluesky text-primary"></i> News</a></li>
   </ul>
 </nav>
     </div>
@@ -179,12 +180,12 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 
 
 <div class="grid gap-0 row-gap-0 column-gap-2">
-<div class="g-col-12 g-col-md-9 ms-0 mb-0 pb-0">
+<div class="g-col-12 g-col-md-9 g-col-lg-9 ms-0 mb-0 pb-0">
 <div class="grid row-gap-0">
-<div class="g-col-12 g-col-md-4 ms-0 mb-0 pb-0">
+<div class="g-col-12 g-col-md-6 g-col-lg-4 ms-0 mb-0 pb-0">
 <p><a href="https://scholar.google.co.uk/citations?user=eAkq43kAAAAJ" class="btn btn-outline-success w-100"><i class="bi bi-mortarboard"></i> Google Scholar</a></p>
 </div>
-<div class="g-col-12 g-col-md-4 ms-0 mb-0 pb-0">
+<div class="g-col-12 g-col-md-6 g-col-lg-4 ms-0 mb-0 pb-0">
 <p><a href="https://linkedin.com/in/cuong-c-nguyen" class="btn btn-outline-success w-100"><i class="bi bi-linkedin"></i> LinkedIn</a></p>
 </div>
 </div>
@@ -193,7 +194,7 @@ gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 <p>My research focuses on probabilistic machine learning, uncertainty modelling, and AI systems that support human decision-making.</p>
 </div>
 </div>
-<div class="g-col-12 g-col-md-3 ms-3 mb-0 pb-0 text-center">
+<div class="g-col-12 g-col-md-3 g-col-lg-3 ms-3 mb-0 pb-0 text-center">
 <p><a href="img/cuong.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="img/cuong.png" class="img-fluid" style="border-radius: 50%; max-width: 200px;" alt="Cuong's photo"></a></p>
 </div>
 </div>
@@ -209,6 +210,39 @@ Show publications
 <button id="load-more-btn" type="button" class="btn btn-outline-success" style="display:none;" onclick="fetchMorePublications()">
 Display More
 </button>
+</section>
+<section id="news" class="level2">
+<h2 class="anchored" data-anchor-id="news"><i class="bi bi-bluesky text-primary"></i> News</h2>
+<div id="my-bsky-feed" class="lozad" style="min-height: 300px;">
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+<script>
+  const observer = lozad('#my-bsky-feed', {
+    load: function(el) {
+      // 1. Import the Bluesky script module
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = "https://cdn.jsdelivr.net/npm/bsky-embed/dist/bsky-embed.es.js";
+      document.head.appendChild(script);
+
+      // Add the component attributes
+      el.innerHTML = `
+        <bsky-embed
+          username="probabilita.bsky.social"
+          limit="3"
+          disable-images="false"
+          disable-videos="false"
+          disable-autoplay="true"
+          load-more="true"
+          date-format='{"type":"absolute","locale":"en-GB","options":{"year":"numeric", "month":"short", "day":"numeric"}}'
+          custom-styles="img.rounded-full { display: none; } span.font-bold {display: none;}"
+        ></bsky-embed>`;
+      console.log("Bluesky feed lazily loaded.");
+    }
+  });
+  observer.observe();
+</script>
 
 
 </section>
