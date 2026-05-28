@@ -1,5 +1,11 @@
 [
   {
+    "listing": "/presentation.html",
+    "items": [
+      "/presentations/pecman/index.html"
+    ]
+  },
+  {
     "listing": "/blog.html",
     "items": [
       "/posts/stochastic_grad_hamiltonian_monte_carlo/index.html",
@@ -9,12 +15,6 @@
       "/posts/Gauss-Newton-matrix/index.html",
       "/posts/PAC-Bayes-bounds/index.html",
       "/posts/vae-normalising-constant-matters/index.html"
-    ]
-  },
-  {
-    "listing": "/presentation.html",
-    "items": [
-      "/presentations/pecman/index.html"
     ]
   }
 ]

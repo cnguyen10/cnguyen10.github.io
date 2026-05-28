@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -44,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-339d622166834a96f42c2a0c40ee91cc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-639b3ae514d318c81952ca5392232d65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -112,23 +147,6 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </script>
-<style>
-
-      .quarto-title-block .quarto-title-banner h1,
-      .quarto-title-block .quarto-title-banner h2,
-      .quarto-title-block .quarto-title-banner h3,
-      .quarto-title-block .quarto-title-banner h4,
-      .quarto-title-block .quarto-title-banner h5,
-      .quarto-title-block .quarto-title-banner h6
-      {
-        color: white;
-      }
-
-      .quarto-title-block .quarto-title-banner {
-        color: white;
-background: #006400;
-      }
-</style>
 
     <style type="text/css">
     .ps-root .ps-algorithm {
@@ -197,7 +215,7 @@ window.Quarto = {
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -234,37 +252,38 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Blog</h1>
-            <p class="subtitle lead">Formulating probabilistic machine learning and optimisation concepts through mathematics.</p>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta column-page-left">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="QmF5ZXNpYW4lMjBJbmZlcmVuY2U=">Bayesian Inference <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2x1c3RlcmluZw==">Clustering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGVlcCUyMExlYXJuaW5n">Deep Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RXhwZWN0YXRpb24tTWF4aW1pemF0aW9u">Expectation-Maximization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuZXJhbGlzYXRpb24=">Generalisation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuZXJhdGl2ZSUyME1vZGVscw==">Generative Models <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGF0ZW50JTIwVmFyaWFibGVz">Latent Variables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGluZWFyJTIwQWxnZWJyYQ==">Linear Algebra <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TUNNQw==">MCMC <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWV0YS1MZWFybmluZw==">Meta-Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="T3B0aW1pc2F0aW9u">Optimisation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="U3RhdGlzdGljYWwlMjBMZWFybmluZyUyMFRoZW9yeQ==">Statistical Learning Theory <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3RhdGlzdGljcw==">Statistics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="VHJhbnNmZXIlMjBMZWFybmluZw==">Transfer Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VmFyaWF0aW9uYWwlMjBJbmZlcmVuY2U=">Variational Inference <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Blog</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Formulating probabilistic machine learning and optimisation concepts through mathematics.</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
 
 
 
 
 
-
-
+<!-- -->
 
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
@@ -291,7 +310,7 @@ window.Quarto = {
     </div>
 </div>
 <div class="list grid quarto-listing-cols-2">
-<div class="g-col-1" data-index="0" data-categories="QmF5ZXNpYW4lMjBJbmZlcmVuY2UlMkNNQ01DJTJDU3RhdGlzdGljcw==" data-listing-date-sort="1700352000000" data-listing-file-modified-sort="1779955694130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4516">
+<div class="g-col-1" data-index="0" data-categories="QmF5ZXNpYW4lMjBJbmZlcmVuY2UlMkNNQ01DJTJDU3RhdGlzdGljcw==" data-listing-date-sort="1700352000000" data-listing-file-modified-sort="1779957902774" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4516">
 <a href="./posts/stochastic_grad_hamiltonian_monte_carlo/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -319,7 +338,7 @@ Nov 19, 2023
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="RXhwZWN0YXRpb24tTWF4aW1pemF0aW9uJTJDQ2x1c3RlcmluZyUyQ0xhdGVudCUyMFZhcmlhYmxlcw==" data-listing-date-sort="1658016000000" data-listing-file-modified-sort="1779955694130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4608">
+<div class="g-col-1" data-index="1" data-categories="RXhwZWN0YXRpb24tTWF4aW1pemF0aW9uJTJDQ2x1c3RlcmluZyUyQ0xhdGVudCUyMFZhcmlhYmxlcw==" data-listing-date-sort="1658016000000" data-listing-file-modified-sort="1779957902773" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4608">
 <a href="./posts/mixture-models/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -347,7 +366,7 @@ Jul 17, 2022
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDU3RhdGlzdGljcw==" data-listing-date-sort="1651536000000" data-listing-file-modified-sort="1779955694129" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4401">
+<div class="g-col-1" data-index="2" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDU3RhdGlzdGljcw==" data-listing-date-sort="1651536000000" data-listing-file-modified-sort="1779957902773" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4401">
 <a href="./posts/bias-variance-decomposition/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -373,7 +392,7 @@ May 3, 2022
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="3" data-categories="TWV0YS1MZWFybmluZyUyQ1RyYW5zZmVyJTIwTGVhcm5pbmclMkNPcHRpbWlzYXRpb24=" data-listing-date-sort="1637539200000" data-listing-file-modified-sort="1779955694130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3343">
+<div class="g-col-1" data-index="3" data-categories="TWV0YS1MZWFybmluZyUyQ1RyYW5zZmVyJTIwTGVhcm5pbmclMkNPcHRpbWlzYXRpb24=" data-listing-date-sort="1637539200000" data-listing-file-modified-sort="1779957902773" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3343">
 <a href="./posts/meta-learning/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -401,7 +420,7 @@ Nov 22, 2021
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="4" data-categories="T3B0aW1pc2F0aW9uJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDTGluZWFyJTIwQWxnZWJyYQ==" data-listing-date-sort="1618185600000" data-listing-file-modified-sort="1779955694128" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1330">
+<div class="g-col-1" data-index="4" data-categories="T3B0aW1pc2F0aW9uJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDTGluZWFyJTIwQWxnZWJyYQ==" data-listing-date-sort="1618185600000" data-listing-file-modified-sort="1779957902772" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1330">
 <a href="./posts/Gauss-Newton-matrix/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -429,7 +448,7 @@ Apr 12, 2021
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="5" data-categories="U3RhdGlzdGljYWwlMjBMZWFybmluZyUyMFRoZW9yeSUyQ0dlbmVyYWxpc2F0aW9u" data-listing-date-sort="1608940800000" data-listing-file-modified-sort="1779955694129" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1333">
+<div class="g-col-1" data-index="5" data-categories="U3RhdGlzdGljYWwlMjBMZWFybmluZyUyMFRoZW9yeSUyQ0dlbmVyYWxpc2F0aW9u" data-listing-date-sort="1608940800000" data-listing-file-modified-sort="1779957902773" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1333">
 <a href="./posts/PAC-Bayes-bounds/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -455,7 +474,7 @@ Dec 26, 2020
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="6" data-categories="RGVlcCUyMExlYXJuaW5nJTJDR2VuZXJhdGl2ZSUyME1vZGVscyUyQ1ZhcmlhdGlvbmFsJTIwSW5mZXJlbmNl" data-listing-date-sort="1606176000000" data-listing-file-modified-sort="1779955694130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1525">
+<div class="g-col-1" data-index="6" data-categories="RGVlcCUyMExlYXJuaW5nJTJDR2VuZXJhdGl2ZSUyME1vZGVscyUyQ1ZhcmlhdGlvbmFsJTIwSW5mZXJlbmNl" data-listing-date-sort="1606176000000" data-listing-file-modified-sort="1779957902774" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1525">
 <a href="./posts/vae-normalising-constant-matters/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -556,6 +575,57 @@ Nov 24, 2020
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -885,7 +955,24 @@ Nov 24, 2020
       }
     }
   });
-  </script>
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="an">title:</span><span class="co"> "Blog"</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="an">subtitle:</span><span class="co"> "Formulating probabilistic machine learning and optimisation concepts through mathematics."</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="an">listing:</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">  contents: posts</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">  sort: "date desc"</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">  type: grid</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">  categories: true</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">  sort-ui: true</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">  filter-ui: true</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">  feed: true</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">  grid-columns: 2</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co">  grid-item-border: true</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co">  fields: [date, title, description, categories, reading-time]</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="an">page-layout:</span><span class="co"> full</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
     <script type="text/javascript">
     (function(d) {

@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -45,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-339d622166834a96f42c2a0c40ee91cc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-639b3ae514d318c81952ca5392232d65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -216,7 +251,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">VAE: normalising constant matters</h1>
+<div class="quarto-title-block"><div><h1 class="title">VAE: normalising constant matters</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
   <div class="quarto-categories">
     <div class="quarto-category">Deep Learning</div>
     <div class="quarto-category">Generative Models</div>
@@ -334,6 +369,8 @@ Figure 1. The reconstructed images from VAE with β = 1 (top) and β ≪ 1 (bott
 </ol>
 
 
+<!-- -->
+
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nguyen2020,
@@ -417,6 +454,57 @@ November 24. <a href="https://cnguyen10.github.io/posts/vae-normalising-constant
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -746,7 +834,123 @@ November 24. <a href="https://cnguyen10.github.io/posts/vae-normalising-constant
       }
     }
   });
-  </script>
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="an">title:</span><span class="co"> "VAE: normalising constant matters"</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="an">date:</span><span class="co"> "2020-11-24"</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="an">categories:</span><span class="co"> [Deep Learning, Generative Models, Variational Inference]</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="an">description:</span><span class="co"> "Why balancing reconstruction vs. KL divergence with a β weight is often just a workaround for neglecting the normalising constant."</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">---</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a>Variational auto-encoder (VAE) is one of the most popular generative models in machine learning nowadays. However, the rapid development of the field has made many machine learning practitioners (or, maybe only me) focus too much on deep learning without paying much attention to some fundamentals, such as linear regression. That causes much confusion due to the discrepancy between the derivation and the practical implementation, in which the regularization of the loss, or specifically the Kullback-Leibler (KL) divergence, is weighted by some factor $\beta$. I myself did experience and struggle at the beginning of my research. Even though weighting the KL divergence term by a factor $\beta \ll 1 $ could temporarily resolve the issue, I has been questioning why the balancing between reconstruction and KL divergence is necessary. Eventually, the answer is quite simple: the normalising constant in the reconstruction loss (or negative log-likelihood) that has been often ignored. This ignorance is the main cause of the imbalance between the two losses.</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">## Variational auto-encoder</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>Given data points $\mathbf{x} = <span class="sc">\{</span>x_{i}<span class="sc">\}</span>_{n=1}^{N}$, the model of a VAE assumes that there is a corresponding latent variable $\mathbf{z} = \{ z_{n} \}_{n=1}^{N}$ that generates data $\mathbf{x}$. In short, the objective function of a VAE is to minimise the variational-free energy (VFE) given as:</span>
+<span id="cb1-12"><a href="#cb1-12"></a>$$</span>
+<span id="cb1-13"><a href="#cb1-13"></a>    \min_{q} \underbrace{\mathbb{E}_{q(\mathbf{z})} \left[ - \ln p(\mathbf{x} | \mathbf{z}) \right]}_{\text{reconstruction loss}} + \textcolor{red}{\beta} \mathrm{KL} \left<span class="co">[</span><span class="ot"> q(\mathbf{z}) \Vert p(\mathbf{x}) \right</span><span class="co">]</span>, \tag{vfe}</span>
+<span id="cb1-14"><a href="#cb1-14"></a>$$</span>
+<span id="cb1-15"><a href="#cb1-15"></a>where $q(\mathbf{z})$ is the variational distribution of the latent variable, and $\textcolor{red}{\beta} = 1$ is the weighting factor.</span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>In practice, people often "specify" the reconstruction loss as mean squared error (MSE) or binary cross-entropy loss and use gradient descent to minimise VFE. With $\beta = 1$ as in (vfe), the reconstruction of different images seem to be the same image (see Figure 1 (top)), whereas setting $\beta \ll 1 $ results in much better reconstructed images (see Figure 1 (bottom)).</span>
+<span id="cb1-18"><a href="#cb1-18"></a></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="dt">&lt;</span><span class="kw">figure</span><span class="dt">&gt;</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>    <span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://i.stack.imgur.com/QKrOM.jpg"</span><span class="ot"> alt</span><span class="op">=</span><span class="st">"same reconstructed images"</span><span class="ot"> style</span><span class="op">=</span><span class="st">"width:100%"</span><span class="dt">&gt;</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>    <span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://i.stack.imgur.com/63xvp.jpg"</span><span class="ot"> alt</span><span class="op">=</span><span class="st">"decent reconstructed images"</span><span class="ot"> style</span><span class="op">=</span><span class="st">"width:100%"</span><span class="dt">&gt;</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>    <span class="dt">&lt;</span><span class="kw">figcaption</span><span class="dt">&gt;</span>Figure 1. The reconstructed images from VAE with <span class="dv">&amp;beta;</span> = 1 (top) and <span class="dv">&amp;beta;</span> <span class="dv">&amp;Lt;</span> 1 (bottom). Source: <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://stats.stackexchange.com/questions/341954/balancing-reconstruction-vs-kl-loss-variational-autoencoder"</span><span class="dt">&gt;</span>stats.stackexchange.com<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">figcaption</span><span class="dt">&gt;</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="dt">&lt;/</span><span class="kw">figure</span><span class="dt">&gt;</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a>This does not make me satisfied, although some justifications for setting $\beta$ to some small value are made. For example:</span>
+<span id="cb1-26"><a href="#cb1-26"></a><span class="ss">- </span>Setting $\beta \ll 1$ leads to even a "further lower-bound". Hence, maximizing this "further lower-bound" is still mathematically reasonable. However, this bound is very loose. Can we do something better?</span>
+<span id="cb1-27"><a href="#cb1-27"></a><span class="ss">- </span>One can cast the problem to a constrained optimisation as in <span class="co">[</span><span class="ot">&amp;beta;-VAE paper</span><span class="co">][beta vae paper]</span>. However, <span class="dv">&amp;beta;</span> in that case is the Lagrange multiplier, and should be obtained through the optimisation. Is it mathematically correct if considering <span class="dv">&amp;beta;</span> as a hyper-parameter? I doubt that.</span>
+<span id="cb1-28"><a href="#cb1-28"></a></span>
+<span id="cb1-29"><a href="#cb1-29"></a>Later on, I figure out that the main reason of the imbalance between the two losses is due to the "specification" of the reconstruction loss. Simply specifying the type of the loss $-\ln p(\mathbf{x} \vert \mathbf{z})$ as MSE or binary cross-entropy would ignore the normalising constant, resulting in an incorrect reconstruction loss. The correct way is to specify the modelling assumption of the likelihood $p(\mathbf{x} \vert \mathbf{z})$, which, in the case of VAE, goes back to linear regression.</span>
+<span id="cb1-30"><a href="#cb1-30"></a></span>
+<span id="cb1-31"><a href="#cb1-31"></a>In the following sections, $f(\mathbf{z}; \theta)$ denotes the output of the decoder parameterized by a neural network with weight $\theta$. Usually, $f(\mathbf{z}; \theta)$ is assumed to be the reconstructed images, but this might not always true depending on the assumption used.</span>
+<span id="cb1-32"><a href="#cb1-32"></a></span>
+<span id="cb1-33"><a href="#cb1-33"></a><span class="fu">## Reconstruction likelihood with Gaussian assumption</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>This corresponds to linear regression with Gaussian noise assumption.</span>
+<span id="cb1-35"><a href="#cb1-35"></a></span>
+<span id="cb1-36"><a href="#cb1-36"></a>The variable of interest $\mathbf{x}$ is assumed to be a deterministic function $f(\mathbf{z}; \theta)$ with additional Gaussian noise, so that:</span>
+<span id="cb1-37"><a href="#cb1-37"></a>$$</span>
+<span id="cb1-38"><a href="#cb1-38"></a>    \mathbf{x} = f(\mathbf{z}; \theta) + \epsilon,</span>
+<span id="cb1-39"><a href="#cb1-39"></a>$$</span>
+<span id="cb1-40"><a href="#cb1-40"></a>where: $\epsilon \sim \mathcal{N}\left( \epsilon; 0, \Lambda^{-1} \right)$. Thus, the reconstruction likelihood can be written as:</span>
+<span id="cb1-41"><a href="#cb1-41"></a>$$</span>
+<span id="cb1-42"><a href="#cb1-42"></a>    p(\mathbf{x} \vert \mathbf{z}, \theta, \Lambda) = \mathcal{N}(\mathbf{x}; f(\mathbf{z}; \theta), \Lambda^{-1}) = \prod_{n=1}^{N} \mathcal{N}(x_{n}; f(z_{n}; \theta), \Lambda^{-1}).</span>
+<span id="cb1-43"><a href="#cb1-43"></a>$$</span>
+<span id="cb1-44"><a href="#cb1-44"></a>Hence, the negative log-likelihood, or the reconstruction loss in the VAE, can be expressed as:</span>
+<span id="cb1-45"><a href="#cb1-45"></a>$$</span>
+<span id="cb1-46"><a href="#cb1-46"></a>    -\ln p(\mathbf{x} \vert \mathbf{z}, \theta, \Lambda) = - \frac{N}{2} \ln \frac{\Lambda}{2 \pi} + \Lambda \times \frac{1}{2} \underbrace{\sum_{n=1}^{N} \left<span class="co">[</span><span class="ot"> x_{n} - f(z_{n}; \theta) \right</span><span class="co">]</span>^{2}}_{N \times \text{MSE}}. \tag{nll-G}</span>
+<span id="cb1-47"><a href="#cb1-47"></a>$$</span>
+<span id="cb1-48"><a href="#cb1-48"></a></span>
+<span id="cb1-49"><a href="#cb1-49"></a><span class="at">&gt; Note that current practice uses only MSE, which ignores the first term and the scaling factor relating to the noise precision $\Lambda$.</span></span>
+<span id="cb1-50"><a href="#cb1-50"></a></span>
+<span id="cb1-51"><a href="#cb1-51"></a>Under this modelling approach, the decoder would consist of 2 networks: one for mean $\bar{x} = f(z; \theta)$ and the other for noise precision $\Lambda = g(z; \phi)$. Of course, one can consider $\Lambda$ as a hyper-parameter to simplify further the implementation.</span>
+<span id="cb1-52"><a href="#cb1-52"></a></span>
+<span id="cb1-53"><a href="#cb1-53"></a>The "full" loss function of a VAE is, therefore, presented as:</span>
+<span id="cb1-54"><a href="#cb1-54"></a>$$</span>
+<span id="cb1-55"><a href="#cb1-55"></a>    \boxed{</span>
+<span id="cb1-56"><a href="#cb1-56"></a>    \mathbb{E}_{q(\mathbf{z})} \left[ \frac{N}{2} \ln(2\pi) - \frac{N}{2} \ln \Lambda + \frac{\Lambda}{2} \sum_{n=1}^{N} \left[ x_{n} - f(z_{n}; \theta) \right]^{2} \right] + \mathrm{KL} \left<span class="co">[</span><span class="ot"> q(\mathbf{z}) \Vert p(\mathbf{x}) \right</span><span class="co">]</span>. \tag{vfe-G}</span>
+<span id="cb1-57"><a href="#cb1-57"></a>    }</span>
+<span id="cb1-58"><a href="#cb1-58"></a>$$</span>
+<span id="cb1-59"><a href="#cb1-59"></a></span>
+<span id="cb1-60"><a href="#cb1-60"></a>After training, one can pass an image to the encoder $h(.; \phi)$ and decoder to get the predicted mean and precision. The reconstructed images can then be obtained as:</span>
+<span id="cb1-61"><a href="#cb1-61"></a>$$</span>
+<span id="cb1-62"><a href="#cb1-62"></a>    \hat{x} \sim \mathcal{N}(x; f(z; \theta), \Lambda), \text{where } z = h(x; \phi).</span>
+<span id="cb1-63"><a href="#cb1-63"></a>$$</span>
+<span id="cb1-64"><a href="#cb1-64"></a>Although this approach is easy to understand, one drawback is the unbounded support of the Gaussian distribution, resulting in reconstructed pixel intensity values out of the desired range $<span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span>$. Consequently, when visualizing, the pixels that are out of that range will be truncated to 0 or 1, potentially making the reconstructed images blurrier.</span>
+<span id="cb1-65"><a href="#cb1-65"></a></span>
+<span id="cb1-66"><a href="#cb1-66"></a><span class="fu">## Reconstruction likelihood with continuous Bernoulli assumption</span></span>
+<span id="cb1-67"><a href="#cb1-67"></a>This corresponding to linear regression in $<span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span>$ (not $ <span class="sc">\{</span>0, 1 <span class="sc">\}</span> $ as in logistic regression), and hence, the words "continuous Bernoulli".</span>
+<span id="cb1-68"><a href="#cb1-68"></a></span>
+<span id="cb1-69"><a href="#cb1-69"></a>This modelling approach is not as intuitive as the one with <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"#reconstruction-likelihood-with-Gaussian-assumption"</span><span class="dt">&gt;</span>Gaussian assumption<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span>, but please bear with me for a moment.</span>
+<span id="cb1-70"><a href="#cb1-70"></a></span>
+<span id="cb1-71"><a href="#cb1-71"></a>The likelihood of interest, $p(\mathbf{x} \vert \mathbf{z})$, is assumed to be a <span class="co">[</span><span class="ot">continuous Bernoulli distribution</span><span class="co">][continuous bernoulli paper]</span>:</span>
+<span id="cb1-72"><a href="#cb1-72"></a>$$</span>
+<span id="cb1-73"><a href="#cb1-73"></a>    p(\mathbf{x} \vert \mathbf{z}) = \mathcal{CB}(\mathbf{x}; f(\mathbf{z}; \theta)) = \prod_{n=1}^{N} \underbrace{C \left( f(z_{n}; \theta) \right)}_{\text{normalising const.}}  \underbrace{\left[ f(z_{n}; \theta) \right]^{x_{n}} \left[ 1 - f(z_{n}; \theta) \right]^{1 - x_{n}}}_{\text{Bernoulli pdf}},</span>
+<span id="cb1-74"><a href="#cb1-74"></a>$$</span>
+<span id="cb1-75"><a href="#cb1-75"></a>and $f(z_{n}; \theta)) \in <span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span>, \forall n \in <span class="sc">\{</span>1, \ldots, N <span class="sc">\}</span> $.</span>
+<span id="cb1-76"><a href="#cb1-76"></a></span>
+<span id="cb1-77"><a href="#cb1-77"></a>Note that:</span>
+<span id="cb1-78"><a href="#cb1-78"></a><span class="ss">- </span>the usage of continuous Bernoulli distribution is due to the fact that VAE tries to regress the pixel intensity $x_{n}$ which falls in $<span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span>$, not $ <span class="sc">\{</span>0, 1 <span class="sc">\}</span> $ as in classification,</span>
+<span id="cb1-79"><a href="#cb1-79"></a><span class="ss">- </span>the pdf of a continuous Bernoulli distribution differs from a Bernoulli distribution at the normalising constant term,</span>
+<span id="cb1-80"><a href="#cb1-80"></a><span class="ss">- </span>the output of the decoder now is not the mean of the reconstructed pixel intensity as in the case of Gaussian distribution,</span>
+<span id="cb1-81"><a href="#cb1-81"></a><span class="ss">- </span>due to the assumption of the continuous Bernoulli distribution, the last layer of the decoder must be activated by sigmoid function to ensure the output falling in $<span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span> $.</span>
+<span id="cb1-82"><a href="#cb1-82"></a></span>
+<span id="cb1-83"><a href="#cb1-83"></a>The negative log-likelihood, or reconstruction loss, can be easily derived as:</span>
+<span id="cb1-84"><a href="#cb1-84"></a>$$</span>
+<span id="cb1-85"><a href="#cb1-85"></a><span class="ss">    - </span>\ln p(\mathbf{x} \vert \mathbf{z}) = \sum_{n=1}^{N} \underbrace{ - \left[ x_{n} \ln f(z_{n}; \theta) + (1 - x_{n}) \ln \left[1 - f(z_{n}; \theta) \right] \right]}_{\text{binary cross-entropy}} - \underbrace{\ln C \left( f(z_{n}; \theta) \right)}_{\text{log normalising const.}}. \tag{nll-CB}</span>
+<span id="cb1-86"><a href="#cb1-86"></a>$$</span>
+<span id="cb1-87"><a href="#cb1-87"></a></span>
+<span id="cb1-88"><a href="#cb1-88"></a><span class="at">&gt; Current practice uses binary cross-entropy loss only, corresponding to Bernoulli distribution. To me, that practice is not correct, since the learning is to infer the parameter of the Bernoulli distribution, which is the probability when the outcome is 1. In that case, the pixel intensity is in $ </span><span class="sc">\{</span><span class="at">0, 1 </span><span class="sc">\}</span><span class="at"> $, not $</span><span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span><span class="at"> $. This explains why VAE using binary cross-entropy loss often works well for grey-scale, but not colour, images.</span></span>
+<span id="cb1-89"><a href="#cb1-89"></a></span>
+<span id="cb1-90"><a href="#cb1-90"></a>Substituting (nll-CB) into (vfe) gives the "full" objective function for VAE:</span>
+<span id="cb1-91"><a href="#cb1-91"></a>$$</span>
+<span id="cb1-92"><a href="#cb1-92"></a>    \boxed{</span>
+<span id="cb1-93"><a href="#cb1-93"></a>        \begin{aligned}</span>
+<span id="cb1-94"><a href="#cb1-94"></a>        &amp; - \mathbb{E}_{q(\mathbf{z})} \left[ \sum_{n=1}^{N} x_{n} \ln f(z_{n}; \theta) + (1 - x_{n}) \ln \left[1 - f(z_{n}; \theta) \right] \right. <span class="sc">\\</span></span>
+<span id="cb1-95"><a href="#cb1-95"></a>        &amp; \quad \left. + \ln C \left( f(z_{n}; \theta) \right) \right] + \mathrm{KL} \left<span class="co">[</span><span class="ot"> q(\mathbf{z}) \Vert p(\mathbf{x}) \right</span><span class="co">]</span>.</span>
+<span id="cb1-96"><a href="#cb1-96"></a>        \end{aligned}</span>
+<span id="cb1-97"><a href="#cb1-97"></a>        \tag{vfe-CB}</span>
+<span id="cb1-98"><a href="#cb1-98"></a>    }</span>
+<span id="cb1-99"><a href="#cb1-99"></a>$$</span>
+<span id="cb1-100"><a href="#cb1-100"></a></span>
+<span id="cb1-101"><a href="#cb1-101"></a>Note that after training, direct plotting $f(z; \theta)$ as the pixel intensity might result in an incorrect reconstructed image, since the mean of the continuous Bernoulli distribution is not equal to its parameter. To reconstruct an image $x$, one needs to pass that image through the encoder and decoder, and then:</span>
+<span id="cb1-102"><a href="#cb1-102"></a>$$</span>
+<span id="cb1-103"><a href="#cb1-103"></a>    \hat{x} \sim \mathcal{CB}\left(x; f(z; \theta) \right),</span>
+<span id="cb1-104"><a href="#cb1-104"></a>$$</span>
+<span id="cb1-105"><a href="#cb1-105"></a>and plot $\hat{x}$ to visualize the reconstructed image.</span>
+<span id="cb1-106"><a href="#cb1-106"></a></span>
+<span id="cb1-107"><a href="#cb1-107"></a><span class="fu">## Conclusion</span></span>
+<span id="cb1-108"><a href="#cb1-108"></a>VAE is often considered as a basic generative model. However, most machine learning practitioners often learn by memorization about the "type" of reconstruction loss. This leads to the weighting trick in the implementation. Understanding the nature of the reconstruction loss as the log-likelihood in linear regression allows one to obtain the "full" objective function without applying any weighting tricks. Hopefully, this post would be useful to save time for ones who start to practise machine learning.</span>
+<span id="cb1-109"><a href="#cb1-109"></a></span>
+<span id="cb1-110"><a href="#cb1-110"></a><span class="fu">## References</span></span>
+<span id="cb1-111"><a href="#cb1-111"></a><span class="ss">1. </span>Higgins, I., Matthey, L., Pal, A., Burgess, C., Glorot, X., Botvinick, M., Mohamed, S. and Lerchner, A., 2016. <span class="co">[</span><span class="ot">&amp;beta;-VAE: Learning basic visual concepts with a constrained variational framework</span><span class="co">][beta vae paper]</span>. In International Conference on Learning Representation.</span>
+<span id="cb1-112"><a href="#cb1-112"></a><span class="ss">2. </span>Loaiza-Ganem, G. and Cunningham, J.P., 2019. <span class="co">[</span><span class="ot">The continuous Bernoulli: fixing a pervasive error in variational autoencoders</span><span class="co">][continuous bernoulli paper]</span>. In Advances in Neural Information Processing Systems (pp. 13287-13297).</span>
+<span id="cb1-113"><a href="#cb1-113"></a></span>
+<span id="cb1-114"><a href="#cb1-114"></a><span class="ot">[beta vae paper]: https://openreview.net/forum?id=Sy2fzU9gl</span></span>
+<span id="cb1-115"><a href="#cb1-115"></a><span class="ot">[continuous bernoulli paper]: https://papers.nips.cc/paper/2019/hash/f82798ec8909d23e55679ee26bb26437-Abstract.html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
     <script type="text/javascript">
     (function(d) {
