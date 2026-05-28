@@ -84,9 +84,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-description','listing-categories','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -112,6 +112,23 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-NLRVZL0JSR', { 'anonymize_ip': true});
 </script>
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: white;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: white;
+background: #006400;
+      }
+</style>
 
     <style type="text/css">
     .ps-root .ps-algorithm {
@@ -175,12 +192,12 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
-</head>
+<link rel="alternate" type="application/rss+xml" title="Cuong Nguyen" href="blog.xml" data-external="1"></head>
 
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -217,150 +234,256 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">Blog</h1>
+            <p class="subtitle lead">Formulating probabilistic machine learning and optimisation concepts through mathematics.</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="QmF5ZXNpYW4lMjBJbmZlcmVuY2U=">Bayesian Inference <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2x1c3RlcmluZw==">Clustering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGVlcCUyMExlYXJuaW5n">Deep Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RXhwZWN0YXRpb24tTWF4aW1pemF0aW9u">Expectation-Maximization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuZXJhbGlzYXRpb24=">Generalisation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuZXJhdGl2ZSUyME1vZGVscw==">Generative Models <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGF0ZW50JTIwVmFyaWFibGVz">Latent Variables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGluZWFyJTIwQWxnZWJyYQ==">Linear Algebra <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TUNNQw==">MCMC <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWV0YS1MZWFybmluZw==">Meta-Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="T3B0aW1pc2F0aW9u">Optimisation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="U3RhdGlzdGljYWwlMjBMZWFybmluZyUyMFRoZW9yeQ==">Statistical Learning Theory <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3RhdGlzdGljcw==">Statistics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="VHJhbnNmZXIlMjBMZWFybmluZw==">Transfer Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VmFyaWF0aW9uYWwlMjBJbmZlcmVuY2U=">Variational Inference <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
-<div class="quarto-title-meta column-page">
 
-    
-  
-    
+
+
+
+
+
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+    <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+    <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+      <option value="" disabled="" selected="" hidden="">Order By</option>
+      <option value="index" data-direction="asc">Default</option>
+      <option value="listing-title" data-direction="asc">
+        Title
+      </option>
+      <option value="listing-date-sort" data-direction="asc">
+        Date - Oldest
+      </option>
+      <option value="listing-date-sort" data-direction="desc">
+        Date - Newest
+      </option>
+    </select>
   </div>
-  
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list grid quarto-listing-cols-2">
+<div class="g-col-1" data-index="0" data-categories="QmF5ZXNpYW4lMjBJbmZlcmVuY2UlMkNNQ01DJTJDU3RhdGlzdGljcw==" data-listing-date-sort="1700352000000" data-listing-file-modified-sort="1779955694130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4516">
+<a href="./posts/stochastic_grad_hamiltonian_monte_carlo/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Stochastic gradient and Hamiltonian Monte Carlo
+</h5>
+<div class="listing-reading-time card-text text-muted">23 min</div>
+<div class="listing-categories">
 
+<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXNpYW4lMjBJbmZlcmVuY2U='); return false;">Bayesian Inference</div>
 
-</header>
+<div class="listing-category" onclick="window.quartoListingCategory('TUNNQw=='); return false;">MCMC</div>
 
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhdGlzdGljcw=='); return false;">Statistics</div>
 
+</div>
+<div class="card-text listing-description delink">
+<p>A complete mathematical formulation of Stochastic Gradient Hamiltonian Monte Carlo (SGHMC) from physical dynamics to sampling.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+Nov 19, 2023
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="RXhwZWN0YXRpb24tTWF4aW1pemF0aW9uJTJDQ2x1c3RlcmluZyUyQ0xhdGVudCUyMFZhcmlhYmxlcw==" data-listing-date-sort="1658016000000" data-listing-file-modified-sort="1779955694130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4608">
+<a href="./posts/mixture-models/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Expectation - Maximisation algorithm and its applications in finite mixture models
+</h5>
+<div class="listing-reading-time card-text text-muted">24 min</div>
+<div class="listing-categories">
 
+<div class="listing-category" onclick="window.quartoListingCategory('RXhwZWN0YXRpb24tTWF4aW1pemF0aW9u'); return false;">Expectation-Maximization</div>
 
+<div class="listing-category" onclick="window.quartoListingCategory('Q2x1c3RlcmluZw=='); return false;">Clustering</div>
 
+<div class="listing-category" onclick="window.quartoListingCategory('TGF0ZW50JTIwVmFyaWFibGVz'); return false;">Latent Variables</div>
 
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<table class="quarto-listing-table table">
-<thead>
-<tr>
+</div>
+<div class="card-text listing-description delink">
+<p>A deep dive into the Expectation-Maximization (EM) algorithm and its application in Gaussian and Multinomial mixture models.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+Jul 17, 2022
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDU3RhdGlzdGljcw==" data-listing-date-sort="1651536000000" data-listing-file-modified-sort="1779955694129" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4401">
+<a href="./posts/bias-variance-decomposition/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Bias - variance decomposition
+</h5>
+<div class="listing-reading-time card-text text-muted">23 min</div>
+<div class="listing-categories">
 
-<th>
-Date
-</th>
+<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
 
-<th>
-Title
-</th>
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhdGlzdGljcw=='); return false;">Statistics</div>
 
-<th>
-Author
-</th>
+</div>
+<div class="card-text listing-description delink">
+<p>Extending the square-loss bias-variance decomposition framework to Bregman divergence, 0-1 loss, and KL divergence.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+May 3, 2022
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="TWV0YS1MZWFybmluZyUyQ1RyYW5zZmVyJTIwTGVhcm5pbmclMkNPcHRpbWlzYXRpb24=" data-listing-date-sort="1637539200000" data-listing-file-modified-sort="1779955694130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3343">
+<a href="./posts/meta-learning/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+From hyper-parameter optimisation to meta-learning
+</h5>
+<div class="listing-reading-time card-text text-muted">17 min</div>
+<div class="listing-categories">
 
-</tr>
-</thead>
-<tbody class="list">
+<div class="listing-category" onclick="window.quartoListingCategory('TWV0YS1MZWFybmluZw=='); return false;">Meta-Learning</div>
 
-<tr data-index="0" data-listing-date-sort="1700352000000" data-listing-file-modified-sort="1779953416412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4516" data-listing-title-sort="Stochastic gradient and Hamiltonian Monte Carlo" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Nov 19, 2023</span>
-</td>
-<td>
-<a href="./posts/stochastic_grad_hamiltonian_monte_carlo/index.html" class="title listing-title">Stochastic gradient and Hamiltonian Monte Carlo</a>
-</td>
-<td>
-<span class="listing-author">Cuong Nguyen</span>
-</td>
+<div class="listing-category" onclick="window.quartoListingCategory('VHJhbnNmZXIlMjBMZWFybmluZw=='); return false;">Transfer Learning</div>
 
-</tr>
+<div class="listing-category" onclick="window.quartoListingCategory('T3B0aW1pc2F0aW9u'); return false;">Optimisation</div>
 
-<tr data-index="1" data-listing-date-sort="1658016000000" data-listing-file-modified-sort="1779953416412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4608" data-listing-title-sort="Expectation - Maximisation algorithm and its applications in finite mixture models" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Jul 17, 2022</span>
-</td>
-<td>
-<a href="./posts/mixture-models/index.html" class="title listing-title">Expectation - Maximisation algorithm and its applications in finite mixture models</a>
-</td>
-<td>
-<span class="listing-author">Cuong Nguyen</span>
-</td>
+</div>
+<div class="card-text listing-description delink">
+<p>Formulating meta-learning explicitly through empirical Bayes and bi-level hyper-parameter optimisation.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+Nov 22, 2021
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="4" data-categories="T3B0aW1pc2F0aW9uJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDTGluZWFyJTIwQWxnZWJyYQ==" data-listing-date-sort="1618185600000" data-listing-file-modified-sort="1779955694128" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1330">
+<a href="./posts/Gauss-Newton-matrix/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Outer product approximation of Hessian matrix
+</h5>
+<div class="listing-reading-time card-text text-muted">7 min</div>
+<div class="listing-categories">
 
-</tr>
+<div class="listing-category" onclick="window.quartoListingCategory('T3B0aW1pc2F0aW9u'); return false;">Optimisation</div>
 
-<tr data-index="2" data-listing-date-sort="1651536000000" data-listing-file-modified-sort="1779953416411" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4401" data-listing-title-sort="Bias - variance decomposition" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">May 3, 2022</span>
-</td>
-<td>
-<a href="./posts/bias-variance-decomposition/index.html" class="title listing-title">Bias - variance decomposition</a>
-</td>
-<td>
-<span class="listing-author">Cuong Nguyen</span>
-</td>
+<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
 
-</tr>
+<div class="listing-category" onclick="window.quartoListingCategory('TGluZWFyJTIwQWxnZWJyYQ=='); return false;">Linear Algebra</div>
 
-<tr data-index="3" data-listing-date-sort="1637539200000" data-listing-file-modified-sort="1779953416412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3343" data-listing-title-sort="From hyper-parameter optimisation to meta-learning" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Nov 22, 2021</span>
-</td>
-<td>
-<a href="./posts/meta-learning/index.html" class="title listing-title">From hyper-parameter optimisation to meta-learning</a>
-</td>
-<td>
-<span class="listing-author">Cuong Nguyen</span>
-</td>
+</div>
+<div class="card-text listing-description delink">
+<p>Deriving the Gauss-Newton optimisation method and the properties of the Gauss-Newton approximation matrix.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+Apr 12, 2021
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="5" data-categories="U3RhdGlzdGljYWwlMjBMZWFybmluZyUyMFRoZW9yeSUyQ0dlbmVyYWxpc2F0aW9u" data-listing-date-sort="1608940800000" data-listing-file-modified-sort="1779955694129" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1333">
+<a href="./posts/PAC-Bayes-bounds/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+PAC-Bayes bounds for generalisation error
+</h5>
+<div class="listing-reading-time card-text text-muted">7 min</div>
+<div class="listing-categories">
 
-</tr>
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhdGlzdGljYWwlMjBMZWFybmluZyUyMFRoZW9yeQ=='); return false;">Statistical Learning Theory</div>
 
-<tr data-index="4" data-listing-date-sort="1618185600000" data-listing-file-modified-sort="1779953416411" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1330" data-listing-title-sort="Outer product approximation of Hessian matrix" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Apr 12, 2021</span>
-</td>
-<td>
-<a href="./posts/Gauss-Newton-matrix/index.html" class="title listing-title">Outer product approximation of Hessian matrix</a>
-</td>
-<td>
-<span class="listing-author">Cuong Nguyen</span>
-</td>
+<div class="listing-category" onclick="window.quartoListingCategory('R2VuZXJhbGlzYXRpb24='); return false;">Generalisation</div>
 
-</tr>
+</div>
+<div class="card-text listing-description delink">
+<p>A comprehensive, step-by-step mathematical proof of the classic PAC-Bayesian generalisation error bounds.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+Dec 26, 2020
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="6" data-categories="RGVlcCUyMExlYXJuaW5nJTJDR2VuZXJhdGl2ZSUyME1vZGVscyUyQ1ZhcmlhdGlvbmFsJTIwSW5mZXJlbmNl" data-listing-date-sort="1606176000000" data-listing-file-modified-sort="1779955694130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1525">
+<a href="./posts/vae-normalising-constant-matters/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+VAE: normalising constant matters
+</h5>
+<div class="listing-reading-time card-text text-muted">8 min</div>
+<div class="listing-categories">
 
-<tr data-index="5" data-listing-date-sort="1608940800000" data-listing-file-modified-sort="1779953416411" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1333" data-listing-title-sort="PAC-Bayes bounds for generalisation error" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Dec 26, 2020</span>
-</td>
-<td>
-<a href="./posts/PAC-Bayes-bounds/index.html" class="title listing-title">PAC-Bayes bounds for generalisation error</a>
-</td>
-<td>
-<span class="listing-author">Cuong Nguyen</span>
-</td>
+<div class="listing-category" onclick="window.quartoListingCategory('RGVlcCUyMExlYXJuaW5n'); return false;">Deep Learning</div>
 
-</tr>
+<div class="listing-category" onclick="window.quartoListingCategory('R2VuZXJhdGl2ZSUyME1vZGVscw=='); return false;">Generative Models</div>
 
-<tr data-index="6" data-listing-date-sort="1606176000000" data-listing-file-modified-sort="1779953416412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1525" data-listing-title-sort="VAE: normalising constant matters" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Nov 24, 2020</span>
-</td>
-<td>
-<a href="./posts/vae-normalising-constant-matters/index.html" class="title listing-title">VAE: normalising constant matters</a>
-</td>
-<td>
-<span class="listing-author">Cuong Nguyen</span>
-</td>
+<div class="listing-category" onclick="window.quartoListingCategory('VmFyaWF0aW9uYWwlMjBJbmZlcmVuY2U='); return false;">Variational Inference</div>
 
-</tr>
-
-</tbody>
-</table>
+</div>
+<div class="card-text listing-description delink">
+<p>Why balancing reconstruction vs.&nbsp;KL divergence with a β weight is often just a workaround for neglecting the normalising constant.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+Nov 24, 2020
+</div>
+</div>
+</div>
+</div></a>
+</div>
+</div>
 <div class="listing-no-matching d-none">No matching items</div>
 </div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

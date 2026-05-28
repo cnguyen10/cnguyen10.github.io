@@ -8,6 +8,7 @@
 
 <meta name="author" content="Cuong Nguyen">
 <meta name="dcterms.date" content="2020-12-26">
+<meta name="description" content="A comprehensive, step-by-step mathematical proof of the classic PAC-Bayesian generalisation error bounds.">
 
 <title>PAC-Bayes bounds for generalisation error – Cuong Nguyen</title>
 <style>
@@ -238,8 +239,17 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">PAC-Bayes bounds for generalisation error</h1>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Statistical Learning Theory</div>
+    <div class="quarto-category">Generalisation</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    A comprehensive, step-by-step mathematical proof of the classic PAC-Bayesian generalisation error bounds.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -268,9 +278,9 @@ window.Quarto = {
 
 <p>Properly approaximately correct (PAC) learning is a part of <em>statistical machine learning</em> which has been a fundamental course for most of graduate programs in machine learning. Its main idea is to upper-bound the <em>true risk</em> (or generalisation error) by the <em>empirical risk</em> with certain confidence level. In other words, it is often written in the following form: <span class="math display">
 \Pr (\text{true risk} \le \text{empirical risk} + r(m, \delta)) \ge 1 - \delta
-</span> where <span class="math inline">\Pr(A)</span> is the probability of event <span class="math inline">A</span>, <span class="math inline">\delta \in (0, 1]</span> is the confidence parameter, and <span class="math inline">r(m, \delta)</span> – a function of <em>sample size</em> <span class="math inline">m</span> and the confidence parameter <span class="math inline">\delta</span> – is the <em>regularization</em> that is satisfied: <span class="math display">
+</span> where <span class="math inline">\Pr(A)</span> is the probability of event <span class="math inline">A</span>, <span class="math inline">\delta \in (0, 1]</span> is the confidence parameter, and <span class="math inline">r(m, \delta)</span> – a function of <em>sample size</em> <span class="math inline">m</span> and the confidence parameter <span class="math inline">\delta</span> – is the <em>regularisation</em> that is satisfied: <span class="math display">
 \lim_{m \to +\infty} r(m, \delta) = 0.
-</span> PAC-Bayes upper generalization bound is a kind of PAC learning. It was firstly proposed in 1999 <span class="citation" data-cites="mcallester1999pac">McAllester (<a href="#ref-mcallester1999pac" role="doc-biblioref">1999</a>)</span>, and has attracted much of research interest. There has been many subsequent improvements made to tighten further this classic PAC-Bayes bound or to extend it to more general loss functions. However, the classic PAC-Bayes theorem is still the backbone. In this post, I will show how to prove this interesting theorem.</p>
+</span> PAC-Bayes upper generalisation bound is a kind of PAC learning. It was firstly proposed in 1999 <span class="citation" data-cites="mcallester1999pac">McAllester (<a href="#ref-mcallester1999pac" role="doc-biblioref">1999</a>)</span>, and has attracted much of research interest. There has been many subsequent improvements made to tighten further this classic PAC-Bayes bound or to extend it to more general loss functions. However, the classic PAC-Bayes theorem is still the backbone. In this post, I will show how to prove this interesting theorem.</p>
 <section id="auxillary-lemmas" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="auxillary-lemmas"><span class="header-section-number">1</span> Auxillary lemmas</h2>
 <p>To prove the classic PAC-Bayes theorem, we need two auxilliary lemmas shown below.</p>
@@ -325,7 +335,7 @@ Y = \int_{1}^{+\infty} \pmb{1}(Y \ge t) \, \mathrm{d}t + 1,
 </span> Or: <span class="math display">
 \mathbb{E} \left[ e^{2(m - 1) X^{2}} \right] = \int_{1}^{+\infty} \mathrm{Pr}( e^{2(m - 1) X^{2}} \ge x) \, \mathrm{d}x + 1.
 </span></p>
-<p>We then make a change of variable from <span class="math inline">x</span> to <span class="math inline">\epsilon</span> to utilize the given inequality in the assumption. Let’s define: <span class="math display">
+<p>We then make a change of variable from <span class="math inline">x</span> to <span class="math inline">\epsilon</span> to utilise the given inequality in the assumption. Let’s define: <span class="math display">
 x = e^{2(m - 1) \epsilon^{2}}.
 </span> Since <span class="math inline">\epsilon</span> is assumed to be non-negative, we can express it as: <span class="math display">
 \epsilon = \sqrt{\frac{\ln x}{2(m - 1)}},
@@ -354,7 +364,7 @@ x = e^{2(m - 1) \epsilon^{2}}.
 <p>Applying <a href="#lem-change-of-measure" class="quarto-xref">Lemma&nbsp;1</a> with <span class="math inline">P(h) = \pi (h)</span> and <span class="math inline">\phi(h) = 2(m - 1) (\Delta L)^{2}</span> gives: <span id="eq-lower-bound-log_expect"><span class="math display">
 2(m - 1) \mathbb{E}_{Q} \left[ (\Delta L)^{2} \right] - \mathrm{KL} [Q \Vert \pi] \le \textcolor{purple}{\ln \mathbb{E}_{\pi} \left[\exp \left( 2(m - 1) (\Delta L)^{2} \right) \right]}.
 \tag{1}</span></span></p>
-<p>We upper-bound the last term in the RHS (highlighted in <span style="color: purple;">purple</span> color) by <a href="#lem-concentration-inequality" class="quarto-xref">Lemma&nbsp;2</a>. To do that, we consider the empirical loss on each observable data point <span class="math inline">l(h, z_{j})</span> as a random variable in <span class="math inline">[0, 1]</span> with true and empirical means <span class="math inline">L</span> and <span class="math inline">\hat{L}</span>, respectively. Following the Hoeffding’s inequality gives: <span class="math display">
+<p>We upper-bound the last term in the RHS (highlighted in <span style="color: purple;">purple</span> colour) by <a href="#lem-concentration-inequality" class="quarto-xref">Lemma&nbsp;2</a>. To do that, we consider the empirical loss on each observable data point <span class="math inline">l(h, z_{j})</span> as a random variable in <span class="math inline">[0, 1]</span> with true and empirical means <span class="math inline">L</span> and <span class="math inline">\hat{L}</span>, respectively. Following the Hoeffding’s inequality gives: <span class="math display">
 \begin{aligned}
 \mathrm{Pr} \left( \Delta L \ge \epsilon \right) &amp; = \mathrm{Pr} \left( L - \hat{L} \ge \epsilon \right)\\
 &amp; \le \mathrm{Pr} \left( | L - \hat{L} | \ge \epsilon \right)\\

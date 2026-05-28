@@ -8,6 +8,7 @@
 
 <meta name="author" content="Cuong Nguyen">
 <meta name="dcterms.date" content="2021-04-12">
+<meta name="description" content="Deriving the Gauss-Newton optimisation method and the properties of the Gauss-Newton approximation matrix.">
 
 <title>Outer product approximation of Hessian matrix – Cuong Nguyen</title>
 <style>
@@ -240,8 +241,18 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Outer product approximation of Hessian matrix</h1>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Optimisation</div>
+    <div class="quarto-category">Machine Learning</div>
+    <div class="quarto-category">Linear Algebra</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Deriving the Gauss-Newton optimisation method and the properties of the Gauss-Newton approximation matrix.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -268,8 +279,8 @@ window.Quarto = {
 </header>
 
 
-<p>Hessian matrix is heavily studied in the optimization community. The purpose is to utilize the second order derivative to optimize a function of interest (also known as Newton’s method). In machine learning, especially Bayesian inference, Hessian matrix can be found in some applications, such as Laplace’s method which approximates a distribution by a Gaussian distribution. Although Hessian matrix provides additional information which improves the convergence rate in optimization or reduces a complicated distribution to a Gaussian distribution, calculating a Hessian matrix often increases computation complexity. In neural networks where the number of model parameters is very large, Hessian matrix is often intractable due to the limited computation and memory.</p>
-<p>Many efficient approximations of Hessian matrix have been developed to either reduce the running time complexity or decompose the Hessian matrix to reduce the amount of memory storage. Hessian-free approaches which utilizes the Hessian-vector product are also attracted much research interest. This post will present an approximation of Hessian matrix using the outer product. Note that this approximation represents an approximated Hessian matrix by a set of matrices whose sizes are reasonable to store in GPU memory. The trade-off is that the running time complexity to obtain the Hessian matrix is still quadractic. Note that this approximation is also known as Gauss-Newton matrix.</p>
+<p>Hessian matrix is heavily studied in the optimisation community. The purpose is to utilise the second order derivative to optimise a function of interest (also known as Newton’s method). In machine learning, especially Bayesian inference, Hessian matrix can be found in some applications, such as Laplace’s method which approximates a distribution by a Gaussian distribution. Although Hessian matrix provides additional information which improves the convergence rate in optimisation or reduces a complicated distribution to a Gaussian distribution, calculating a Hessian matrix often increases computation complexity. In neural networks where the number of model parameters is very large, Hessian matrix is often intractable due to the limited computation and memory.</p>
+<p>Many efficient approximations of Hessian matrix have been developed to either reduce the running time complexity or decompose the Hessian matrix to reduce the amount of memory storage. Hessian-free approaches which utilises the Hessian-vector product are also attracted much research interest. This post will present an approximation of Hessian matrix using the outer product. Note that this approximation represents an approximated Hessian matrix by a set of matrices whose sizes are reasonable to store in GPU memory. The trade-off is that the running time complexity to obtain the Hessian matrix is still quadratic. Note that this approximation is also known as Gauss-Newton matrix.</p>
 <section id="notations" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="notations"><span class="header-section-number">1</span> Notations</h2>
 <p>Before going into details, let’s define some notations used:</p>
@@ -282,7 +293,7 @@ window.Quarto = {
 </ul>
 <p>The loss function of interest is defined as the sum of losses over each data point: <span class="math display">
 L = \sum_{i = 1}^{N} \ell\left( \sigma(\mathbf{f}(x_{i}, \mathbf{w}), t_{i}\right).
-</span> Note that in the following, we will omit the notation of the label <span class="math inline">t_{i}</span> from the loss <span class="math inline">\ell(.)</span> to make the notation unclutered.</p>
+</span> Note that in the following, we will omit the notation of the label <span class="math inline">t_{i}</span> from the loss <span class="math inline">\ell(.)</span> to make the notation uncluttered.</p>
 </section>
 <section id="derivation-of-the-approximated-hessian-matrix" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="derivation-of-the-approximated-hessian-matrix"><span class="header-section-number">2</span> Derivation of the approximated Hessian matrix</h2>

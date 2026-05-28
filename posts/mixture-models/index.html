@@ -8,6 +8,7 @@
 
 <meta name="author" content="Cuong Nguyen">
 <meta name="dcterms.date" content="2022-07-17">
+<meta name="description" content="A deep dive into the Expectation-Maximization (EM) algorithm and its application in Gaussian and Multinomial mixture models.">
 
 <title>Expectation - Maximisation algorithm and its applications in finite mixture models – Cuong Nguyen</title>
 <style>
@@ -246,8 +247,18 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Expectation - Maximisation algorithm and its applications in finite mixture models</h1>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Expectation-Maximization</div>
+    <div class="quarto-category">Clustering</div>
+    <div class="quarto-category">Latent Variables</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    A deep dive into the Expectation-Maximization (EM) algorithm and its application in Gaussian and Multinomial mixture models.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -275,8 +286,8 @@ window.Quarto = {
 
 
 <p>Missing data and latent variables are frequently encountered in various machine learning and statistical inference applications. A common example is the finite mixture model, which includes Gaussian mixture and multinomial mixture models. Due to the inherent nature of missing data or latent variables, calculating the likelihood of these models requires marginalisation over the latent variable distribution. This, in turn, complicates the process of maximum likelihood estimation (MLE).</p>
-<p>The expectation-maximisation (EM) algorithm, introduced in <span class="citation" data-cites="dempster1977maximum">(<a href="#ref-dempster1977maximum" role="doc-biblioref">Dempster et al. 1977</a>)</span>, offers a general technique for handling latent variable models. The fundamental concept behind the EM algorithm is to iterate between two steps: the E-step (expectation step) and the M-step (maximization step). In the E-step, the posterior distribution of the latent variables (or missing data) is estimated. This estimated information is then used in the M-step to compute the MLE as if the data were complete. It has been proven that this iterative process guarantees a non-decreasing likelihood function. In simpler terms, the EM algorithm converges to a saddle point.</p>
-<p>While the EM algorithm is a powerful tool, this explanation may not be as clear as desired. Consequently, this post aims to provide a more accessible explanation of the EM algorithm. Additionally, some readers may question the choice of EM over stochastic gradient descent (SGD), a prevalent optimisation method. This post will, therefore, explore the key differences between these two approaches. Finally, the applications of the EM algorithm in the context of finite mixture modeling, specifically focusing on the MLE problems in Gaussian mixture models and multinomial mixture models, are also demonstrated.</p>
+<p>The expectation-maximisation (EM) algorithm, introduced in <span class="citation" data-cites="dempster1977maximum">(<a href="#ref-dempster1977maximum" role="doc-biblioref">Dempster et al. 1977</a>)</span>, offers a general technique for handling latent variable models. The fundamental concept behind the EM algorithm is to iterate between two steps: the E-step (expectation step) and the M-step (maximisation step). In the E-step, the posterior distribution of the latent variables (or missing data) is estimated. This estimated information is then used in the M-step to compute the MLE as if the data were complete. It has been proven that this iterative process guarantees a non-decreasing likelihood function. In simpler terms, the EM algorithm converges to a saddle point.</p>
+<p>While the EM algorithm is a powerful tool, this explanation may not be as clear as desired. Consequently, this post aims to provide a more accessible explanation of the EM algorithm. Additionally, some readers may question the choice of EM over stochastic gradient descent (SGD), a prevalent optimisation method. This post will, therefore, explore the key differences between these two approaches. Finally, the applications of the EM algorithm in the context of finite mixture modelling, specifically focusing on the MLE problems in Gaussian mixture models and multinomial mixture models, are also demonstrated.</p>
 <section id="notations" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="notations"><span class="header-section-number">1</span> Notations</h2>
 <p>Before diving into the explanation and formulation, it is important to define the notations used in this post as follows:</p>
@@ -440,7 +451,7 @@ q^{*} = \operatorname*{argmax}_{q} \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\ma
 \max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
 </span></p>
 <p>The whole EM algorithm can be referred to <a href="#algo-em" class="quarto-xref">Algorithm 1</a>.</p>
-<div id="algo-em" class="pseudocode-container quarto-float" data-line-number-punc=":" data-no-end="false" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-pseudocode-number="1" data-line-number="true" data-comment-delimiter="//">
+<div id="algo-em" class="pseudocode-container quarto-float" data-pseudocode-number="1" data-line-number="true" data-indent-size="1.2em" data-caption-prefix="Algorithm" data-no-end="false" data-comment-delimiter="//" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \caption{Expectation - Maximisation algorithm} \begin{algorithmic} \Procedure{EM}{$\mathbf{x}$} \State initialise mixture coefficient $\pi$ \State initialise $\theta$ \While{not converged} \State calculate the ELBO: $Q \gets \operatorname{E-step}(\mathbf{x}, \pi, \theta)$ \State maximise the ELBO: $\pi, \theta \gets \operatorname{M-step}(Q, \pi, \theta)$ \EndWhile \State return $\pi, \theta$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
