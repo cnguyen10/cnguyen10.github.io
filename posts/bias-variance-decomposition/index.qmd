@@ -2,6 +2,8 @@
 title: "Bias - variance decomposition"
 date: "2022-05-03"
 tbl-colwidths: [25, 75]
+categories: [Machine Learning, Statistics]
+description: "Extending the square-loss bias-variance decomposition framework to Bregman divergence, 0-1 loss, and KL divergence."
 ---
 Bias and variance decomposition is one of the key tools to understand machine learning. However, conventional discussion about bias - variance decomposition revolves around the square loss (also known as mean square error). It is unclear whether such decomposition is still valid for some common loss functions, such as 0-1 loss or cross-entropy loss used in classification. This post is to present the decomposition for those losses following the <em>unified</em> framework of bias and variance decomposition from [@domingos2000unified], its extended study on <em>Bregman divergence</em> with <em>un-bounded support</em> from [@pfau2013generalized] and the special case about Kullback-Leibler (KL) divergence [@heskes1998bias].
 

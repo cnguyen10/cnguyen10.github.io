@@ -1,6 +1,8 @@
 ---
 title: "Expectation - Maximisation algorithm and its applications in finite mixture models"
 date: "2022-07-17"
+categories: [Expectation-Maximization, Clustering, Latent Variables]
+description: "A deep dive into the Expectation-Maximization (EM) algorithm and its application in Gaussian and Multinomial mixture models."
 ---
 Missing data and latent variables are frequently encountered in various machine learning and statistical inference applications. A common example is the finite mixture model, which includes Gaussian mixture and multinomial mixture models. Due to the inherent nature of missing data or latent variables, calculating the likelihood of these models requires marginalisation over the latent variable distribution. This, in turn, complicates the process of maximum likelihood estimation (MLE).
 

@@ -1,6 +1,8 @@
 ---
 title: "PAC-Bayes bounds for generalisation error"
 date: "2020-12-26"
+categories: [Statistical Learning Theory, Generalization]
+description: "A comprehensive, step-by-step mathematical proof of the classic PAC-Bayesian generalisation error bounds."
 ---
 
 Properly approaximately correct (PAC) learning is a part of <em>statistical machine learning</em> which has been a fundamental course for most of graduate programs in machine learning. Its main idea is to upper-bound the <em>true risk</em> (or generalisation error) by the <em>empirical risk</em> with certain confidence level. In other words, it is often written in the following form:

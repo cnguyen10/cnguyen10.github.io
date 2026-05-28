@@ -1,6 +1,8 @@
 ---
 title: "From hyper-parameter optimisation to meta-learning"
 date: "2021-11-22"
+categories: [Meta-Learning, Transfer Learning, Optimization]
+description: "Formulating meta-learning explicitly through empirical Bayes and bi-level hyper-parameter optimisation."
 ---
 
 Meta-learning, also known as *learn-how-to-learning*, has been being studied from 1980s [@schmidhuber1987evolutionary; @naik1992meta], and recently attracted much attention from the research community. Meta-learning is a technique in _transfer learning_  &mdash; a learning paradigm that utilises knowledge gained from past experience to facilitate the learning in the future. Due to being defined <q>implicitly</q>, meta -learning is often confused with other transfer learning techniques, e.g. *fine-tuning*, *multi-task learning*, *domain adaptation* and *continual learning*. The purpose of this post is to formulate meta-learning explicitly via *empirical Bayes*, and in particular *hyper-parameter optimisation*, to differentiate meta-learning from those common transfer learning approaches.

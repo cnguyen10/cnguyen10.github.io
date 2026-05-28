@@ -1,6 +1,8 @@
 ---
 title: "Stochastic gradient and Hamiltonian Monte Carlo"
 date: "2023-11-19"
+categories: [Bayesian Inference, MCMC, Statistics]
+description: "A complete mathematical formulation of Stochastic Gradient Hamiltonian Monte Carlo (SGHMC) from physical dynamics to sampling."
 ---
 
 This post is to introduce the formulation of stochastic gradient descent as a Monte Carlo sampling to approximate the posterior of the variables of interest.

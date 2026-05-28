@@ -1,6 +1,8 @@
 ---
 title: "Outer product approximation of Hessian matrix"
 date: "2021-04-12"
+categories: [Optimization, Machine Learning, Linear Algebra]
+description: "Deriving the Gauss-Newton optimisation method and the properties of the Gauss-Newton approximation matrix."
 ---
 
 Hessian matrix is heavily studied in the optimization community. The purpose is to utilize the second order derivative to optimize a function of interest (also known as Newton's method). In machine learning, especially Bayesian inference, Hessian matrix can be found in some applications, such as Laplace's method which approximates a distribution by a Gaussian distribution. Although Hessian matrix provides additional information which improves the convergence rate in optimization or reduces a complicated distribution to a Gaussian distribution, calculating a Hessian matrix often increases computation complexity. In neural networks where the number of model parameters is very large, Hessian matrix is often intractable due to the limited computation and memory.
