@@ -1,6 +1,6 @@
 | Year | Semester | Course | Level | Role |
 | --- | --- | --- | --- | --- |
-| 2025 - 2026 | 1 | COM1034 Software Engineering and Object-Oriented Programming | Undergraduate | Intructor |
+| 2025 - 2026 | 1 | COM1034 Software Engineering and Object-Oriented Programming | Undergraduate | Instructor |
 
 : Courses taught at University of Surrey {tbl-colwidths="[15, 15, 30, 20, 20]" .striped .hover}
 
@@ -8,8 +8,8 @@
 
 | Year | Semester | Course | Level | Role |
 | --- | --- | --- | --- | --- |
-| 2023 | 2 | Grand Challenges in Computer Science | Undergraduate | Intructor |
-| 2022 | 2 | Grand Challenges in Computer Science | Undergraduate | Intructor |
+| 2023 | 2 | Grand Challenges in Computer Science | Undergraduate | Instructor |
+| 2022 | 2 | Grand Challenges in Computer Science | Undergraduate | Instructor |
 | 2021 | 1 | Foundations on Computer Science | Master | Tutor |
 | 2021 | 2 | Foundations on Computer Science | Master | Tutor |
 

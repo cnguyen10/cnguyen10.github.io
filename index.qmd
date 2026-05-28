@@ -42,7 +42,7 @@ Please refer to my Google Scholar, or click the button below to retrieve the lis
 
 <button id="fetch-button" type="button" class="btn btn-outline-success">Show publications</button>
 <div id="publication-list"></div>
-<button id="load-more-btn" type="button" class="btn btn-outline-success" style="display:none;" onclick="fetchMorePublications()">Display More</button>
+<button id="load-more-btn" type="button" class="btn btn-outline-success" style="display:none;">Display More</button>
 
 ## <i class="bi bi-bluesky text-primary"></i> News
 

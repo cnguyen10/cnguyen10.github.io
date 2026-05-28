@@ -76,8 +76,6 @@ I am interested in machine learning research, especially probabilistic graphical
             Research in human-machine cooperation, especially learning to defer
         </p>
     </li>
-</ul>
-<ul class="timeline-with-icons">
     <li class="timeline-item mb-5">
         <span class="timeline-icon">
             <i class="bi bi-search text-primary fa-sm fa-fw"></i>
@@ -95,8 +93,6 @@ I am interested in machine learning research, especially probabilistic graphical
             Research in data-centric noisy-label learning
         </p>
     </li>
-</ul>
-<ul class="timeline-with-icons">
     <li class="timeline-item mb-5">
         <span class="timeline-icon">
             <i class="bi bi-wrench text-primary fa-sm fa-fw"></i>
@@ -153,8 +149,6 @@ I am interested in machine learning research, especially probabilistic graphical
             Research in micro-scaled vibration energy harvesting under the supervision of Prof. Said Al-Sarawi and Prof. Damith Ranasinghe
         </p>
     </li>
-</ul>
-<ul class="timeline-with-icons">
     <li class="timeline-item mb-5">
         <span class="timeline-icon">
             <i class="bi bi-mortarboard text-primary fa-sm fa-fw"></i>
