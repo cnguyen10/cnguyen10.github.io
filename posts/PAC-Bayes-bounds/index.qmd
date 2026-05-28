@@ -89,7 +89,7 @@ $$
 \mathbb{E} \left[ e^{2(m - 1) X^{2}} \right] = \int_{1}^{+\infty} \mathrm{Pr}( e^{2(m - 1) X^{2}} \ge x) \, \mathrm{d}x + 1.
 $$
 
-We then make a change of variable from $x$ to $\epsilon$ to utilize the given inequality in the assumption. Let's define:
+We then make a change of variable from $x$ to $\epsilon$ to utilise the given inequality in the assumption. Let's define:
 $$
 x = e^{2(m - 1) \epsilon^{2}}.
 $$

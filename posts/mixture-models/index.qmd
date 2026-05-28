@@ -6,9 +6,9 @@ description: "A deep dive into the Expectation-Maximization (EM) algorithm and i
 ---
 Missing data and latent variables are frequently encountered in various machine learning and statistical inference applications. A common example is the finite mixture model, which includes Gaussian mixture and multinomial mixture models. Due to the inherent nature of missing data or latent variables, calculating the likelihood of these models requires marginalisation over the latent variable distribution. This, in turn, complicates the process of maximum likelihood estimation (MLE).
 
-The expectation-maximisation (EM) algorithm, introduced in [@dempster1977maximum], offers a general technique for handling latent variable models. The fundamental concept behind the EM algorithm is to iterate between two steps: the E-step (expectation step) and the M-step (maximization step). In the E-step, the posterior distribution of the latent variables (or missing data) is estimated. This estimated information is then used in the M-step to compute the MLE as if the data were complete. It has been proven that this iterative process guarantees a non-decreasing likelihood function. In simpler terms, the EM algorithm converges to a saddle point.
+The expectation-maximisation (EM) algorithm, introduced in [@dempster1977maximum], offers a general technique for handling latent variable models. The fundamental concept behind the EM algorithm is to iterate between two steps: the E-step (expectation step) and the M-step (maximisation step). In the E-step, the posterior distribution of the latent variables (or missing data) is estimated. This estimated information is then used in the M-step to compute the MLE as if the data were complete. It has been proven that this iterative process guarantees a non-decreasing likelihood function. In simpler terms, the EM algorithm converges to a saddle point.
 
-While the EM algorithm is a powerful tool, this explanation may not be as clear as desired. Consequently, this post aims to provide a more accessible explanation of the EM algorithm. Additionally, some readers may question the choice of EM over stochastic gradient descent (SGD), a prevalent optimisation method. This post will, therefore, explore the key differences between these two approaches. Finally, the applications of the EM algorithm in the context of finite mixture modeling, specifically focusing on the MLE problems in Gaussian mixture models and multinomial mixture models, are also demonstrated.
+While the EM algorithm is a powerful tool, this explanation may not be as clear as desired. Consequently, this post aims to provide a more accessible explanation of the EM algorithm. Additionally, some readers may question the choice of EM over stochastic gradient descent (SGD), a prevalent optimisation method. This post will, therefore, explore the key differences between these two approaches. Finally, the applications of the EM algorithm in the context of finite mixture modelling, specifically focusing on the MLE problems in Gaussian mixture models and multinomial mixture models, are also demonstrated.
 
 ## Notations
 Before diving into the explanation and formulation, it is important to define the notations used in this post as follows:
@@ -42,7 +42,7 @@ In many tutorials of EM, the parameter $\pi$ of the prior of the latent variable
 
 Such a data generation process is often visualised by the graphical model shown below
 
-```{mermaid caption="Organizational Structure" width="50%"}
+```{mermaid caption="Organisational Structure" width="50%"}
 %%{
     init: {
         'theme': 'base',
