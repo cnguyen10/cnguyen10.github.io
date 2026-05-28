@@ -42,6 +42,16 @@ div[class="proof"]::after {
     left: calc(100% - 20px);
 }
 
+/* listing title highlight */
+.quarto-listing .listing-title {
+  color: #006400;
+  /* font-weight: 600; */
+}
+
+.quarto-listing .quarto-grid-link:hover .listing-title {
+  color: #228B22;
+}
+
 /* timeline */
 .timeline-with-icons {
   border-left: 1px solid hsl(0, 0%, 90%);
