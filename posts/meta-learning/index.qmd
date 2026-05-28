@@ -1,7 +1,7 @@
 ---
 title: "From hyper-parameter optimisation to meta-learning"
 date: "2021-11-22"
-categories: [Meta-Learning, Transfer Learning, Optimization]
+categories: [Meta-Learning, Transfer Learning, Optimisation]
 description: "Formulating meta-learning explicitly through empirical Bayes and bi-level hyper-parameter optimisation."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Blog"
-subtitle: "Formulating probabilistic machine learning and optimization concepts through mathematics."
+subtitle: "Formulating probabilistic machine learning and optimisation concepts through mathematics."
 listing:
   contents: posts
   sort: "date desc"

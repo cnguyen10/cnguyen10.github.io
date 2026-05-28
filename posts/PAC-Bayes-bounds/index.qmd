@@ -1,7 +1,7 @@
 ---
 title: "PAC-Bayes bounds for generalisation error"
 date: "2020-12-26"
-categories: [Statistical Learning Theory, Generalization]
+categories: [Statistical Learning Theory, Generalisation]
 description: "A comprehensive, step-by-step mathematical proof of the classic PAC-Bayesian generalisation error bounds."
 ---
 
@@ -9,11 +9,11 @@ Properly approaximately correct (PAC) learning is a part of <em>statistical mach
 $$
 \Pr (\text{true risk} \le \text{empirical risk} + r(m, \delta)) \ge 1 - \delta
 $$
-where $\Pr(A)$ is the probability of event $A$, $\delta \in (0, 1]$ is the confidence parameter, and $r(m, \delta)$ -- a function of <em>sample size</em> $m$ and the confidence parameter $\delta$ -- is the <em>regularization</em> that is satisfied:
+where $\Pr(A)$ is the probability of event $A$, $\delta \in (0, 1]$ is the confidence parameter, and $r(m, \delta)$ -- a function of <em>sample size</em> $m$ and the confidence parameter $\delta$ -- is the <em>regularisation</em> that is satisfied:
 $$
 \lim_{m \to +\infty} r(m, \delta) = 0.
 $$
-PAC-Bayes upper generalization bound is a kind of PAC learning. It was firstly proposed in 1999 @mcallester1999pac, and has attracted much of research interest. There has been many subsequent improvements made to tighten further this classic PAC-Bayes bound or to extend it to more general loss functions. However, the classic PAC-Bayes theorem is still the backbone. In this post, I will show how to prove this interesting theorem.
+PAC-Bayes upper generalisation bound is a kind of PAC learning. It was firstly proposed in 1999 @mcallester1999pac, and has attracted much of research interest. There has been many subsequent improvements made to tighten further this classic PAC-Bayes bound or to extend it to more general loss functions. However, the classic PAC-Bayes theorem is still the backbone. In this post, I will show how to prove this interesting theorem.
 
 ## Auxillary lemmas
 To prove the classic PAC-Bayes theorem, we need two auxilliary lemmas shown below.
@@ -134,7 +134,7 @@ $$
 2(m - 1) \mathbb{E}_{Q} \left[ (\Delta L)^{2} \right] - \mathrm{KL} [Q \Vert \pi] \le \textcolor{purple}{\ln \mathbb{E}_{\pi} \left[\exp \left( 2(m - 1) (\Delta L)^{2} \right) \right]}.
 $$ {#eq-lower-bound-log_expect}
 
-We upper-bound the last term in the RHS (highlighted in <span style="color: purple;">purple</span> color) by @lem-concentration-inequality. To do that, we consider the empirical loss on each observable data point $l(h, z_{j})$ as a random variable in $[0, 1]$ with true and empirical means $L$ and $\hat{L}$, respectively. Following the Hoeffding's inequality gives:
+We upper-bound the last term in the RHS (highlighted in <span style="color: purple;">purple</span> colour) by @lem-concentration-inequality. To do that, we consider the empirical loss on each observable data point $l(h, z_{j})$ as a random variable in $[0, 1]$ with true and empirical means $L$ and $\hat{L}$, respectively. Following the Hoeffding's inequality gives:
 $$
 \begin{aligned}
 \mathrm{Pr} \left( \Delta L \ge \epsilon \right) & = \mathrm{Pr} \left( L - \hat{L} \ge \epsilon \right)\\
