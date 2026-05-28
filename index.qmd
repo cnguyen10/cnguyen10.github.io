@@ -69,7 +69,6 @@ Please refer to my Google Scholar, or click the button below to retrieve the lis
           disable-autoplay="true"
           load-more="true"
           date-format='{"type":"absolute","locale":"en-GB","options":{"year":"numeric", "month":"short", "day":"numeric"}}'
-          custom-styles="img.rounded-full { display: none; } span.font-bold {display: none;}"
         ></bsky-embed>`;
       console.log("Bluesky feed lazily loaded.");
     }
