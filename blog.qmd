@@ -13,6 +13,4 @@ listing:
   grid-item-border: true
   fields: [date, title, description, categories, reading-time]
 page-layout: full
-title-block-banner: "#006400"
-title-block-banner-color: "white"
 ---

@@ -6,7 +6,7 @@ website:
   description: "Probabilistic machine learning"
   navbar:
     title: ""
-    background: light
+    background: success
     search: true
     right:
       - icon: pencil-square
@@ -42,6 +42,12 @@ format:
     citations-hover: true
     footnotes-hover: true
     linkcolor: "#006400"
+    code-fold: true
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-block-bg: "#f8f9fa"
+    code-block-border: "#dee2e6"
 
 filters:
   - pseudocode
