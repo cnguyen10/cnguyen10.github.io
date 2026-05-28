@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>Expectation - Maximisation algorithm and its applications in finite mixture models – Cuong Nguyen</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -26,7 +29,6 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -54,15 +56,14 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-89fed5d7c02f557cc37a36220678233b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-339d622166834a96f42c2a0c40ee91cc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -274,7 +275,7 @@ window.Quarto = {
 
 
 <p>Missing data and latent variables are frequently encountered in various machine learning and statistical inference applications. A common example is the finite mixture model, which includes Gaussian mixture and multinomial mixture models. Due to the inherent nature of missing data or latent variables, calculating the likelihood of these models requires marginalisation over the latent variable distribution. This, in turn, complicates the process of maximum likelihood estimation (MLE).</p>
-<p>The expectation-maximisation (EM) algorithm, introduced in <span class="citation" data-cites="dempster1977maximum">(<a href="#ref-dempster1977maximum" role="doc-biblioref">Dempster, Laird, and Rubin 1977</a>)</span>, offers a general technique for handling latent variable models. The fundamental concept behind the EM algorithm is to iterate between two steps: the E-step (expectation step) and the M-step (maximization step). In the E-step, the posterior distribution of the latent variables (or missing data) is estimated. This estimated information is then used in the M-step to compute the MLE as if the data were complete. It has been proven that this iterative process guarantees a non-decreasing likelihood function. In simpler terms, the EM algorithm converges to a saddle point.</p>
+<p>The expectation-maximisation (EM) algorithm, introduced in <span class="citation" data-cites="dempster1977maximum">(<a href="#ref-dempster1977maximum" role="doc-biblioref">Dempster et al. 1977</a>)</span>, offers a general technique for handling latent variable models. The fundamental concept behind the EM algorithm is to iterate between two steps: the E-step (expectation step) and the M-step (maximization step). In the E-step, the posterior distribution of the latent variables (or missing data) is estimated. This estimated information is then used in the M-step to compute the MLE as if the data were complete. It has been proven that this iterative process guarantees a non-decreasing likelihood function. In simpler terms, the EM algorithm converges to a saddle point.</p>
 <p>While the EM algorithm is a powerful tool, this explanation may not be as clear as desired. Consequently, this post aims to provide a more accessible explanation of the EM algorithm. Additionally, some readers may question the choice of EM over stochastic gradient descent (SGD), a prevalent optimisation method. This post will, therefore, explore the key differences between these two approaches. Finally, the applications of the EM algorithm in the context of finite mixture modeling, specifically focusing on the MLE problems in Gaussian mixture models and multinomial mixture models, are also demonstrated.</p>
 <section id="notations" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="notations"><span class="header-section-number">1</span> Notations</h2>
@@ -413,7 +414,7 @@ flowchart LR
 <p><span id="eq-e-step"><span class="math display">
 q^{*} = \operatorname*{argmax}_{q} \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\mathbf{x}, \mathbf{z} | \pi, \theta) - \ln q(\mathbf{z}) \right].
 \tag{2}</span></span></p>
-<p>As mentioned above, the tightest bound is when <span class="math inline">q^{*}(\mathbf{z}) = \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta)</span>, or the “variational” posterior approaches the true posterior of the latent variable <span class="math inline">\mathbf{z}</span>. Such a true posterior can be obtained in certain simple cases, but is intractable when the modelling becomes more complex. In those cases, only a local optima “variational” posterior <span class="math inline">q(\mathbf{z})</span> is calculated <span class="citation" data-cites="bernardo2003variational">(<a href="#ref-bernardo2003variational" role="doc-biblioref">Bernardo et al. 2003</a>)</span>.</p>
+<p>As mentioned above, the tightest bound is when <span class="math inline">q^{*}(\mathbf{z}) = \Pr(\mathbf{z} | \mathbf{x}, \pi, \theta)</span>, or the “variational” posterior approaches the true posterior of the latent variable <span class="math inline">\mathbf{z}</span>. Such a true posterior can be obtained in certain simple cases, but is intractable when the modelling becomes more complex. In those cases, only a local optima “variational” posterior <span class="math inline">q(\mathbf{z})</span> is calculated <span class="citation" data-cites="bernardo2003variational">(<a href="#ref-bernardo2003variational" role="doc-biblioref"><span class="nocase">Bernardo et al.</span> 2003</a>)</span>.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="True posterior in the E-step">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -439,7 +440,7 @@ q^{*} = \operatorname*{argmax}_{q} \mathbb{E}_{q(\mathbf{z})} \left[ \ln \Pr(\ma
 \max_{\pi, \theta} \max_{q_{i}} \sum_{i = 1}^{N} \mathbb{E}_{q(\mathbf{z}_{i})} \left[ \ln \Pr(\mathbf{x}_{i}, \mathbf{z}_{i} | \pi, \theta) - \ln q(\mathbf{z}) \right] + \ln \Pr(\pi) + \ln \Pr(\theta).
 </span></p>
 <p>The whole EM algorithm can be referred to <a href="#algo-em" class="quarto-xref">Algorithm 1</a>.</p>
-<div id="algo-em" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-line-number="true" data-line-number-punc=":" data-comment-delimiter="//" data-no-end="false" data-pseudocode-number="1" data-indent-size="1.2em">
+<div id="algo-em" class="pseudocode-container quarto-float" data-line-number-punc=":" data-no-end="false" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-pseudocode-number="1" data-line-number="true" data-comment-delimiter="//">
 <div class="pseudocode">
 \begin{algorithm} \caption{Expectation - Maximisation algorithm} \begin{algorithmic} \Procedure{EM}{$\mathbf{x}$} \State initialise mixture coefficient $\pi$ \State initialise $\theta$ \While{not converged} \State calculate the ELBO: $Q \gets \operatorname{E-step}(\mathbf{x}, \pi, \theta)$ \State maximise the ELBO: $\pi, \theta \gets \operatorname{M-step}(Q, \pi, \theta)$ \EndWhile \State return $\pi, \theta$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -769,18 +770,18 @@ flowchart LR
 </section>
 <section id="references" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="references"><span class="header-section-number">4</span> References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-bernardo2003variational" class="csl-entry" role="listitem">
-Bernardo, JM, MJ Bayarri, JO Berger, AP Dawid, D Heckerman, AFM Smith, M West, et al. 2003. <span>“The Variational Bayesian EM Algorithm for Incomplete Data: With Application to Scoring Graphical Model Structures.”</span> <em>Bayesian Statistics</em> 7 (453-464): 210.
+<span class="nocase">Bernardo, JM, MJ Bayarri, JO Berger, et al.</span> 2003. <span>“The Variational Bayesian EM Algorithm for Incomplete Data: With Application to Scoring Graphical Model Structures.”</span> <em>Bayesian Statistics</em> 7 (453-464): 210.
 </div>
 <div id="ref-bishop2006pattern" class="csl-entry" role="listitem">
-Bishop, Christopher M. 2006. <em>Pattern Recognition and Machine Learning</em>. Vol. 4. 4. Springer.
+Bishop, Christopher M. 2006. <em>Pattern Recognition and Machine Learning</em>. Vol. 4. Springer.
 </div>
 <div id="ref-dempster1977maximum" class="csl-entry" role="listitem">
 Dempster, Arthur P, Nan M Laird, and Donald B Rubin. 1977. <span>“Maximum Likelihood from Incomplete Data via the EM Algorithm.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 39 (1): 1–22.
 </div>
 <div id="ref-elmore2003identifiability" class="csl-entry" role="listitem">
-Elmore, Ryan T, and Shaoli Wang. 2003. <span>“Identifiability and Estimation in Finite Mixture Models with Multinomial Components.”</span> Technical Report 03-04, Pennsylvania State University.
+Elmore, Ryan T, and Shaoli Wang. 2003. <em>Identifiability and Estimation in Finite Mixture Models with Multinomial Components</em>. Technical Report 03-04, Pennsylvania State University.
 </div>
 </div>
 
@@ -797,7 +798,7 @@ Elmore, Ryan T, and Shaoli Wang. 2003. <span>“Identifiability and Estimation i
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-nguyen2022" class="csl-entry quarto-appendix-citeas" role="listitem">
 Nguyen, Cuong. 2022. <span>“Expectation - Maximisation Algorithm and Its
-Applications in Finite Mixture Models.”</span> July 17, 2022. <a href="https://cnguyen10.github.io/posts/mixture-models/">https://cnguyen10.github.io/posts/mixture-models/</a>.
+Applications in Finite Mixture Models.”</span> July 17. <a href="https://cnguyen10.github.io/posts/mixture-models/">https://cnguyen10.github.io/posts/mixture-models/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

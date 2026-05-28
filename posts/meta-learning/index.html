@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>From hyper-parameter optimisation to meta-learning – Cuong Nguyen</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -26,7 +29,6 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -54,15 +56,14 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-89fed5d7c02f557cc37a36220678233b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-339d622166834a96f42c2a0c40ee91cc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -352,9 +353,9 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 <p>The difference between meta-learning and hyper-parameter optimisation is that the meta-parameter (also known as hyper-parameter) <span class="math inline">\theta</span> is shared across all tasks sampled from the task environment <span class="math inline">p(\mathcal{D}, f)</span> as highlighted in <span style="color: crimson;">red</span> colour in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a>.</p>
 <p>In practice, the meta-parameter (or shared hyper-parameter) <span class="math inline">\theta</span> can be chosen as one of the followings:</p>
 <ul>
-<li><em>learning rate</em> of gradient-based optimisation used to minimise the lower level objective function in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a> to learn <span class="math inline">\mathbf{w}_{i}^{*} \left(\theta\right)</span> <span class="citation" data-cites="li2017meta">(<a href="#ref-li2017meta" role="doc-biblioref">Z. Li et al. 2017</a>)</span>,</li>
-<li><em>initialisation</em> of model parameter <span class="citation" data-cites="finn2017model">(<a href="#ref-finn2017model" role="doc-biblioref">Finn, Abbeel, and Levine 2017</a>)</span>,</li>
-<li><em>data representation</em> or <em>feature extractor</em> <span class="citation" data-cites="vinyals2016matching snell2017prototypical">(<a href="#ref-vinyals2016matching" role="doc-biblioref">Vinyals et al. 2016</a>; <a href="#ref-snell2017prototypical" role="doc-biblioref">Snell, Swersky, and Zemel 2017</a>)</span>,</li>
+<li><em>learning rate</em> of gradient-based optimisation used to minimise the lower level objective function in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a> to learn <span class="math inline">\mathbf{w}_{i}^{*} \left(\theta\right)</span> <span class="citation" data-cites="li2017meta">(<a href="#ref-li2017meta" role="doc-biblioref">Li et al. 2017</a>)</span>,</li>
+<li><em>initialisation</em> of model parameter <span class="citation" data-cites="finn2017model">(<a href="#ref-finn2017model" role="doc-biblioref">Finn et al. 2017</a>)</span>,</li>
+<li><em>data representation</em> or <em>feature extractor</em> <span class="citation" data-cites="vinyals2016matching snell2017prototypical">(<a href="#ref-vinyals2016matching" role="doc-biblioref"><span class="nocase">Vinyals et al.</span> 2016</a>; <a href="#ref-snell2017prototypical" role="doc-biblioref">Snell et al. 2017</a>)</span>,</li>
 <li><em>optimiser</em> used to optimise the lower-level in <a href="#eq-meta_learning_bilevel_optimisation" class="quarto-xref">Equation&nbsp;2</a>.</li>
 </ul>
 <p>In this post, the meta-parameter <span class="math inline">\theta</span> is assumed to be the initialisation of model parameters. Formulation, derivation and analysis in the subsequent sections and chapters will, therefore, revolve around this assumption. Note that the analysis can be straight-forwardly extended to other types of meta-parameters with slight modifications.</p>
@@ -365,7 +366,7 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 \theta \gets \theta - \gamma \mathbb{E}_{\mathcal{T}_{i} \sim p(\mathcal{D}, f)} \mathbb{E}_{ \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(v)}, \mathbf{y}_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right],
 \tag{4}</span></span> where <span class="math inline">\gamma</span> is another hyper-parameter representing the learning rate to learn <span class="math inline">\theta</span>.</p>
 <p>The general algorithm of meta-learning using gradient-based optimisation is shown in <a href="#algo-meta-learning" class="quarto-xref">Algorithm 1</a>.</p>
-<div id="algo-meta-learning" class="pseudocode-container quarto-float" data-line-number-punc=":" data-indent-size="1.2em" data-pseudocode-number="1" data-no-end="false" data-comment-delimiter="//" data-line-number="true" data-caption-prefix="Algorithm">
+<div id="algo-meta-learning" class="pseudocode-container quarto-float" data-no-end="false" data-line-number-punc=":" data-caption-prefix="Algorithm" data-pseudocode-number="1" data-comment-delimiter="//" data-indent-size="1.2em" data-line-number="true">
 <div class="pseudocode">
 \begin{algorithm} \caption{Training procedure of meta-learning in general} \begin{algorithmic} \Procedure{Training}{task environment $p(\mathcal{D}, f)$, learning rates $\gamma$ and $\alpha$} \State initialise meta-parameter $\theta$ \While{$\theta$ not converged} \State sample a mini-batch of $T$ tasks from task environment $p\left( \mathcal{D}, f \right)$ \For{each task $\mathcal{T}_{i}, i \in \{1, \ldots, T\}$} \State sample two data subsets $S_{i}^{(t)}$ and $S_{i}^{(v)}$ from task $\mathcal{T}_{i} = (\mathcal{D}_{i}^{(t)}, \mathcal{D}_{i}^{(v)}, f_{i})$ \State adapt meta-parameter to task $\mathcal{T}_{i}$: $\mathbf{w}_{i}^{*} \left( \theta \right) = \theta - \frac{\alpha}{m_{i}^{(t)}} \sum_{j = 1}^{m_{i}^{(t)}} \nabla_{\theta} \left[ \ell \left( \mathbf{x}_{ij}^{(t)}, y_{ij}^{(t)}; \theta \right)\right]$ \EndFor \State update meta-parameter: $\theta \gets \theta - \frac{\gamma}{T} \sum_{i=1}^{T} \frac{1}{m_{i}^{(v)}} \sum_{k=1}^{m_{i}^{(v)}} \nabla_{\theta} \left[\ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*} \left( \theta \right) \right) \right]$ \EndWhile \State \textbf{return} the trained meta-parameter $\theta$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -382,18 +383,18 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 \end{aligned}
 </span> where the first equality is due to chain rule, and the second equality is the result that differentiates the gradient update in <a href="#eq-task_adaptation_sgd" class="quarto-xref">Equation&nbsp;3</a>. Note that in the second equality, we remove the transpose notation since the corresponding matrix is symmetric.</p>
 <p>Thus, naively implementing such gradient would require to calculate the Hessian matrix $ $, resulting in an intractable procedure for large models, such as deep neural networks. To obtain a more efficient implementation, one can utilise the Hessian-vector product <span class="citation" data-cites="pearlmutter94fastexact">(<a href="#ref-pearlmutter94fastexact" role="doc-biblioref">Pearlmutter 1994</a>)</span> between the gradient vector <span class="math inline">\textcolor{green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span> and the Hessian matrix $ $ to efficiently calculate the gradient of the validation loss w.r.t. <span class="math inline">\theta</span>.</p>
-<p>Another way to calculate the gradient of the validation loss w.r.t. the meta-parameter <span class="math inline">\theta</span> is to use implicit differentiation <span class="citation" data-cites="domke2012generic rajeswaran2019meta lorraine2020optimizing">(<a href="#ref-domke2012generic" role="doc-biblioref">Domke 2012</a>; <a href="#ref-rajeswaran2019meta" role="doc-biblioref">Rajeswaran et al. 2019</a>; <a href="#ref-lorraine2020optimizing" role="doc-biblioref">Lorraine, Vicol, and Duvenaud 2020</a>)</span>. This approach is more advantaged since it does not need to stores the computational graph and takes gradient via chain rule. Such implicit differentiation technique reduces the memory usage and therefore, allows to work with large-scale models. However, the trade-off is the increasing computational time to apply the chain rule to calculate the gradient of interest.</p>
+<p>Another way to calculate the gradient of the validation loss w.r.t. the meta-parameter <span class="math inline">\theta</span> is to use implicit differentiation <span class="citation" data-cites="domke2012generic rajeswaran2019meta lorraine2020optimizing">(<a href="#ref-domke2012generic" role="doc-biblioref">Domke 2012</a>; <a href="#ref-rajeswaran2019meta" role="doc-biblioref">Rajeswaran et al. 2019</a>; <a href="#ref-lorraine2020optimizing" role="doc-biblioref">Lorraine et al. 2020</a>)</span>. This approach is more advantaged since it does not need to stores the computational graph and takes gradient via chain rule. Such implicit differentiation technique reduces the memory usage and therefore, allows to work with large-scale models. However, the trade-off is the increasing computational time to apply the chain rule to calculate the gradient of interest.</p>
 <p>Nevertheless, the implementations that compute the exact gradient of the validation loss w.r.t. <span class="math inline">\theta</span> without approximation are often referred to as <q>second-order</q> meta-learning.</p>
 </section>
 <section id="first-order-meta-learning" class="level3" data-number="1.5">
 <h3 data-number="1.5" class="anchored" data-anchor-id="first-order-meta-learning"><span class="header-section-number">1.5</span> First-order meta-learning</h3>
-<p>In practice, the Hessian matrix $ $ is often omitted from the calculation to simplify the update for the meta-parameter <span class="math inline">\theta</span> <span class="citation" data-cites="finn2017model">(<a href="#ref-finn2017model" role="doc-biblioref">Finn, Abbeel, and Levine 2017</a>)</span>. The resulting gradient consists of only the gradient of validation loss <span class="math inline">\textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span>, which is more efficient to calculate with a single forward-pass if auto differentiation is used. This approximation is often referred as <q>first-order</q> meta-learning, and the gradient of interest can be presented as: <span class="math display">
+<p>In practice, the Hessian matrix $ $ is often omitted from the calculation to simplify the update for the meta-parameter <span class="math inline">\theta</span> <span class="citation" data-cites="finn2017model">(<a href="#ref-finn2017model" role="doc-biblioref">Finn et al. 2017</a>)</span>. The resulting gradient consists of only the gradient of validation loss <span class="math inline">\textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ij}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span>, which is more efficient to calculate with a single forward-pass if auto differentiation is used. This approximation is often referred as <q>first-order</q> meta-learning, and the gradient of interest can be presented as: <span class="math display">
 \begin{aligned}
 &amp; \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left(\mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right] \\
 &amp; \approx \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)} \right].
 \end{aligned}
 </span></p>
-<p>REPTILE [<span class="citation" data-cites="nichol2018on">Nichol, Achiam, and Schulman (<a href="#ref-nichol2018on" role="doc-biblioref">2018</a>)</span>} — a variant first-order meta-learning — approximates further the gradient of validation loss <span class="math inline">\textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span> by the difference <span class="math inline">\theta - \mathbf{w}_{i}^{*}</span>, resulting in a much simpler approximation: <span class="math display">
+<p>REPTILE [<span class="citation" data-cites="nichol2018on">Nichol et al. (<a href="#ref-nichol2018on" role="doc-biblioref">2018</a>)</span>} — a variant first-order meta-learning — approximates further the gradient of validation loss <span class="math inline">\textcolor{Green}{\nabla_{\mathbf{w}_{i}^{*}(\theta)} \ell \left( \mathbf{x}_{ij}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right)}</span> by the difference <span class="math inline">\theta - \mathbf{w}_{i}^{*}</span>, resulting in a much simpler approximation: <span class="math display">
 \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \mathbb{E}_{\left( \mathbf{x}_{ik}^{(v)}, \mathbf{y}_{ik}^{(v)} \right) \sim \left( \mathcal{D}_{i}^{(v)}, f_{i} \right)} \left[ \nabla_{\theta} \ell \left( \mathbf{x}_{ik}^{(v)}, y_{ik}^{(v)}; \mathbf{w}_{i}^{*}(\theta) \right) \right] = \theta - \mathbb{E}_{\mathcal{T}_{i} \sim p \left( \mathcal{D}, f \right)} \left[ \mathbf{w}_{i}^{*}(\theta) \right].
 </span></p>
 </section>
@@ -419,7 +420,7 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 </section>
 <section id="domain-adaptation-and-generalisation" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="domain-adaptation-and-generalisation"><span class="header-section-number">2.2</span> Domain adaptation and generalisation</h3>
-<p>Domain adaptation or domain-shift refers to the case when the joint data-label distribution on source and target are different, denoted as <span class="math inline">p_{s} \left( \mathcal{D}, f \right) \neq p_{t} \left( \mathcal{D}, f \right)</span>, or simply <span class="math inline">p_{s}(\mathbf{x}, \mathbf{y}) \neq p_{t}(\mathbf{x}, \mathbf{y})</span> <span class="citation" data-cites="heckman1979sample shimodaira2000improving japkowicz2002class daume2006domain ben2007analysis">(<a href="#ref-heckman1979sample" role="doc-biblioref">Heckman 1979</a>; <a href="#ref-shimodaira2000improving" role="doc-biblioref">Shimodaira 2000</a>; <a href="#ref-japkowicz2002class" role="doc-biblioref">Japkowicz and Stephen 2002</a>; <a href="#ref-daume2006domain" role="doc-biblioref">Daume III and Marcu 2006</a>; <a href="#ref-ben2007analysis" role="doc-biblioref">Ben-David et al. 2007</a>)</span>. The aim of domain adaptation is to leverage the model trained on source domain to available data in the target domain, so that the model adapted to the target domain can perform reasonably well. In other words, domain adaptation relies on a data transformation <span class="math inline">g(., .; \mathbf{w}_{0}): \mathcal{X} \times \mathcal{Y} \to \mathcal{X}^{\prime} \times \mathcal{Y}^{\prime}</span> that produces a domain-invariant latent space. Mathematically, the transformation <span class="math inline">g</span> is obtained by minimising a divergence between the two transformed data distribution: <span id="eq-domain_adaptation"><span class="math display">
+<p>Domain adaptation or domain-shift refers to the case when the joint data-label distribution on source and target are different, denoted as <span class="math inline">p_{s} \left( \mathcal{D}, f \right) \neq p_{t} \left( \mathcal{D}, f \right)</span>, or simply <span class="math inline">p_{s}(\mathbf{x}, \mathbf{y}) \neq p_{t}(\mathbf{x}, \mathbf{y})</span> <span class="citation" data-cites="heckman1979sample shimodaira2000improving japkowicz2002class daume2006domain ben2007analysis">(<a href="#ref-heckman1979sample" role="doc-biblioref">Heckman 1979</a>; <a href="#ref-shimodaira2000improving" role="doc-biblioref">Shimodaira 2000</a>; <a href="#ref-japkowicz2002class" role="doc-biblioref">Japkowicz and Stephen 2002</a>; <a href="#ref-daume2006domain" role="doc-biblioref">Daume III and Marcu 2006</a>; <a href="#ref-ben2007analysis" role="doc-biblioref"><span class="nocase">Ben-David et al.</span> 2007</a>)</span>. The aim of domain adaptation is to leverage the model trained on source domain to available data in the target domain, so that the model adapted to the target domain can perform reasonably well. In other words, domain adaptation relies on a data transformation <span class="math inline">g(., .; \mathbf{w}_{0}): \mathcal{X} \times \mathcal{Y} \to \mathcal{X}^{\prime} \times \mathcal{Y}^{\prime}</span> that produces a domain-invariant latent space. Mathematically, the transformation <span class="math inline">g</span> is obtained by minimising a divergence between the two transformed data distribution: <span id="eq-domain_adaptation"><span class="math display">
 \begin{aligned}
 &amp; \min_{\mathbf{w}_{0}} \mathrm{Divergence} \left[ p\left( \mathbf{x}_{s}^{\prime}, \mathbf{y}_{s}^{\prime} \right) || p\left( \mathbf{x}_{t}^{\prime}, \mathbf{y}_{t}^{\prime} \right) \right]\\
 &amp; \text{s.t.: } \left( \mathbf{x}_{i}^{\prime}, \mathbf{y}_{i}^{\prime} \right) = g \left( \mathbf{x}_{i}, \mathbf{y}_{i}; \mathbf{w}_{0} \right), i \in \{s, t\}.
@@ -431,7 +432,7 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 <li>Domain adaptation assumes a shift in the task environments that generate source and target tasks, while meta-learning is based on the assumption of same task generation.</li>
 <li>Domain adaptation utilises information of data from target domain, while meta-learning does not have such access.</li>
 </ul>
-<p>In general, meta-learning learns a shared prior or hyper-parameters to generalise for unseen tasks, while domain adaptation produces a model to solve a particular task in a specified target domain. Recently, there is a variance of domain adaptation, named <b>domain generalisation</b>, where the aim is to learn a domain-invariant model without any information of target domain. In this view, domain generalisation is very similar to meta-learning, and there are some works that employ meta-learning algorithms for domain generalisation <span class="citation" data-cites="li2018learning li2019feature">(<a href="#ref-li2018learning" role="doc-biblioref">D. Li et al. 2018</a>; <a href="#ref-li2019feature" role="doc-biblioref">Y. Li et al. 2019</a>)</span>.</p>
+<p>In general, meta-learning learns a shared prior or hyper-parameters to generalise for unseen tasks, while domain adaptation produces a model to solve a particular task in a specified target domain. Recently, there is a variance of domain adaptation, named <b>domain generalisation</b>, where the aim is to learn a domain-invariant model without any information of target domain. In this view, domain generalisation is very similar to meta-learning, and there are some works that employ meta-learning algorithms for domain generalisation <span class="citation" data-cites="li2018learning li2019feature">(<a href="#ref-li2018learning" role="doc-biblioref">Li et al. 2018</a>; <a href="#ref-li2019feature" role="doc-biblioref">Li et al. 2019</a>)</span>.</p>
 </section>
 <section id="multi-task-learning" class="level3" data-number="2.3">
 <h3 data-number="2.3" class="anchored" data-anchor-id="multi-task-learning"><span class="header-section-number">2.3</span> Multi-task learning</h3>
@@ -452,15 +453,15 @@ S_{i}^{(t)} \cap S_{i}^{(v)} &amp; = \varnothing,
 </section>
 <section id="references" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="references"><span class="header-section-number">4</span> References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-al2018continuous" class="csl-entry" role="listitem">
-Al-Shedivat, Maruan, Trapit Bansal, Yuri Burda, Ilya Sutskever, Igor Mordatch, and Pieter Abbeel. 2018. <span>“Continuous Adaptation via Meta-Learning in Nonstationary and Competitive Environments.”</span> In <em>International Conference on Learning Representation</em>.
+Al-Shedivat, Maruan, Trapit Bansal, Yuri Burda, Ilya Sutskever, Igor Mordatch, and Pieter Abbeel. 2018. <span>“Continuous Adaptation via Meta-Learning in Nonstationary and Competitive Environments.”</span> <em>International Conference on Learning Representation</em>.
 </div>
 <div id="ref-baxter2000model" class="csl-entry" role="listitem">
 Baxter, Jonathan. 2000. <span>“A Model of Inductive Bias Learning.”</span> <em>Journal of Artificial Intelligence Research</em> 12: 149–98.
 </div>
 <div id="ref-ben2007analysis" class="csl-entry" role="listitem">
-Ben-David, Shai, John Blitzer, Koby Crammer, Fernando Pereira, et al. 2007. <span>“Analysis of Representations for Domain Adaptation.”</span> <em>Advances in Neural Information Processing Systems</em> 19: 137.
+<span class="nocase">Ben-David, Shai, John Blitzer, Koby Crammer, Fernando Pereira, et al.</span> 2007. <span>“Analysis of Representations for Domain Adaptation.”</span> <em>Advances in Neural Information Processing Systems</em> 19: 137.
 </div>
 <div id="ref-caruana1997multitask" class="csl-entry" role="listitem">
 Caruana, Rich. 1997. <span>“Multitask Learning.”</span> <em>Machine Learning</em> 28 (1): 41–75.
@@ -472,10 +473,10 @@ Chen, Zhiyuan, and Bing Liu. 2018. <span>“Lifelong Machine Learning.”</span>
 Daume III, Hal, and Daniel Marcu. 2006. <span>“Domain Adaptation for Statistical Classifiers.”</span> <em>Journal of Artificial Intelligence Research</em> 26: 101–26.
 </div>
 <div id="ref-domke2012generic" class="csl-entry" role="listitem">
-Domke, Justin. 2012. <span>“Generic Methods for Optimization-Based Modeling.”</span> In <em>Artificial Intelligence and Statistics</em>, 318–26. PMLR.
+Domke, Justin. 2012. <span>“Generic Methods for Optimization-Based Modeling.”</span> <em>Artificial Intelligence and Statistics</em>, 318–26.
 </div>
 <div id="ref-finn2017model" class="csl-entry" role="listitem">
-Finn, Chelsea, Pieter Abbeel, and Sergey Levine. 2017. <span>“Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks.”</span> In <em>International Conference on Machine Learning</em>, 1126–35.
+Finn, Chelsea, Pieter Abbeel, and Sergey Levine. 2017. <span>“Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks.”</span> <em>International Conference on Machine Learning</em>, 1126–35.
 </div>
 <div id="ref-french1999catastrophic" class="csl-entry" role="listitem">
 French, Robert M. 1999. <span>“Catastrophic Forgetting in Connectionist Networks.”</span> <em>Trends in Cognitive Sciences</em> 3 (4): 128–35.
@@ -490,22 +491,22 @@ Hospedales, Timothy M, Antreas Antoniou, Paul Micaelli, and Amos J Storkey. 2021
 Japkowicz, Nathalie, and Shaju Stephen. 2002. <span>“The Class Imbalance Problem: A Systematic Study.”</span> <em>Intelligent Data Analysis</em> 6 (5): 429–49.
 </div>
 <div id="ref-li2018learning" class="csl-entry" role="listitem">
-Li, Da, Yongxin Yang, Yi-Zhe Song, and Timothy M Hospedales. 2018. <span>“Learning to Generalize: Meta-Learning for Domain Generalization.”</span> In <em>Thirty-Second AAAI Conference on Artificial Intelligence</em>.
+Li, Da, Yongxin Yang, Yi-Zhe Song, and Timothy M Hospedales. 2018. <span>“Learning to Generalize: Meta-Learning for Domain Generalization.”</span> <em>Thirty-Second AAAI Conference on Artificial Intelligence</em>.
 </div>
 <div id="ref-li2019feature" class="csl-entry" role="listitem">
-Li, Yiying, Yongxin Yang, Wei Zhou, and Timothy Hospedales. 2019. <span>“Feature-Critic Networks for Heterogeneous Domain Generalization.”</span> In <em>International Conference on Machine Learning</em>, 3915–24. PMLR.
+Li, Yiying, Yongxin Yang, Wei Zhou, and Timothy Hospedales. 2019. <span>“Feature-Critic Networks for Heterogeneous Domain Generalization.”</span> <em>International Conference on Machine Learning</em>, 3915–24.
 </div>
 <div id="ref-li2017meta" class="csl-entry" role="listitem">
 Li, Zhenguo, Fengwei Zhou, Fei Chen, and Hang Li. 2017. <span>“Meta-Sgd: Learning to Learn Quickly for Few-Shot Learning.”</span> <em>arXiv Preprint arXiv:1707.09835</em>.
 </div>
 <div id="ref-lorraine2020optimizing" class="csl-entry" role="listitem">
-Lorraine, Jonathan, Paul Vicol, and David Duvenaud. 2020. <span>“Optimizing Millions of Hyperparameters by Implicit Differentiation.”</span> In <em>International Conference on International Conference on Artificial Intelligence and Statistics</em>, 1540–52. PMLR.
+Lorraine, Jonathan, Paul Vicol, and David Duvenaud. 2020. <span>“Optimizing Millions of Hyperparameters by Implicit Differentiation.”</span> <em>International Conference on International Conference on Artificial Intelligence and Statistics</em>, 1540–52.
 </div>
 <div id="ref-nagabandi2019learning" class="csl-entry" role="listitem">
-Nagabandi, Anusha, Ignasi Clavera, Simin Liu, Ronald S Fearing, Pieter Abbeel, Sergey Levine, and Chelsea Finn. 2019. <span>“Learning to Adapt in Dynamic, Real-World Environments Through Meta-Reinforcement Learning.”</span> In <em>International Conference on Learning Representation</em>.
+Nagabandi, Anusha, Ignasi Clavera, Simin Liu, et al. 2019. <span>“Learning to Adapt in Dynamic, Real-World Environments Through Meta-Reinforcement Learning.”</span> <em>International Conference on Learning Representation</em>.
 </div>
 <div id="ref-naik1992meta" class="csl-entry" role="listitem">
-Naik, Devang K, and RJ Mammone. 1992. <span>“Meta-Neural Networks That Learn by Learning.”</span> In <em>International Joint Conference on Neural Networks</em>, 1:437–42. IEEE.
+Naik, Devang K, and RJ Mammone. 1992. <span>“Meta-Neural Networks That Learn by Learning.”</span> <em>International Joint Conference on Neural Networks</em> 1: 437–42.
 </div>
 <div id="ref-nichol2018on" class="csl-entry" role="listitem">
 Nichol, Alex, Joshua Achiam, and John Schulman. 2018. <span>“On First-Order Meta-Learning Algorithms.”</span> <em>CoRR</em> abs/1803.02999. <a href="http://arxiv.org/abs/1803.02999">http://arxiv.org/abs/1803.02999</a>.
@@ -517,10 +518,10 @@ Parisi, German I, Ronald Kemker, Jose L Part, Christopher Kanan, and Stefan Werm
 Pearlmutter, Barak A. 1994. <span>“Fast Exact Multiplication by the <span>Hessian</span>.”</span> <em>Neural Computation</em> 6: 147–60.
 </div>
 <div id="ref-pratt1991direct" class="csl-entry" role="listitem">
-Pratt, Lorien Y, Jack Mostow, Candace A Kamm, and Ace A Kamm. 1991. <span>“Direct Transfer of Learned Information Among Neural Networks.”</span> In <em>Aaai</em>, 91:584–89.
+Pratt, Lorien Y, Jack Mostow, Candace A Kamm, and Ace A Kamm. 1991. <span>“Direct Transfer of Learned Information Among Neural Networks.”</span> <em>Aaai</em> 91: 584–89.
 </div>
 <div id="ref-rajeswaran2019meta" class="csl-entry" role="listitem">
-Rajeswaran, Aravind, Chelsea Finn, Sham Kakade, and Sergey Levine. 2019. <span>“Meta-Learning with Implicit Gradients.”</span>
+Rajeswaran, Aravind, Chelsea Finn, Sham Kakade, and Sergey Levine. 2019. <em>Meta-Learning with Implicit Gradients</em>.
 </div>
 <div id="ref-schmidhuber1987evolutionary" class="csl-entry" role="listitem">
 Schmidhuber, Jürgen. 1987. <span>“Evolutionary Principles in Self-Referential Learning (on Learning How to Learn: The Meta-Meta-... Hook).”</span> Diploma thesis, Technische Universit<span>ä</span>t M<span>ü</span>nchen.
@@ -529,13 +530,13 @@ Schmidhuber, Jürgen. 1987. <span>“Evolutionary Principles in Self-Referential
 Shimodaira, Hidetoshi. 2000. <span>“Improving Predictive Inference Under Covariate Shift by Weighting the Log-Likelihood Function.”</span> <em>Journal of Statistical Planning and Inference</em> 90 (2): 227–44.
 </div>
 <div id="ref-snell2017prototypical" class="csl-entry" role="listitem">
-Snell, Jake, Kevin Swersky, and Richard Zemel. 2017. <span>“Prototypical Networks for Few-Shot Learning.”</span> In <em>Advances in Neural Information Processing Systems</em>, 4077–87.
+Snell, Jake, Kevin Swersky, and Richard Zemel. 2017. <span>“Prototypical Networks for Few-Shot Learning.”</span> <em>Advances in Neural Information Processing Systems</em>, 4077–87.
 </div>
 <div id="ref-vinyals2016matching" class="csl-entry" role="listitem">
-Vinyals, Oriol, Charles Blundell, Timothy Lillicrap, Daan Wierstra, et al. 2016. <span>“Matching Networks for One Shot Learning.”</span> In <em>Advances in Neural Information Processing Systems</em>, 29:3630–38.
+<span class="nocase">Vinyals, Oriol, Charles Blundell, Timothy Lillicrap, Daan Wierstra, et al.</span> 2016. <span>“Matching Networks for One Shot Learning.”</span> <em>Advances in Neural Information Processing Systems</em> 29: 3630–38.
 </div>
 <div id="ref-yosinski2014transferable" class="csl-entry" role="listitem">
-Yosinski, Jason, Jeff Clune, Yoshua Bengio, and Hod Lipson. 2014. <span>“How Transferable Are Features in Deep Neural Networks?”</span> In <em>Advances in Neural Information Processing Systems</em>.
+Yosinski, Jason, Jeff Clune, Yoshua Bengio, and Hod Lipson. 2014. <span>“How Transferable Are Features in Deep Neural Networks?”</span> <em>Advances in Neural Information Processing Systems</em>.
 </div>
 </div>
 
@@ -551,7 +552,7 @@ Yosinski, Jason, Jeff Clune, Yoshua Bengio, and Hod Lipson. 2014. <span>“How T
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-nguyen2021" class="csl-entry quarto-appendix-citeas" role="listitem">
 Nguyen, Cuong. 2021. <span>“From Hyper-Parameter Optimisation to
-Meta-Learning.”</span> November 22, 2021. <a href="https://cnguyen10.github.io/posts/meta-learning/">https://cnguyen10.github.io/posts/meta-learning/</a>.
+Meta-Learning.”</span> November 22. <a href="https://cnguyen10.github.io/posts/meta-learning/">https://cnguyen10.github.io/posts/meta-learning/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

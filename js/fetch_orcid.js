@@ -3,118 +3,153 @@ let publications = [];  // Array to store all retrieved publications
 let displayedCount = 0;  // Tracks the number of publications currently displayed
 const pageSize = 10;  // Number of publications to fetch and display at a time
 
+// Author name variations to bold in publications
+const myNames = ['Cuong C. Nguyen', 'Nguyen, Cuong C.', 'Nguyen, C.C.', 'Cuong Nguyen', 'Nguyen, Cuong', 'Nguyen, C.'];
+
 function formatString(str) {
     return str
-    .replace(/(\B)[^ ]*/g, match => (match.toLowerCase()))
-    .replace(/^[^ ]/g, match => (match.toUpperCase()));
-}
-
-async function fetchBiography() {
-    const personUrl = `https://pub.orcid.org/v3.0/${orcidID}/personal-details`;
-
-    try{
-        const response = await fetch(personUrl, {
-            headers: { 'Accept': 'application/json' }
-        });
-        const data = await response.json();
-
-        const biographyDiv = document.getElementById('biography');
-        biographyDiv.innerHTML = data.biography.content;
-    } catch (error) {
-        console.error('Error fetching publications:', error);
-    }
+        .replace(/(\B)[^ ]*/g, match => match.toLowerCase())
+        .replace(/^[^ ]/g, match => match.toUpperCase());
 }
 
 async function fetchPublications() {
-    // load list of publications from Orcid
     const worksUrl = `https://pub.orcid.org/v3.0/${orcidID}/works`;
 
     try {
         const response = await fetch(worksUrl, {
             headers: { 'Accept': 'application/json' }
         });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-        publications = data.group;
+        publications = data.group || [];
 
-        displayPublications(publications);
+        await displayPublications(publications);
     } catch (error) {
-        console.error('Error fetching publications:', error);
+        console.error('Error fetching publications list:', error);
+        // Reset state so the user can try clicking the button again
+        const fetchButton = document.getElementById('fetch-button');
+        if (fetchButton) {
+            fetchButton.hidden = false;
+        }
+        // Let user know there was a fetch issue
+        const publicationListElement = document.getElementById('publication-list');
+        if (publicationListElement) {
+            publicationListElement.innerHTML = '<div class="text-danger ms-3">Failed to load publications. Please try again.</div>';
+        }
     }
 }
 
-// Display publications in chunks (pagination)
-async function displayPublications(publications) {
-    // const myNames = ['Cuong C. Nguyen', 'Nguyen, Cuong C.', 'Nguyen, C.C.', 'Cuong Nguyen', 'Nguyen, Cuong', 'Nguyen, C.']
+// Display publications in parallel chunks (pagination)
+async function displayPublications(publicationsList) {
+    const publicationListElement = document.getElementById('publication-list');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (!publicationListElement) return;
 
-    const publicationList = document.getElementById('publication-list');
+    const endIndex = Math.min(displayedCount + pageSize, publicationsList.length);
+    const batch = publicationsList.slice(displayedCount, endIndex);
 
-    // Display publications in batches of `pageSize`
-    for (let i = displayedCount; i < Math.min(displayedCount + pageSize, publications.length); i++) {
-        const workSummary = publications[i]['work-summary'][0];
-        const title = workSummary['title']['title']['value'];
-        const putCode = workSummary['put-code'];  // Get the unique identifier for each work
+    // Fetch all details in parallel rather than sequentially
+    const detailsPromises = batch.map(async (pub) => {
+        const workSummary = pub['work-summary']?.[0];
+        if (!workSummary) return null;
 
-        let journalTitle = null;
-        if (workSummary['journal-title'] != null) {
-            journalTitle = workSummary['journal-title']['value'];
-        } else {
-            journalTitle = 'Preprint'
+        const title = workSummary['title']?.['title']?.['value'] || 'Untitled';
+        const putCode = workSummary['put-code'];
+        const journalTitle = workSummary['journal-title']?.['value'] || 'Preprint';
+
+        const workDetailsUrl = `https://pub.orcid.org/v3.0/${orcidID}/work/${putCode}`;
+        try {
+            const res = await fetch(workDetailsUrl, {
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!res.ok) return null;
+            const workDetails = await res.json();
+            return { title, journalTitle, workDetails };
+        } catch (err) {
+            console.error(`Error fetching work details for put-code ${putCode}:`, err);
+            return null;
+        }
+    });
+
+    const results = await Promise.all(detailsPromises);
+
+    // Append fetched items to DOM
+    results.forEach((item) => {
+        if (!item) return;
+
+        const { title, journalTitle, workDetails } = item;
+
+        // Safely extract contributors/authors
+        let authors = '';
+        if (workDetails?.contributors?.contributor) {
+            authors = workDetails.contributors.contributor
+                .map(contributor => contributor['credit-name']?.['value'])
+                .filter(Boolean)
+                .join(', ');
         }
 
-        // Fetch detailed information about the publication
-        const workDetailsUrl = `https://pub.orcid.org/v3.0/${orcidID}/work/${putCode}`;
-        const workDetailsResponse = await fetch(workDetailsUrl, {
-        headers: { 'Accept': 'application/json' }
-        });
-        const workDetails = await workDetailsResponse.json();
+        // Bold the author's name in the list
+        for (const myName of myNames) {
+            if (authors.includes(myName)) {
+                authors = authors.replace(myName, `<strong style="color: MidnightBlue;">${myName}</strong>`);
+                break; // Stop at the first match to avoid nested replacements
+            }
+        }
 
-        // Get the list of contributors (authors)
-        let authors = workDetails.contributors.contributor
-            .map(contributor => contributor['credit-name']['value'])
-            .join(', ');
-
-        // // bold my name in the author list
-        // for (let myName of myNames) {
-        //     authors = authors.replace(myName, `<strong style="color: MidnightBlue;">${myName}</strong>`);
-        // }
-        
-        const pubYear = workDetails['publication-date']['year']['value'];
+        const pubYear = workDetails['publication-date']?.['year']?.['value'] || 'N/A';
 
         // Create list item for publication
         const pubItem = document.createElement('div');
-        const pub_title = formatString(title);
-        let publication_text = `<div class="g-col-10 ms-3 mb-0 pb-0"><b>${pub_title}</b></div><div class="g-col-1 mb-0 pb-0"></div><div class="g-col-1 mb-0 pb-0">${pubYear}</div><div class="g-col-10 ms-3 my-0 py-0"><small>${authors}</small></div>`;
-        if (journalTitle != null) {
-            publication_text = publication_text + `<div class="g-col-10 ms-3 my-0 py-0"><small>${journalTitle}</small></div>`;
+        const formattedTitle = formatString(title);
+
+        let publicationText = `
+            <div class="g-col-10 ms-3 mb-0 pb-0"><b>${formattedTitle}</b></div>
+            <div class="g-col-1 mb-0 pb-0"></div>
+            <div class="g-col-1 mb-0 pb-0">${pubYear}</div>
+            <div class="g-col-10 ms-3 my-0 py-0"><small>${authors}</small></div>
+        `;
+        if (journalTitle) {
+            publicationText += `<div class="g-col-10 ms-3 my-0 py-0"><small>${journalTitle}</small></div>`;
         }
-        pubItem.innerHTML = `<div class="grid gap-0 row-gap-0 column-gap-3">${publication_text}</div><div class="g-col-10 ms-3 mb-0 pb-0"><hr></div>`;
+
+        pubItem.innerHTML = `
+            <div class="grid gap-0 row-gap-0 column-gap-3">${publicationText}</div>
+            <div class="g-col-10 ms-3 mb-0 pb-0"><hr></div>
+        `;
         pubItem.style.marginTop = "10px";
-        publicationList.appendChild(pubItem);
-    }
+        publicationListElement.appendChild(pubItem);
+    });
 
     // Update displayed count
-    displayedCount += pageSize;
+    displayedCount = endIndex;
 
-    // Show the "Display More" button if there are more publications to load
-    if (displayedCount < publications.length) {
-        document.getElementById('load-more-btn').style.display = 'block';
-    } else {
-        document.getElementById('load-more-btn').style.display = 'none';
+    // Show/Hide "Display More" button
+    if (loadMoreBtn) {
+        loadMoreBtn.style.display = displayedCount < publicationsList.length ? 'block' : 'none';
     }
 }
 
-// Load more publications when "Display More" is clicked
-function fetchMorePublications() {
-    displayPublications(publications);
-}
+// Bind events cleanly when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const fetchButton = document.getElementById('fetch-button');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    let isDataFetched = false;
 
-const fetchButton = document.getElementById('fetch-button');
-let isDataFetched = false;
-
-fetchButton.addEventListener('click', () => {
-    if (!isDataFetched) {
-        fetchPublications();
-        isDataFetched = true;
+    if (fetchButton) {
+        fetchButton.addEventListener('click', () => {
+            if (!isDataFetched) {
+                isDataFetched = true;
+                fetchPublications();
+            }
+            fetchButton.hidden = true;
+        });
     }
-    fetchButton.hidden = true;
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+            displayPublications(publications);
+        });
+    }
 });
